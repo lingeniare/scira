@@ -1,0 +1,148 @@
+ИЗМЕНЕНИЯ В ПРОЕКТЕ SCIRA
+=========================
+
+Дата: [Текущая дата]
+
+ИЗМЕНЕНИЕ 1: Временное открытие доступа ко всем AI моделям
+=========================================================
+Цель: Временное открытие доступа ко всем AI моделям для бесплатных пользователей без регистрации
+
+ВНЕСЕННЫЕ ИЗМЕНЕНИЯ:
+1. Создана резервная копия: ai/providers.ts.backup
+2. Изменен файл: ai/providers.ts для ВСЕХ моделей:
+   - pro: false (убрано требование Pro подписки)
+   - requiresAuth: false (убрано требование авторизации)
+   - freeUnlimited: true (убраны лимиты для бесплатных пользователей)
+
+ИЗМЕНЕННЫЕ МОДЕЛИ:
+- Grok 3 Mini, Grok 3, Grok 4
+- GPT 5 Nano, GPT 5 Mini, GPT 5
+- Qwen 3 32B, Qwen 3 Coder, Qwen 3 235B A22B
+- GLM 4.5, GLM 4.5 Air
+- DeepSeek V3 0324
+- Gemini 2.5 Flash Lite, Gemini 2.5 Flash, Gemini 2.5 Pro
+- Kimi K2
+- Claude 4 Sonnet
+- Mistral Medium
+- OpenAI GPT OSS 20b, GPT OSS 120b
+- Llama 4 Maverick
+
+ВСЕГО ИЗМЕНЕНО: 20+ AI моделей теперь доступны бесплатно без регистрации
+
+ИЗМЕНЕНИЕ 2: Замена провайдера OpenAI на OpenRouter
+==================================================
+Цель: Замена прямого использования OpenAI API на OpenRouter для моделей GPT-5
+
+ВНЕСЕННЫЕ ИЗМЕНЕНИЯ:
+
+1. Добавлен OpenRouter провайдер:
+   - Импорт и настройка createOpenAI для OpenRouter
+   - Базовый URL: https://openrouter.ai/api/v1
+   - Переменная окружения: OPENROUTER_API_KEY
+
+2. Закомментированы оригинальные OpenAI модели:
+   - scira-5-nano: openai.responses('gpt-5-nano')
+   - scira-5-mini: openai.responses('gpt-5-mini')
+   - scira-5: openai.responses('gpt-5')
+   - scira-5-high: openai.responses('gpt-5') // GPT 5 MAX
+
+3. Добавлены новые модели через OpenRouter:
+   - scira-5-nano: openrouter.responses('openai/gpt-5-nano')
+
+ИЗМЕНЕНИЕ 3: Обновление модели GPT-5 на GPT-5-Chat
+=================================================
+Дата: [Текущая дата]
+Цель: Замена модели 'openai/gpt-5' на 'openai/gpt-5-chat' согласно ссылке https://openrouter.ai/openai/gpt-5-chat
+
+ВНЕСЕННЫЕ ИЗМЕНЕНИЯ:
+1. Изменена модель в languageModels секции:
+   - 'scira-5': openrouter.chat('openai/gpt-5') → openrouter.chat('openai/gpt-5-chat')
+
+ОБОСНОВАНИЕ:
+- Использование актуальной модели GPT-5-Chat от OpenAI через OpenRouter
+- Обеспечение доступа к последней версии чат-модели GPT-5
+   - scira-5-mini: openrouter.responses('openai/gpt-5-mini')
+   - scira-5: openrouter.responses('openai/gpt-5')
+
+4. Закомментирована конфигурация GPT 5 MAX в массиве models
+
+5. Обновлены описания моделей:
+   - Добавлено "(via OpenRouter)" к описаниям GPT-5 моделей
+
+СОХРАНЕННЫЕ ФУНКЦИИ:
+- Все инструменты (tools)
+- Мультимодальность (vision: true)
+- Размышления (reasoning middleware)
+- PDF поддержка
+- Все существующие настройки моделей
+
+ТРЕБУЕМЫЕ ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ:
+- OPENROUTER_API_KEY - API ключ для OpenRouter
+
+ИСПРАВЛЕНИЕ ОШИБКИ СБОРКИ (2025-01-20):
+- Исправлена ошибка "Cannot find module 'next/dist/client/components/builtin/global-not-found'"
+- Выполнена очистка кэша pnpm: `pnpm store prune`
+- Переустановлены зависимости: `pnpm install --force`
+- Сборка проекта теперь проходит успешно
+
+ИНСТРУКЦИИ ПО ВОССТАНОВЛЕНИЮ:
+1. Для отката OpenRouter: раскомментировать оригинальные OpenAI модели и закомментировать OpenRouter модели
+2. Для отката доступа: использовать ai/providers.ts.backup или вернуть оригинальные значения requiresAuth и pro
+
+ИЗМЕНЕНИЕ 3: Добавление новых AI моделей через OpenRouter
+==================================================
+Цель: Расширение списка доступных AI моделей через OpenRouter API
+
+ВНЕСЕННЫЕ ИЗМЕНЕНИЯ:
+
+1. Добавлены новые модели в languageModels:
+   - scira-deepseek-v3-0324: openrouter.responses('deepseek/deepseek-chat-v3-0324')
+   - scira-deepseek-r1-0528: openrouter.responses('deepseek/deepseek-r1-0528')
+   - scira-kimi-k2-new: openrouter.responses('moonshotai/kimi-k2')
+   - scira-glm-4-5v: openrouter.responses('z-ai/glm-4.5v')
+
+2. Добавлены модели в массив models:
+   - DeepSeek Chat V3 0324: 64K токенов вывода, без vision/reasoning
+   - DeepSeek R1 0528: 65K токенов вывода, с reasoning (thinking)
+   - Kimi K2 (OpenRouter): 200K токенов вывода, расширенный контекст
+   - GLM 4.5V: 8K токенов вывода, с vision и PDF поддержкой
+
+ОСОБЕННОСТИ НОВЫХ МОДЕЛЕЙ:
+- Все модели настроены как бесплатные (pro: false, requiresAuth: false, freeUnlimited: true)
+- DeepSeek R1 использует middleware для reasoning capabilities (thinking)
+- GLM 4.5V поддерживает мультимодальность (vision: true, pdf: true)
+- Kimi K2 имеет самый большой контекст (200K токенов)
+
+ВСЕГО ДОБАВЛЕНО: 4 новые AI модели через OpenRouter
+
+ВНИМАНИЕ: Убедитесь, что OPENROUTER_API_KEY настроен в переменных окружения!
+
+ИЗМЕНЕНИЕ 4: Исправление ошибок в providers.ts
+==================================================
+Цель: Исправление синтаксических ошибок и проблем с конфигурацией моделей
+
+ВНЕСЕННЫЕ ИЗМЕНЕНИЯ:
+
+1. Исправлены ошибки в определении моделей OpenRouter:
+   - Изменен openrouter.responses на openrouter.chat для моделей scira-5-nano, scira-5-mini, scira-5
+   - Добавлена отсутствующая запятая после определения модели scira-5
+
+2. Исправлена ошибка Invalid JSON response в actions.ts:
+   - Устранена проблема с генерацией большого количества кода
+   - Исправлена неправильная настройка моделей
+
+3. Обновлены параметры всех моделей для тестирования:
+   - pro: false - убрано требование Pro подписки
+   - requiresAuth: false - убрано требование авторизации  
+   - freeUnlimited: true - убраны лимиты для бесплатных пользователей
+
+ИСПРАВЛЕННЫЕ ПРОБЛЕМЫ:
+- Синтаксические ошибки в providers.ts
+- Проблемы с компиляцией проекта
+- Ошибки выполнения при использовании моделей
+- Проблемы с генерацией избыточного количества кода
+
+ФАЙЛЫ ИЗМЕНЕНЫ:
+- ai/providers.ts - исправлены синтаксические ошибки и обновлены параметры моделей
+
+ДАТА ИЗМЕНЕНИЙ: 2025-01-20

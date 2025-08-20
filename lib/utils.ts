@@ -43,7 +43,7 @@ export const searchGroups = [
     name: 'X',
     description: 'Search X posts',
     icon: NewTwitterIcon,
-    show: true,
+    show: false, // Скрыто по запросу пользователя
   },
   {
     id: 'stocks' as const,
@@ -57,7 +57,7 @@ export const searchGroups = [
     name: 'Reddit',
     description: 'Search Reddit posts',
     icon: RedditIcon,
-    show: true,
+    show: false, // Скрыто по запросу пользователя
   },
   {
     id: 'academic' as const,

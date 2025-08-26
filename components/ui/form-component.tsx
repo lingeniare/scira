@@ -68,13 +68,21 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
       [user?.isProUser, subscriptionData?.hasSubscription, subscriptionData?.subscription?.status],
     );
 
+    // Определение Ultra пользователей на основе данных пользователя
+    const isUltraUser = useMemo(
+      () => Boolean(user?.isUltraUser),
+      [user?.isUltraUser],
+    );
+
     const isSubscriptionLoading = useMemo(() => user && !subscriptionData, [user, subscriptionData]);
 
     const availableModels = useMemo(() => models, []);
 
     const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+    const [showUltraUpgradeDialog, setShowUltraUpgradeDialog] = useState(false);
     const [showSignInDialog, setShowSignInDialog] = useState(false);
     const [selectedProModel, setSelectedProModel] = useState<(typeof models)[0] | null>(null);
+    const [selectedUltraModel, setSelectedUltraModel] = useState<(typeof models)[0] | null>(null);
     const [selectedAuthModel, setSelectedAuthModel] = useState<(typeof models)[0] | null>(null);
     const [open, setOpen] = useState(false);
 
@@ -114,18 +122,34 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
     }, [attachments, messages, isFilePart]);
 
     const filteredModels = useMemo(() => {
+      // Сначала фильтруем по доступу пользователя
+      let accessibleModels = availableModels.filter((model) => {
+        // Скрываем экспериментальные модели
+        if (model.experimental) return false;
+        
+        // Проверяем доступ к модели
+        const requiresAuth = model.requiresAuth && !user;
+        // Временно делаем Ultra модели доступными всем пользователям для тестирования
+        // const requiresUltra = model.ultra && !isUltraUser;
+        const requiresPro = model.pro && !isProUser && !isUltraUser;
+        
+        // Показываем модель только если у пользователя есть доступ
+        return !requiresAuth && !requiresPro;
+      });
+      
+      // Затем фильтруем по вложениям
       if (!hasImageAttachments && !hasPdfAttachments) {
-        return availableModels;
+        return accessibleModels;
       }
       if (hasImageAttachments && hasPdfAttachments) {
-        return availableModels.filter((model) => model.vision && model.pdf);
+        return accessibleModels.filter((model) => model.vision && model.pdf);
       }
       if (hasImageAttachments) {
-        return availableModels.filter((model) => model.vision);
+        return accessibleModels.filter((model) => model.vision);
       }
       // Only PDFs attached
-      return availableModels.filter((model) => model.pdf);
-    }, [availableModels, hasImageAttachments, hasPdfAttachments]);
+      return accessibleModels.filter((model) => model.pdf);
+    }, [availableModels, hasImageAttachments, hasPdfAttachments, user, isProUser, isUltraUser]);
 
     const sortedModels = useMemo(() => filteredModels, [filteredModels]);
 
@@ -146,7 +170,8 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
     );
 
     const orderedGroupEntries = useMemo(() => {
-      const groupOrder = ['Mini', 'Pro', 'Experimental'];
+      // Обновленный порядок групп: Mini, Pro, Ultra (без Experimental)
+      const groupOrder = ['Mini', 'Pro', 'Ultra'];
       return groupOrder
         .filter((category) => groupedModels[category] && groupedModels[category].length > 0)
         .map((category) => [category, groupedModels[category]] as const);
@@ -162,25 +187,12 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
         const model = availableModels.find((m) => m.value === value);
         if (!model) return;
 
-        const requiresAuth = requiresAuthentication(model.value) && !user;
-        const requiresPro = requiresProSubscription(model.value) && !isProUser;
-
         if (isSubscriptionLoading) {
           return;
         }
 
-        if (requiresAuth) {
-          setSelectedAuthModel(model);
-          setShowSignInDialog(true);
-          return;
-        }
-
-        if (requiresPro && !isProUser) {
-          setSelectedProModel(model);
-          setShowUpgradeDialog(true);
-          return;
-        }
-
+        // Поскольку недоступные модели уже скрыты из списка,
+        // мы можем сразу устанавливать выбранную модель
         console.log('Selected model:', model.value);
         setSelectedModel(model.value.trim());
 
@@ -188,7 +200,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
           onModelSelect(model);
         }
       },
-      [availableModels, user, isProUser, isSubscriptionLoading, setSelectedModel, onModelSelect],
+      [availableModels, isSubscriptionLoading, setSelectedModel, onModelSelect],
     );
 
     return (
@@ -255,56 +267,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                     {categoryIndex > 0 && <div className="my-1 border-t border-border" />}
                     <div className="px-2 py-1 text-[10px] font-medium text-muted-foreground">{category} Models</div>
                     {categoryModels.map((model) => {
-                      const requiresAuth = requiresAuthentication(model.value) && !user;
-                      const requiresPro = requiresProSubscription(model.value) && !isProUser;
-                      const isLocked = requiresAuth || requiresPro;
-
-                      if (isLocked) {
-                        return (
-                          <div
-                            key={model.value}
-                            className={cn(
-                              'flex items-center justify-between px-2 py-1.5 mb-0.5 rounded-lg text-xs cursor-pointer',
-                              'transition-all duration-200',
-                              'opacity-50 hover:opacity-70 hover:bg-accent',
-                            )}
-                            onClick={() => {
-                              if (isSubscriptionLoading) {
-                                return;
-                              }
-
-                              if (requiresAuth) {
-                                setSelectedAuthModel(model);
-                                setShowSignInDialog(true);
-                              } else if (requiresPro && !isProUser) {
-                                setSelectedProModel(model);
-                                setShowUpgradeDialog(true);
-                              }
-                            }}
-                          >
-                            <div className="flex flex-col min-w-0 flex-1">
-                              <div className="font-medium truncate text-[11px] flex items-center gap-1">
-                                {model.label}
-                                {requiresAuth ? (
-                                  <LockIcon className="size-3 text-muted-foreground" />
-                                ) : (
-                                  <HugeiconsIcon
-                                    icon={Crown02Icon}
-                                    size={12}
-                                    color="currentColor"
-                                    strokeWidth={1.5}
-                                    className="text-muted-foreground"
-                                  />
-                                )}
-                              </div>
-                              <div className="text-[9px] text-muted-foreground truncate leading-tight">
-                                {model.description}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-
+                      // Поскольку недоступные модели уже отфильтрованы, показываем все модели как доступные
                       return (
                         <CommandItem
                           key={model.value}
@@ -323,25 +286,6 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                           <div className="flex flex-col min-w-0 flex-1">
                             <div className="font-medium truncate text-[11px] flex items-center gap-1">
                               {model.label}
-                              {(() => {
-                                const requiresAuth = requiresAuthentication(model.value) && !user;
-                                const requiresPro = requiresProSubscription(model.value) && !isProUser;
-
-                                if (requiresAuth) {
-                                  return <LockIcon className="size-3 text-muted-foreground" />;
-                                } else if (requiresPro) {
-                                  return (
-                                    <HugeiconsIcon
-                                      icon={Crown02Icon}
-                                      size={12}
-                                      color="currentColor"
-                                      strokeWidth={1.5}
-                                      className="text-muted-foreground"
-                                    />
-                                  );
-                                }
-                                return null;
-                              })()}
                             </div>
                             <div className="text-[9px] text-muted-foreground truncate leading-tight">
                               {model.description}
@@ -362,6 +306,79 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
             </Command>
           </PopoverContent>
         </Popover>
+
+        <Dialog open={showUltraUpgradeDialog} onOpenChange={setShowUltraUpgradeDialog}>
+          <DialogContent className="sm:max-w-md p-0 gap-0 border !shadow-none">
+            <div className="p-6 space-y-5">
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                    <HugeiconsIcon
+                      icon={Crown02Icon}
+                      size={16}
+                      color="white"
+                      strokeWidth={1.5}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-medium text-foreground">{selectedUltraModel?.label} requires Ultra</h2>
+                    <p className="text-sm text-muted-foreground">Upgrade to Ultra for the most advanced AI models</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Ultra AI models</p>
+                    <p className="text-xs text-muted-foreground">GPT-5, Claude 5, most advanced reasoning</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Everything in Pro</p>
+                    <p className="text-xs text-muted-foreground">Unlimited searches, premium models, PDF analysis</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Priority support</p>
+                    <p className="text-xs text-muted-foreground">Fastest response times and dedicated assistance</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 space-y-2">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl font-medium text-foreground">2000₽</span>
+                  <span className="text-sm text-muted-foreground">/month</span>
+                </div>
+                <p className="text-xs text-muted-foreground">Cancel anytime</p>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowUltraUpgradeDialog(false)}
+                  className="flex-1 h-9 text-sm font-normal"
+                >
+                  Maybe later
+                </Button>
+                <Button
+                  onClick={() => {
+                    window.location.href = '/pricing';
+                  }}
+                  className="flex-1 h-9 text-sm font-normal bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                >
+                  Upgrade to Ultra
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
           <DialogContent className="sm:max-w-md p-0 gap-0 border !shadow-none">
@@ -410,7 +427,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
 
               <div className="bg-muted rounded-lg p-4 space-y-2">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-xl font-medium text-foreground">$15</span>
+                  <span className="text-xl font-medium text-foreground">1000₽</span>
                   <span className="text-sm text-muted-foreground">/month</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Cancel anytime</p>

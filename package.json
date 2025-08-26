@@ -33,6 +33,7 @@
     "@hugeicons/react": "^1.0.5",
     "@mendable/firecrawl-js": "^1.29.3",
     "@neondatabase/serverless": "^1.0.1",
+    "@openrouter/ai-sdk-provider": "^1.1.2",
     "@phosphor-icons/react": "^2.1.10",
     "@polar-sh/better-auth": "^1.1.0",
     "@polar-sh/sdk": "^0.34.11",
@@ -172,5 +173,5 @@
   "overrides": {
     "react-is": "^19.0.0-rc-69d4b800-20241021"
   },
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "pnpm@10.15.0"
 }

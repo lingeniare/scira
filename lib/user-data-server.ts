@@ -20,6 +20,7 @@ export type ComprehensiveUserData = {
   createdAt: Date;
   updatedAt: Date;
   isProUser: boolean;
+  isUltraUser: boolean; // Новое поле для Ultra пользователей
   proSource: 'polar' | 'dodo' | 'none';
   subscriptionStatus: 'active' | 'canceled' | 'expired' | 'none';
   polarSubscription?: {
@@ -137,6 +138,7 @@ export async function getComprehensiveUserData(): Promise<ComprehensiveUserData 
 
     // Determine overall Pro status and source
     let isProUser = false;
+    let isUltraUser = false; // TODO: Добавить логику определения Ultra пользователей
     let proSource: 'polar' | 'dodo' | 'none' = 'none';
     let subscriptionStatus: 'active' | 'canceled' | 'expired' | 'none' = 'none';
 
@@ -177,6 +179,7 @@ export async function getComprehensiveUserData(): Promise<ComprehensiveUserData 
       createdAt: userData.createdAt,
       updatedAt: userData.updatedAt,
       isProUser,
+      isUltraUser,
       proSource,
       subscriptionStatus,
       paymentHistory: dodoPayments,

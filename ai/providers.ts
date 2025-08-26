@@ -22,39 +22,22 @@ const openrouter = createOpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
+const deepseek = createOpenAI({
+  baseURL: 'https://api.deepseek.com',
+  apiKey: process.env.DEEPSEEK_API_KEY,
+});
+
 export const scira = customProvider({
   languageModels: {
-    'scira-default': xai('grok-3-mini'),
-    'scira-nano': groq('llama-3.3-70b-versatile'),
+    'scira-default': openrouter.chat('openai/gpt-5-nano'),
     'scira-grok-3': xai('grok-3-fast'),
     'scira-grok-4': xai('grok-4'),
-    'scira-gpt-oss-120': wrapLanguageModel({
-      model: groq('openai/gpt-oss-120b'),
-      middleware,
-    }),
-    'scira-gpt-oss-20': wrapLanguageModel({
-      model: groq('openai/gpt-oss-20b'),
-      middleware,
-    }),
-    // Закомментированные оригинальные OpenAI модели
-    // 'scira-5-nano': openai.responses('gpt-5-nano'),
-    // 'scira-5-mini': openai.responses('gpt-5-mini'),
-    // 'scira-5': openai.responses('gpt-5'),
-    // 'scira-5-high': openai.responses('gpt-5'), // GPT 5 MAX закомментирован
-    
+   
     // Новые модели через OpenRouter
     'scira-5-nano': openrouter.chat('openai/gpt-5-nano'),
     'scira-5-mini': openrouter.chat('openai/gpt-5-mini'),
     'scira-5': openrouter.chat('openai/gpt-5-chat'),
-    'scira-qwen-32b': wrapLanguageModel({
-      model: groq('qwen/qwen3-32b'),
-      middleware,
-    }),
-    'scira-qwen-coder': huggingface.chat('Qwen/Qwen3-Coder-480B-A35B-Instruct:cerebras'),
-    'scira-deepseek-v3': wrapLanguageModel({
-      model: huggingface.chat('deepseek-ai/DeepSeek-V3-0324:together'),
-      middleware,
-    }),
+
     'scira-glm': wrapLanguageModel({
       model: huggingface.chat('zai-org/GLM-4.5:fireworks-ai'),
       middleware,
@@ -62,7 +45,6 @@ export const scira = customProvider({
     'scira-glm-air': huggingface.chat('zai-org/GLM-4.5-Air:fireworks-ai'),
     'scira-qwen-235': huggingface.chat('Qwen/Qwen3-235B-A22B-Instruct-2507:together'),
     'scira-kimi-k2': groq('moonshotai/kimi-k2-instruct'),
-    'scira-haiku': anthropic('claude-3-5-haiku-20241022'),
     'scira-mistral-medium': mistral('mistral-medium-2508'),
     'scira-google-lite': google('gemini-2.5-flash-lite'),
     'scira-google': google('gemini-2.5-flash'),
@@ -71,13 +53,16 @@ export const scira = customProvider({
     'scira-llama-4': groq('meta-llama/llama-4-maverick-17b-128e-instruct'),
     
     // Новые модели через OpenRouter
-    'scira-deepseek-v3-0324': openrouter.chat('deepseek/deepseek-chat-v3-0324'),
-    'scira-deepseek-r1-0528': wrapLanguageModel({
-      model: openrouter.chat('deepseek/deepseek-r1-0528'),
-      middleware,
-    }),
+
     'scira-kimi-k2-new': openrouter.chat('moonshotai/kimi-k2'),
     'scira-glm-4-5v': openrouter.chat('z-ai/glm-4.5v'),
+    
+    // DeepSeek V3.1 модели
+    'scira-deepseek-chat': deepseek.chat('deepseek-chat'),
+    'scira-deepseek-reasoner': wrapLanguageModel({
+      model: deepseek.chat('deepseek-reasoner'),
+      middleware,
+    })
   },
 });
 
@@ -91,57 +76,14 @@ interface Model {
   category: string;
   pdf: boolean;
   pro: boolean;
+  ultra: boolean; // Новое поле для Ultra моделей
   requiresAuth: boolean;
   freeUnlimited: boolean;
   maxOutputTokens: number;
 }
 
 export const models: Model[] = [
-  // Free Unlimited Models (xAI)
-  {
-    value: 'scira-default',
-    label: 'Grok 3 Mini',
-    description: "xAI's most efficient reasoning LLM.",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Mini',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 16000,
-  },
-  {
-    value: 'scira-grok-3',
-    label: 'Grok 3',
-    description: "xAI's recent smartest LLM",
-    vision: false,
-    reasoning: false,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 16000,
-  },
-  {
-    value: 'scira-grok-4',
-    label: 'Grok 4',
-    description: "xAI's most intelligent vision LLM",
-    vision: true,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 16000,
-  },
-
-  // Mini Models (Free/Paid)
+  // Mini Models
   {
     value: 'scira-5-nano',
     label: 'GPT 5 Nano',
@@ -152,79 +94,10 @@ export const models: Model[] = [
     category: 'Mini',
     pdf: true,
     pro: false,
+    ultra: false,
     requiresAuth: false,
-    freeUnlimited: true,
+    freeUnlimited: false,
     maxOutputTokens: 128000,
-  },
-  {
-    value: 'scira-5-mini',
-    label: 'GPT 5 Mini',
-    description: "OpenAI's latest flagship mini LLM (via OpenRouter)",
-    vision: true,
-    reasoning: true,
-    experimental: false,
-    category: 'Mini',
-    pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 128000,
-  },
-  {
-    value: 'scira-qwen-32b',
-    label: 'Qwen 3 32B',
-    description: "Alibaba's advanced reasoning LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Mini',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 40960,
-  },
-  {
-    value: 'scira-qwen-coder',
-    label: 'Qwen 3 Coder',
-    description: "Alibaba's advanced coding LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 130000,
-  },
-  {
-    value: 'scira-glm-air',
-    label: 'GLM 4.5 Air',
-    description: "Zhipu AI's efficient base LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Mini',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 130000,
-  },
-  {
-    value: 'scira-deepseek-v3',
-    label: 'DeepSeek V3 0324',
-    description: "DeepSeek's advanced base LLM",
-    vision: false,
-    reasoning: false,
-    experimental: false,
-    category: 'Mini',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 16000,
   },
   {
     value: 'scira-google-lite',
@@ -236,124 +109,42 @@ export const models: Model[] = [
     category: 'Mini',
     pdf: true,
     pro: false,
+    ultra: false,
     requiresAuth: false,
-    freeUnlimited: true,
+    freeUnlimited: false,
     maxOutputTokens: 10000,
   },
 
   // Pro Models
   {
-    value: 'scira-5',
-    label: 'GPT 5',
-    description: "OpenAI's latest flagship LLM (via OpenRouter)",
+    value: 'scira-default',
+    label: 'Grok 3 Mini',
+    description: "xAI's most efficient reasoning LLM.",
     vision: true,
     reasoning: true,
     experimental: false,
     category: 'Pro',
     pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 16000,
+  },
+  {
+    value: 'scira-5-mini',
+    label: 'GPT 5 Mini',
+    description: "OpenAI's latest flagship mini LLM (via OpenRouter)",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Pro',
+    pdf: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: true,
+    freeUnlimited: false,
     maxOutputTokens: 128000,
-  },
-  // GPT 5 MAX закомментирован по запросу
-  // {
-  //   value: 'scira-5-high',
-  //   label: 'GPT 5 (Max)',
-  //   description: "OpenAI's latest flagship reasoning LLM",
-  //   vision: true,
-  //   reasoning: true,
-  //   experimental: false,
-  //   category: 'Pro',
-  //   pdf: true,
-  //   pro: true,
-  //   requiresAuth: true,
-  //   freeUnlimited: false,
-  //   maxOutputTokens: 128000,
-  // },
-  {
-    value: 'scira-kimi-k2',
-    label: 'Kimi K2',
-    description: "MoonShot AI's advanced base LLM",
-    vision: false,
-    reasoning: false,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 10000,
-  },
-  {
-    value: 'scira-anthropic',
-    label: 'Claude 4 Sonnet',
-    description: "Anthropic's most advanced LLM",
-    vision: true,
-    reasoning: false,
-    experimental: false,
-    category: 'Pro',
-    pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 8000,
-  },
-  {
-    value: 'scira-mistral-medium',
-    label: 'Mistral Medium',
-    description: "Mistral's medium LLM",
-    vision: true,
-    reasoning: false,
-    experimental: false,
-    category: 'Pro',
-    pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 8000,
-  },
-  {
-    value: 'scira-qwen-235',
-    label: 'Qwen 3 235B A22B',
-    description: "Qwen's advanced instruct LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 100000,
-  },
-  {
-    value: 'scira-gpt-oss-20',
-    label: 'OpenAI GPT OSS 20b',
-    description: "OpenAI's advanced small OSS LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 8000,
-  },
-  {
-    value: 'scira-gpt-oss-120',
-    label: 'OpenAI GPT OSS 120b',
-    description: "OpenAI's advanced OSS LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 8000,
   },
   {
     value: 'scira-google',
@@ -364,97 +155,25 @@ export const models: Model[] = [
     experimental: false,
     category: 'Pro',
     pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: true,
+    freeUnlimited: false,
     maxOutputTokens: 10000,
   },
   {
-    value: 'scira-glm',
-    label: 'GLM 4.5',
-    description: "Zhipu AI's advanced base LLM",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 13000,
-  },
-  {
-    value: 'scira-google-pro',
-    label: 'Gemini 2.5 Pro',
-    description: "Google's most advanced LLM",
+    value: 'scira-kimi-k2-new',
+    label: 'Kimi K2',
+    description: "MoonShot AI's advanced base LLM",
     vision: true,
     reasoning: false,
     experimental: false,
     category: 'Pro',
     pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 10000,
-  },
-
-  // Experimental Models
-  {
-    value: 'scira-llama-4',
-    label: 'Llama 4 Maverick',
-    description: "Meta's latest LLM",
-    vision: true,
-    reasoning: false,
-    experimental: true,
-    category: 'Experimental',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 8000,
-  },
-  
-  // Новые модели через OpenRouter
-  {
-    value: 'scira-deepseek-v3-0324',
-    label: 'DeepSeek Chat V3 0324',
-    description: "DeepSeek's latest chat model with enhanced capabilities",
-    vision: false,
-    reasoning: false,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 64000,
-  },
-  {
-    value: 'scira-deepseek-r1-0528',
-    label: 'DeepSeek R1 0528',
-    description: "DeepSeek's advanced reasoning model with thinking capabilities",
-    vision: false,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
-    maxOutputTokens: 65536,
-  },
-  {
-    value: 'scira-kimi-k2-new',
-    label: 'Kimi K2 (OpenRouter)',
-    description: "MoonShot AI's advanced model via OpenRouter with extended context",
-    vision: false,
-    reasoning: false,
-    experimental: false,
-    category: 'Pro',
-    pdf: false,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: true,
+    freeUnlimited: false,
     maxOutputTokens: 200000,
   },
   {
@@ -466,10 +185,103 @@ export const models: Model[] = [
     experimental: false,
     category: 'Pro',
     pdf: true,
-    pro: false,
-    requiresAuth: false,
-    freeUnlimited: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: true,
+    freeUnlimited: false,
     maxOutputTokens: 8000,
+  },
+  {
+    value: 'scira-deepseek-chat',
+    label: 'DeepSeek V3.1 Chat',
+    description: "DeepSeek's advanced model",
+    vision: true,
+    reasoning: false,
+    experimental: false,
+    category: 'Pro',
+    pdf: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 8192,
+  },
+
+  // Ultra Models
+  {
+    value: 'scira-grok-4',
+    label: 'Grok 4',
+    description: "xAI's most intelligent vision LLM",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Ultra',
+    pdf: true,
+    pro: false,
+    ultra: true,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 16000,
+  },
+  {
+    value: 'scira-5',
+    label: 'GPT 5',
+    description: "OpenAI's latest flagship LLM (via OpenRouter)",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Ultra',
+    pdf: true,
+    pro: false,
+    ultra: true,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 128000,
+  },
+  {
+    value: 'scira-anthropic',
+    label: 'Claude 4 Sonnet',
+    description: "Anthropic's most advanced LLM",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Ultra',
+    pdf: true,
+    pro: false,
+    ultra: true,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 8000,
+  },
+  {
+    value: 'scira-google-pro',
+    label: 'Gemini 2.5 Pro',
+    description: "Google's most advanced LLM",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Ultra',
+    pdf: true,
+    pro: false,
+    ultra: true,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 10000,
+  },
+  {
+    value: 'scira-deepseek-reasoner',
+    label: 'DeepSeek V3.1 Reasoner',
+    description: "DeepSeek's reasoning model with advanced problem-solving capabilities",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Ultra',
+    pdf: true,
+    pro: false,
+    ultra: true,
+    requiresAuth: true,
+    freeUnlimited: false,
+    maxOutputTokens: 8192,
   },
 ];
 
@@ -486,6 +298,11 @@ export function requiresAuthentication(modelValue: string): boolean {
 export function requiresProSubscription(modelValue: string): boolean {
   const model = getModelConfig(modelValue);
   return model?.pro || false;
+}
+
+export function requiresUltraSubscription(modelValue: string): boolean {
+  const model = getModelConfig(modelValue);
+  return model?.ultra || false;
 }
 
 export function isFreeUnlimited(modelValue: string): boolean {
@@ -519,7 +336,7 @@ export function getMaxOutputTokens(modelValue: string): number {
 }
 
 // Access control helper
-export function canUseModel(modelValue: string, user: any, isProUser: boolean): { canUse: boolean; reason?: string } {
+export function canUseModel(modelValue: string, user: any, isProUser: boolean, isUltraUser?: boolean): { canUse: boolean; reason?: string } {
   const model = getModelConfig(modelValue);
 
   if (!model) {
@@ -531,8 +348,13 @@ export function canUseModel(modelValue: string, user: any, isProUser: boolean): 
     return { canUse: false, reason: 'authentication_required' };
   }
 
-  // Check if model requires Pro subscription
-  if (model.pro && !isProUser) {
+  // Check if model requires Ultra subscription
+  if (model.ultra && !isUltraUser) {
+    return { canUse: false, reason: 'ultra_subscription_required' };
+  }
+
+  // Check if model requires Pro subscription (but not Ultra)
+  if (model.pro && !isProUser && !isUltraUser) {
     return { canUse: false, reason: 'pro_subscription_required' };
   }
 

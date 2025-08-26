@@ -53,6 +53,7 @@ export function useCachedUserData() {
 
     // Quick access to commonly used properties
     isProUser,
+    isUltraUser: Boolean(user?.isUltraUser), // Новое поле для Ultra пользователей
     proSource,
     subscriptionStatus,
 

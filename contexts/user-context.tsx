@@ -14,6 +14,7 @@ interface UserContextType {
 
   // Quick access to commonly used properties
   isProUser: boolean;
+  isUltraUser: boolean; // Новое поле для Ultra пользователей
   proSource: string;
   subscriptionStatus: string;
 

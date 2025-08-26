@@ -102,7 +102,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
 
   const handleCheckout = async (productId: string, slug: string, paymentMethod?: 'dodo' | 'polar') => {
     if (!user) {
-      router.push('/sign-up');
+      router.push('/sign-in');
       return;
     }
 
@@ -208,8 +208,8 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
       )}
 
       {/* Pricing Cards */}
-      <div className="max-w-4xl mx-auto px-6 pb-24">
-        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+      <div className="max-w-6xl mx-auto px-6 pb-24">
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {/* Free Plan */}
           <Card className="relative">
             <CardHeader className="pb-4">
@@ -270,8 +270,8 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                   </div>
                 ) : (
                   <div className="flex items-baseline">
-                    <span className="text-4xl font-light">$15</span>
-                    <span className="text-muted-foreground ml-2">/month</span>
+                    <span className="text-4xl font-light">₽{PRICING.PRO_MONTHLY_INR}</span>
+                    <span className="text-muted-foreground ml-2">/месяц</span>
                   </div>
                 )
               ) : !location.loading && location.isIndia ? (
@@ -320,13 +320,13 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 <div className="flex items-baseline">
                   {shouldShowDiscount() ? (
                     <div className="flex items-baseline gap-3">
-                      <span className="text-xl text-muted-foreground line-through">$15</span>
-                      <span className="text-4xl font-light">${getDiscountedPrice(PRICING.PRO_MONTHLY)}</span>
+                      <span className="text-xl text-muted-foreground line-through">₽{PRICING.PRO_MONTHLY_INR}</span>
+                      <span className="text-4xl font-light">₽{getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)}</span>
                     </div>
                   ) : (
-                    <span className="text-4xl font-light">$15</span>
+                    <span className="text-4xl font-light">₽{PRICING.PRO_MONTHLY_INR}</span>
                   )}
-                  <span className="text-muted-foreground ml-2">/month</span>
+                  <span className="text-muted-foreground ml-2">/месяц</span>
                 </div>
               )}
             </CardHeader>
@@ -339,7 +339,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  All AI models
+                  Pro AI models
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
@@ -415,6 +415,59 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                   )}
                 </Button>
               )}
+            </CardContent>
+          </Card>
+
+          {/* Ultra Plan */}
+          <Card className="relative border-2 border-yellow-500">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+              <Badge className="bg-yellow-500 text-yellow-900">Ultra</Badge>
+            </div>
+
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-medium">Scira Ultra</h3>
+                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Premium</Badge>
+              </div>
+
+              <div className="flex items-baseline">
+                <span className="text-4xl font-light">₽{PRICING.ULTRA_MONTHLY_INR}</span>
+                <span className="text-muted-foreground ml-2">/месяц</span>
+              </div>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              <ul className="space-y-3">
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Unlimited searches
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  All AI models + Ultra models
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Advanced PDF analysis
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Priority support
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Scira Lookout Pro
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Early access to new features
+                </li>
+              </ul>
+
+              <Button className="w-full group bg-yellow-500 hover:bg-yellow-600 text-yellow-900">
+                {!user ? 'Sign up for Ultra' : 'Upgrade to Ultra'}
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
             </CardContent>
           </Card>
         </div>

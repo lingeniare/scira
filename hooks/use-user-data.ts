@@ -34,6 +34,7 @@ export function useUserData() {
 
     // Quick access to commonly used properties
     isProUser: Boolean(userData?.isProUser),
+    isUltraUser: Boolean(userData?.isUltraUser), // Новое поле для Ultra пользователей
     proSource: userData?.proSource || 'none',
     subscriptionStatus: userData?.subscriptionStatus || 'none',
 

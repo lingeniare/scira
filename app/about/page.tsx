@@ -583,7 +583,7 @@ export default function AboutPage() {
             <p className="text-muted-foreground/80 max-w-lg mx-auto">Simple, transparent pricing for everyone</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Free Plan */}
             <div className="bg-background/50 border border-border/50 rounded-xl p-8 hover:border-border/80 transition-colors flex flex-col">
               <div className="mb-8">
@@ -633,6 +633,58 @@ export default function AboutPage() {
               </Button>
             </div>
 
+            {/* Ultra Plan */}
+            <div className="bg-background border border-primary/50 rounded-xl p-8 relative hover:border-primary/70 transition-colors flex flex-col">
+              <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"></div>
+
+              <div className="mb-8">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-xl font-medium">Ultra</h3>
+                  <span className="text-xs font-medium text-orange-600/80 bg-orange-600/10 px-2.5 py-1 rounded-full">
+                    Premium
+                  </span>
+                </div>
+                <p className="text-muted-foreground/70 mb-4">Maximum power for professionals</p>
+                <div className="space-y-1">
+                  <div className="flex items-baseline">
+                    <span className="text-3xl font-light tracking-tight">${PRICING.ULTRA_MONTHLY}</span>
+                    <span className="text-muted-foreground/70 ml-2">/month</span>
+                  </div>
+                  <div className="flex items-baseline">
+                    <span className="text-2xl font-medium text-muted-foreground/60">₹{PRICING.ULTRA_MONTHLY_INR}</span>
+                    <span className="text-muted-foreground/60 ml-2 text-sm">1 month access</span>
+                  </div>
+                </div>
+              </div>
+
+              <ul className="space-y-3 flex-1 mb-8">
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                  <span className="text-muted-foreground">Everything in Pro</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                  <span className="text-muted-foreground">Premium AI models (GPT-5, Claude Opus)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                  <span className="text-muted-foreground">Advanced reasoning capabilities</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                  <span className="text-muted-foreground">Faster response times</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                  <span className="text-muted-foreground">Premium support</span>
+                </li>
+              </ul>
+
+              <Button className="w-full bg-orange-600 hover:bg-orange-700" onClick={() => router.push('/pricing')}>
+                Upgrade to Ultra
+              </Button>
+            </div>
+
             {/* Pro Plan */}
             <div className="bg-background border border-primary/30 rounded-xl p-8 relative hover:border-primary/50 transition-colors flex flex-col">
               <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
@@ -664,7 +716,7 @@ export default function AboutPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">All AI models</span>
+                  <span className="text-muted-foreground">Advanced AI models</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>

@@ -64,7 +64,7 @@ const ChatInterface = memo(
     const [input, setInput] = useState<string>('');
 
     // Use localStorage hook directly for model selection with a default
-    const [selectedModel, setSelectedModel] = useLocalStorage('scira-selected-model', 'scira-default');
+    const [selectedModel, setSelectedModel] = useLocalStorage('scira-selected-model', 'scira-5-nano');
     const [selectedGroup, setSelectedGroup] = useLocalStorage<SearchGroupId>('scira-selected-group', 'web');
     const [isCustomInstructionsEnabled, setIsCustomInstructionsEnabled] = useLocalStorage(
       'scira-custom-instructions-enabled',
@@ -104,6 +104,32 @@ const ChatInterface = memo(
       shouldCheckLimits: shouldCheckUserLimits,
       shouldBypassLimitsForModel,
     } = useUser();
+
+    // Функция для определения модели по умолчанию в зависимости от роли пользователя
+    const getDefaultModel = useCallback(() => {
+      if (!user) {
+        return 'scira-5-nano'; // Free пользователи (неавторизованные) - GPT 5 Nano
+      }
+      
+      // Проверяем Ultra подписку
+      const isUltraUser = Boolean(user?.isUltraUser);
+      
+      if (isUltraUser) {
+        return 'scira-5'; // Ultra пользователи - GPT 5
+      } else if (isUserPro) {
+        return 'scira-5-mini'; // Pro пользователи - GPT 5 Mini
+      } else {
+        return 'scira-5-nano'; // Free пользователи (авторизованные) - GPT 5 Nano
+      }
+    }, [user, isUserPro]);
+
+    // Обновляем selectedModel при изменении пользователя
+    useEffect(() => {
+      const defaultModel = getDefaultModel();
+      if (selectedModel !== defaultModel) {
+        setSelectedModel(defaultModel);
+      }
+    }, [user, isUserPro, getDefaultModel, selectedModel, setSelectedModel]);
 
     const { setDataStream } = useDataStream();
 

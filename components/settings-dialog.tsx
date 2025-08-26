@@ -23,7 +23,7 @@ import {
   deleteCustomInstructionsAction,
 } from '@/app/actions';
 import { SEARCH_LIMITS } from '@/lib/constants';
-import { authClient, betterauthClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth-client';
 import {
   Gear,
   MagnifyingGlass,
@@ -68,7 +68,7 @@ function ProfileSection({ user, subscriptionData, isProUser, isProStatusLoading 
   const { isProUser: fastProStatus, isLoading: fastProLoading } = useIsProUser();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  // Use comprehensive Pro status from user data (includes both Polar + DodoPayments)
+  // Use comprehensive Pro status from user data (includes DodoPayments and CloudPayments)
   const isProUserActive: boolean = user?.isProUser || fastProStatus || false;
   const showProLoading: boolean = Boolean(fastProLoading || isProStatusLoading);
 
@@ -401,41 +401,19 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   // Use data from user object (already cached)
-  const paymentHistory = user?.paymentHistory || null;
+  const paymentHistory = null; // Payment history no longer available
   const dodoProStatus = user?.dodoProStatus || null;
 
   useEffect(() => {
-    const fetchPolarOrders = async () => {
-      try {
-        setOrdersLoading(true);
-
-        // Only fetch Polar orders (DodoPayments data comes from user cache)
-        const ordersResponse = await authClient.customer.orders
-          .list({
-            query: {
-              page: 1,
-              limit: 10,
-              productBillingType: 'recurring',
-            },
-          })
-          .catch(() => ({ data: null }));
-
-        setOrders(ordersResponse.data);
-      } catch (error) {
-        console.log('Failed to fetch Polar orders:', error);
-        setOrders(null);
-      } finally {
-        setOrdersLoading(false);
-      }
-    };
-
-    fetchPolarOrders();
+    // Legacy orders are no longer used, set empty state
+    setOrdersLoading(false);
+    setOrders(null);
   }, []);
 
   const handleManageSubscription = async () => {
     // Determine the subscription source
     const getProAccessSource = () => {
-      if (hasActiveSubscription) return 'polar';
+      if (hasActiveSubscription) return 'cloudpayments';
       if (hasDodoProStatus) return 'dodo';
       return null;
     };
@@ -452,19 +430,19 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
       console.log('User full object keys:', Object.keys(user || {}));
 
       if (proSource === 'dodo') {
-        // Use DodoPayments portal for DodoPayments users
-        console.log('Opening DodoPayments portal');
-        console.log('User object for DodoPayments:', {
+        // Use CloudPayments portal for DodoPayments users
+        console.log('Opening CloudPayments portal');
+        console.log('User object for CloudPayments:', {
           id: user?.id,
           email: user?.email,
           dodoProStatus: user?.dodoProStatus,
           isProUser: user?.isProUser,
         });
-        await betterauthClient.dodopayments.customer.portal();
+        window.location.href = '/api/cloudpayments/manage-subscription';
       } else {
-        // Use Polar portal for Polar subscribers
-        console.log('Opening Polar portal');
-        await authClient.customer.portal();
+        // Use CloudPayments for all subscribers
+        console.log('Opening CloudPayments portal');
+        window.location.href = '/api/cloudpayments/manage-subscription';
       }
     } catch (error) {
       console.error('Subscription management error:', error);
@@ -666,40 +644,9 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
           </div>
         ) : (
           <div className="space-y-2">
-            {/* Show DodoPayments history */}
-            {paymentHistory && paymentHistory.length > 0 && (
-              <>
-                {paymentHistory.slice(0, 3).map((payment: any) => (
-                  <div key={payment.id} className={cn('bg-muted/30 rounded-lg', isMobile ? 'p-2.5' : 'p-3')}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <p className={cn('font-medium truncate', isMobile ? 'text-xs' : 'text-sm')}>
-                          Scira Pro (DodoPayments)
-                        </p>
-                        <div className="flex items-center gap-2">
-                          <p className={cn('text-muted-foreground', isMobile ? 'text-[10px]' : 'text-xs')}>
-                            {new Date(payment.createdAt).toLocaleDateString()}
-                          </p>
-                          <Badge variant="secondary" className="text-[8px] px-1 py-0">
-                            🇮🇳 INR
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span className={cn('font-semibold block', isMobile ? 'text-xs' : 'text-sm')}>
-                          ₹{(payment.totalAmount / 100).toFixed(0)}
-                        </span>
-                        <span className={cn('text-muted-foreground', isMobile ? 'text-[9px]' : 'text-xs')}>
-                          {payment.status}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
+            {/* Payment history no longer available */}
 
-            {/* Show Polar orders */}
+            {/* Show legacy orders */}
             {orders?.result?.items && orders.result.items.length > 0 && (
               <>
                 {orders.result.items.slice(0, 3).map((order: any) => (
@@ -714,7 +661,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                             {new Date(order.createdAt).toLocaleDateString()}
                           </p>
                           <Badge variant="secondary" className="text-[8px] px-1 py-0">
-                            🌍 USD
+                            💳 USD
                           </Badge>
                         </div>
                       </div>
@@ -733,8 +680,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
             )}
 
             {/* Show message if no billing history */}
-            {(!paymentHistory || paymentHistory.length === 0) &&
-              (!orders?.result?.items || orders.result.items.length === 0) && (
+            {(!orders?.result?.items || orders.result.items.length === 0) && (
                 <div
                   className={cn(
                     'border rounded-lg text-center bg-muted/20 flex items-center justify-center',

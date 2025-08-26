@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Internal app imports
 import { suggestQuestions, updateChatVisibility } from '@/app/actions';
+import { canUseModel } from '@/ai/providers';
 
 // Component imports
 import { ChatDialogs } from '@/components/chat-dialogs';
@@ -66,6 +67,7 @@ const ChatInterface = memo(
     // Use localStorage hook directly for model selection with a default
     const [selectedModel, setSelectedModel] = useLocalStorage('scira-selected-model', 'scira-5-nano');
     const [selectedGroup, setSelectedGroup] = useLocalStorage<SearchGroupId>('scira-selected-group', 'web');
+    const [temperature, setTemperature] = useLocalStorage('scira-ai-temperature', 0.7);
     const [isCustomInstructionsEnabled, setIsCustomInstructionsEnabled] = useLocalStorage(
       'scira-custom-instructions-enabled',
       true,
@@ -115,7 +117,7 @@ const ChatInterface = memo(
       const isUltraUser = Boolean(user?.isUltraUser);
       
       if (isUltraUser) {
-        return 'scira-5'; // Ultra пользователи - GPT 5
+        return 'scira-grok-4'; // Ultra пользователи - Grok 4
       } else if (isUserPro) {
         return 'scira-5-mini'; // Pro пользователи - GPT 5 Mini
       } else {
@@ -123,13 +125,29 @@ const ChatInterface = memo(
       }
     }, [user, isUserPro]);
 
-    // Обновляем selectedModel при изменении пользователя
+    // Флаг для отслеживания, была ли модель выбрана пользователем вручную
+    const [isModelManuallySelected, setIsModelManuallySelected] = useLocalStorage('scira-model-manually-selected', false);
+
+    // Обновляем selectedModel при изменении пользователя только если модель не была выбрана вручную
     useEffect(() => {
       const defaultModel = getDefaultModel();
+      
+      // Если модель была выбрана вручную, проверяем доступность текущей модели
+      if (isModelManuallySelected) {
+        const { canUse } = canUseModel(selectedModel, user, isUserPro, Boolean(user?.isUltraUser));
+        // Если текущая модель недоступна, сбрасываем на модель по умолчанию
+        if (!canUse) {
+          setSelectedModel(defaultModel);
+          setIsModelManuallySelected(false);
+        }
+        return;
+      }
+      
+      // Если модель не была выбрана вручную, устанавливаем модель по умолчанию
       if (selectedModel !== defaultModel) {
         setSelectedModel(defaultModel);
       }
-    }, [user, isUserPro, getDefaultModel, selectedModel, setSelectedModel]);
+    }, [user, isUserPro, getDefaultModel, selectedModel, setSelectedModel, isModelManuallySelected, setIsModelManuallySelected]);
 
     const { setDataStream } = useDataStream();
 
@@ -227,11 +245,13 @@ const ChatInterface = memo(
     // Create refs to store current values to avoid closure issues
     const selectedModelRef = useRef(selectedModel);
     const selectedGroupRef = useRef(selectedGroup);
+    const temperatureRef = useRef(temperature);
     const isCustomInstructionsEnabledRef = useRef(isCustomInstructionsEnabled);
 
     // Update refs whenever state changes - this ensures we always have current values
     selectedModelRef.current = selectedModel;
     selectedGroupRef.current = selectedGroup;
+    temperatureRef.current = temperature;
     isCustomInstructionsEnabledRef.current = isCustomInstructionsEnabled;
 
     const { messages, sendMessage, setMessages, regenerate, stop, status, error, resumeStream } = useChat<ChatMessage>({
@@ -246,6 +266,7 @@ const ChatInterface = memo(
               messages,
               model: selectedModelRef.current,
               group: selectedGroupRef.current,
+              temperature: temperatureRef.current,
               timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
               isCustomInstructionsEnabled: isCustomInstructionsEnabledRef.current,
               ...(initialChatId ? { chat_id: initialChatId } : {}),
@@ -514,8 +535,10 @@ const ChatInterface = memo(
     const handleModelChange = useCallback(
       (model: string) => {
         setSelectedModel(model);
+        // Отмечаем, что модель была выбрана пользователем вручную
+        setIsModelManuallySelected(true);
       },
-      [setSelectedModel],
+      [setSelectedModel, setIsModelManuallySelected],
     );
 
     const resetSuggestedQuestions = useCallback(() => {
@@ -721,10 +744,13 @@ const ChatInterface = memo(
                   sendMessage={sendMessage}
                   selectedModel={selectedModel}
                   setSelectedModel={handleModelChange}
+                  setIsModelManuallySelected={setIsModelManuallySelected}
                   resetSuggestedQuestions={resetSuggestedQuestions}
                   lastSubmittedQueryRef={lastSubmittedQueryRef}
                   selectedGroup={selectedGroup}
                   setSelectedGroup={setSelectedGroup}
+                  temperature={temperature}
+                  setTemperature={setTemperature}
                   showExperimentalModels={messages.length === 0}
                   status={status}
                   setHasSubmitted={(hasSubmitted) => {

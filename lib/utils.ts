@@ -38,6 +38,20 @@ export const searchGroups = [
     icon: GlobalSearchIcon,
     show: true,
   },
+    {
+    id: 'chat' as const,
+    name: 'Chat',
+    description: 'Talk to the model directly.',
+    icon: ChattingIcon,
+    show: true,
+  },
+    {
+    id: 'academic' as const,
+    name: 'Academic',
+    description: 'Search academic papers powered by Exa',
+    icon: MicroscopeIcon,
+    show: true,
+  },
   {
     id: 'x' as const,
     name: 'X',
@@ -58,20 +72,6 @@ export const searchGroups = [
     description: 'Search Reddit posts',
     icon: RedditIcon,
     show: false, // Скрыто по запросу пользователя
-  },
-  {
-    id: 'academic' as const,
-    name: 'Academic',
-    description: 'Search academic papers powered by Exa',
-    icon: MicroscopeIcon,
-    show: true,
-  },
-  {
-    id: 'chat' as const,
-    name: 'Chat',
-    description: 'Talk to the model directly.',
-    icon: ChattingIcon,
-    show: true,
   },
   {
     id: 'memory' as const,

@@ -1,14 +1,10 @@
 import 'server-only';
 
 import { eq } from 'drizzle-orm';
-import { subscription, payment, user } from './db/schema';
+import { subscription, user } from './db/schema';
 import { db } from './db';
 import { auth } from './auth';
 import { headers } from 'next/headers';
-import { getPaymentsByUserId, getDodoPaymentsExpirationInfo } from './db/queries';
-
-// Configurable subscription duration for DodoPayments (in months)
-const DODO_SUBSCRIPTION_DURATION_MONTHS = parseInt(process.env.DODO_SUBSCRIPTION_DURATION_MONTHS || '1');
 
 // Single comprehensive user data type
 export type ComprehensiveUserData = {
@@ -20,10 +16,10 @@ export type ComprehensiveUserData = {
   createdAt: Date;
   updatedAt: Date;
   isProUser: boolean;
-  isUltraUser: boolean; // Новое поле для Ultra пользователей
-  proSource: 'polar' | 'dodo' | 'none';
+  isUltraUser: boolean;
+  proSource: 'cloudpayments' | 'none';
   subscriptionStatus: 'active' | 'canceled' | 'expired' | 'none';
-  polarSubscription?: {
+  cloudPaymentsSubscription?: {
     id: string;
     productId: string;
     status: string;
@@ -35,16 +31,6 @@ export type ComprehensiveUserData = {
     cancelAtPeriodEnd: boolean;
     canceledAt: Date | null;
   };
-  dodoPayments?: {
-    hasPayments: boolean;
-    expiresAt: Date | null;
-    mostRecentPayment?: Date;
-    daysUntilExpiration?: number;
-    isExpired: boolean;
-    isExpiringSoon: boolean;
-  };
-  // Payment history
-  paymentHistory: any[];
 };
 
 const userDataCache = new Map<string, { data: ComprehensiveUserData; expiresAt: number }>();
@@ -55,17 +41,12 @@ function getCachedUserData(userId: string): ComprehensiveUserData | null {
   if (cached && cached.expiresAt > Date.now()) {
     return cached.data;
   }
-  if (cached) {
-    userDataCache.delete(userId);
-  }
+  userDataCache.delete(userId);
   return null;
 }
 
 function setCachedUserData(userId: string, data: ComprehensiveUserData): void {
-  userDataCache.set(userId, {
-    data,
-    expiresAt: Date.now() + CACHE_TTL_MS,
-  });
+  userDataCache.set(userId, { data, expiresAt: Date.now() + CACHE_TTL_MS });
 }
 
 export function clearUserDataCache(userId: string): void {
@@ -95,81 +76,63 @@ export async function getComprehensiveUserData(): Promise<ComprehensiveUserData 
       return cached;
     }
 
-    // Fetch all data in parallel - SINGLE DATABASE OPERATION SET
-    const [userData, polarSubscriptions, dodoPayments, dodoExpirationInfo] = await Promise.all([
+    // Fetch all data in parallel
+    const [userData, cloudPaymentsSubscriptions] = await Promise.all([
       // User basic data
       db
         .select()
         .from(user)
         .where(eq(user.id, userId))
         .then((rows) => rows[0]),
-      // Polar subscriptions
+      // CloudPayments subscriptions
       db.select().from(subscription).where(eq(subscription.userId, userId)).$withCache(),
-      // DodoPayments data
-      getPaymentsByUserId({ userId }),
-      // DodoPayments expiration info
-      getDodoPaymentsExpirationInfo({ userId }),
     ]);
 
     if (!userData) {
       return null;
     }
 
-    // Process Polar subscription
-    const activePolarSubscription = polarSubscriptions
-      .filter((sub) => sub.status === 'active')
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    // Check for active CloudPayments subscription
+    const activeCloudPaymentsSubscription = cloudPaymentsSubscriptions.find((sub) => {
+      const now = new Date();
+      return (
+        sub.status === 'active' && 
+        sub.paymentProvider === 'cloudpayments' && 
+        new Date(sub.currentPeriodEnd) > now
+      );
+    });
 
-    // Process DodoPayments
-    const successfulDodoPayments = dodoPayments
-      .filter((p: any) => p.status === 'succeeded')
-      .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    // Check for active Ultra subscription (CloudPayments)
+    const activeUltraSubscription = cloudPaymentsSubscriptions.find((sub) => {
+      const now = new Date();
+      return (
+        sub.status === 'active' &&
+        new Date(sub.currentPeriodEnd) > now &&
+        sub.paymentProvider === 'cloudpayments' &&
+        sub.productId === 'cloudpayments_ultra' // Ultra tier product ID
+      );
+    });
 
-    const hasDodoPayments = successfulDodoPayments.length > 0;
-    let isDodoActive = false;
-
-    if (hasDodoPayments) {
-      const mostRecentPayment = successfulDodoPayments[0];
-      const paymentDate = new Date(mostRecentPayment.createdAt);
-      const subscriptionEndDate = new Date(paymentDate);
-      subscriptionEndDate.setMonth(subscriptionEndDate.getMonth() + DODO_SUBSCRIPTION_DURATION_MONTHS);
-      isDodoActive = subscriptionEndDate > new Date();
-    }
-
-    // Determine overall Pro status and source
+    // Determine user status
     let isProUser = false;
-    let isUltraUser = false; // TODO: Добавить логику определения Ultra пользователей
-    let proSource: 'polar' | 'dodo' | 'none' = 'none';
+    let isUltraUser = false;
+    let proSource: 'cloudpayments' | 'none' = 'none';
     let subscriptionStatus: 'active' | 'canceled' | 'expired' | 'none' = 'none';
 
-    if (activePolarSubscription) {
+    if (activeCloudPaymentsSubscription) {
       isProUser = true;
-      proSource = 'polar';
-      subscriptionStatus = 'active';
-    } else if (isDodoActive) {
-      isProUser = true;
-      proSource = 'dodo';
-      subscriptionStatus = 'active';
-    } else {
-      // Check for expired/canceled Polar subscriptions
-      const latestPolarSubscription = polarSubscriptions.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      )[0];
-
-      if (latestPolarSubscription) {
-        const now = new Date();
-        const isExpired = new Date(latestPolarSubscription.currentPeriodEnd) < now;
-        const isCanceled = latestPolarSubscription.status === 'canceled';
-
-        if (isCanceled) {
-          subscriptionStatus = 'canceled';
-        } else if (isExpired) {
-          subscriptionStatus = 'expired';
-        }
-      }
+      proSource = 'cloudpayments';
+      subscriptionStatus = activeCloudPaymentsSubscription.status as 'active' | 'canceled' | 'expired';
     }
 
-    // Build comprehensive user data
+    if (activeUltraSubscription) {
+      isUltraUser = true;
+      isProUser = true; // Ultra users are also Pro users
+      proSource = 'cloudpayments';
+      subscriptionStatus = activeUltraSubscription.status as 'active' | 'canceled' | 'expired';
+    }
+
+    // Build comprehensive data
     const comprehensiveData: ComprehensiveUserData = {
       id: userData.id,
       email: userData.email,
@@ -182,34 +145,21 @@ export async function getComprehensiveUserData(): Promise<ComprehensiveUserData 
       isUltraUser,
       proSource,
       subscriptionStatus,
-      paymentHistory: dodoPayments,
     };
 
-    // Add Polar subscription details if exists
-    if (activePolarSubscription) {
-      comprehensiveData.polarSubscription = {
-        id: activePolarSubscription.id,
-        productId: activePolarSubscription.productId,
-        status: activePolarSubscription.status,
-        amount: activePolarSubscription.amount,
-        currency: activePolarSubscription.currency,
-        recurringInterval: activePolarSubscription.recurringInterval,
-        currentPeriodStart: activePolarSubscription.currentPeriodStart,
-        currentPeriodEnd: activePolarSubscription.currentPeriodEnd,
-        cancelAtPeriodEnd: activePolarSubscription.cancelAtPeriodEnd,
-        canceledAt: activePolarSubscription.canceledAt,
-      };
-    }
-
-    // Always add DodoPayments details if user has any payments or dodo pro status
-    if (dodoPayments.length > 0 || proSource === 'dodo') {
-      comprehensiveData.dodoPayments = {
-        hasPayments: hasDodoPayments,
-        expiresAt: dodoExpirationInfo?.expirationDate || null,
-        mostRecentPayment: hasDodoPayments ? successfulDodoPayments[0].createdAt : undefined,
-        daysUntilExpiration: dodoExpirationInfo?.daysUntilExpiration,
-        isExpired: dodoExpirationInfo?.isExpired || false,
-        isExpiringSoon: dodoExpirationInfo?.isExpiringSoon || false,
+    // Add CloudPayments subscription details if exists
+    if (activeCloudPaymentsSubscription) {
+      comprehensiveData.cloudPaymentsSubscription = {
+        id: activeCloudPaymentsSubscription.id,
+        productId: activeCloudPaymentsSubscription.productId,
+        status: activeCloudPaymentsSubscription.status,
+        amount: activeCloudPaymentsSubscription.amount,
+        currency: activeCloudPaymentsSubscription.currency,
+        recurringInterval: activeCloudPaymentsSubscription.recurringInterval,
+        currentPeriodStart: activeCloudPaymentsSubscription.currentPeriodStart,
+        currentPeriodEnd: activeCloudPaymentsSubscription.currentPeriodEnd,
+        cancelAtPeriodEnd: activeCloudPaymentsSubscription.cancelAtPeriodEnd,
+        canceledAt: activeCloudPaymentsSubscription.canceledAt,
       };
     }
 
@@ -223,7 +173,6 @@ export async function getComprehensiveUserData(): Promise<ComprehensiveUserData 
   }
 }
 
-// Helper functions for backward compatibility and specific use cases
 export async function isUserPro(): Promise<boolean> {
   const userData = await getComprehensiveUserData();
   return userData?.isProUser || false;
@@ -234,7 +183,12 @@ export async function getUserSubscriptionStatus(): Promise<'active' | 'canceled'
   return userData?.subscriptionStatus || 'none';
 }
 
-export async function getProSource(): Promise<'polar' | 'dodo' | 'none'> {
+export async function getProSource(): Promise<'cloudpayments' | 'none'> {
   const userData = await getComprehensiveUserData();
   return userData?.proSource || 'none';
+}
+
+export async function isUserUltra(): Promise<boolean> {
+  const userData = await getComprehensiveUserData();
+  return userData?.isUltraUser || false;
 }

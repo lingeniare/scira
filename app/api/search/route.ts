@@ -95,7 +95,7 @@ export async function POST(req: Request) {
   console.log('🔍 Search API endpoint hit');
 
   const requestStartTime = Date.now();
-  const { messages, model, group, timezone, id, selectedVisibilityType, isCustomInstructionsEnabled } =
+  const { messages, model, group, timezone, id, selectedVisibilityType, isCustomInstructionsEnabled, temperature } =
     await req.json();
   const { latitude, longitude } = geolocation(req);
 
@@ -206,10 +206,10 @@ export async function POST(req: Request) {
           canProceed: true,
           messageCount: messageCountResult.count,
           isProUser: false,
-          subscriptionData: user.polarSubscription
+          subscriptionData: user.cloudPaymentsSubscription
             ? {
                 hasSubscription: true,
-                subscription: { ...user.polarSubscription, organizationId: null },
+                subscription: { ...user.cloudPaymentsSubscription, organizationId: null },
               }
             : { hasSubscription: false },
           shouldBypassLimits,
@@ -228,10 +228,10 @@ export async function POST(req: Request) {
         canProceed: true,
         messageCount: 0,
         isProUser: true,
-        subscriptionData: user.polarSubscription
+        subscriptionData: user.cloudPaymentsSubscription
           ? {
               hasSubscription: true,
-              subscription: { ...user.polarSubscription, organizationId: null },
+              subscription: { ...user.cloudPaymentsSubscription, organizationId: null },
             }
           : { hasSubscription: false },
         shouldBypassLimits: true,
@@ -326,24 +326,24 @@ export async function POST(req: Request) {
         messages: convertToModelMessages(messages),
         ...(model.includes('scira-qwen-32b')
           ? {
-              temperature: 0.6,
+              temperature: temperature ?? 0.6,
               topP: 0.95,
               minP: 0,
             }
           : model.includes('scira-deepseek-v3')
             ? {
-                temperature: 0.6,
+                temperature: temperature ?? 0.6,
                 topP: 1,
                 topK: 40,
               }
             : model.includes('scira-qwen-235')
               ? {
-                  temperature: 0.7,
+                  temperature: temperature ?? 0.7,
                   topP: 0.8,
                   minP: 0,
                   presencePenalty: 1.5,
                 }
-              : {}),
+              : temperature !== undefined ? { temperature } : {}),
         stopWhen: stepCountIs(3),
         maxRetries: 10,
         ...(model.includes('scira-5')

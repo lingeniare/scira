@@ -21,16 +21,13 @@ const isValidEmail = (email: string): boolean => {
 };
 
 // Компонент кнопки VK
-const VKButton = ({ disabled, loading }: { disabled: boolean; loading: boolean }) => {
+const VKButton = ({ disabled, loading, onClick }: { disabled: boolean; loading: boolean; onClick: () => void }) => {
   return (
     <Button
       variant="outline"
       className="relative w-full h-10 px-4 font-normal text-sm"
-      disabled={disabled || loading}
-      onClick={() => {
-        // TODO: Реализовать авторизацию через VK
-        console.log('VK authorization');
-      }}
+      disabled={loading}
+      onClick={onClick}
     >
       <div className="flex items-center justify-center w-full gap-3">
         {loading ? (
@@ -91,36 +88,66 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[400px] p-6 gap-0">
         {/* Заголовок */}
-        <div className="mb-6">
-          <h2 className="text-lg font-medium text-foreground mb-1">Войти в аккаунт</h2>
-          <p className="text-sm text-muted-foreground">Сохраняйте беседы и синхронизируйте между устройствами</p>
+        <div className="mb-6 text-center">
+          <h2 className="text-lg font-medium text-foreground mb-1">Создать или войти в аккаунт</h2>
+          <p className="text-sm text-muted-foreground">чтобы получить больше возможностей</p>
         </div>
 
         {/* Magic Link секция */}
-        <div className="space-y-3 mb-4">
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-foreground">
-              Email адрес
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="example@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 h-10"
-                disabled={magicLinkLoading}
-              />
-            </div>
+        <div className="space-y-3 mb-0">
+          <div className="space-y-2 text-center">
+
+            <Button
+              variant="outline"
+              className="relative w-full h-10 px-4 font-normal text-sm justify-start"
+              disabled={magicLinkLoading}
+              onClick={() => {
+                // Фокус на поле ввода при клике на кнопку
+                document.getElementById('email')?.focus();
+              }}
+            >
+              <div className="flex items-center justify-center w-full gap-3">
+                <Mail className="w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Войти через Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="border-0 bg-transparent p-0 h-auto text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+                  disabled={magicLinkLoading}
+                />
+              </div>
+            </Button>
           </div>
           
           {/* Кнопка Magic Link появляется только при валидном email */}
           {isEmailValid && (
             <Button
-              onClick={handleMagicLink}
-              disabled={!canProceed || magicLinkLoading}
+              onClick={() => {
+                if (!canProceed) {
+                  // Подсветка чекбоксов с анимацией
+                  const termsCheckbox = document.getElementById('terms');
+                  const privacyCheckbox = document.getElementById('privacy');
+                  
+                  if (!termsAccepted && termsCheckbox) {
+                    termsCheckbox.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                      termsCheckbox.style.animation = '';
+                    }, 500);
+                  }
+                  
+                  if (!privacyAccepted && privacyCheckbox) {
+                    privacyCheckbox.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                      privacyCheckbox.style.animation = '';
+                    }, 500);
+                  }
+                  return;
+                }
+                handleMagicLink();
+              }}
+              disabled={magicLinkLoading}
               className="w-full h-10"
               variant={magicLinkSent ? "secondary" : "default"}
             >
@@ -149,8 +176,35 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
         </div>
 
         {/* Кнопка VK */}
-        <div className="mb-4">
-          <VKButton disabled={!canProceed} loading={vkLoading} />
+        <div className="mb-6">
+          <VKButton 
+            disabled={false} 
+            loading={vkLoading} 
+            onClick={() => {
+              if (!canProceed) {
+                // Подсветка чекбоксов с анимацией
+                const termsCheckbox = document.getElementById('terms');
+                const privacyCheckbox = document.getElementById('privacy');
+                
+                if (!termsAccepted && termsCheckbox) {
+                  termsCheckbox.style.animation = 'shake 0.5s ease-in-out';
+                  setTimeout(() => {
+                    termsCheckbox.style.animation = '';
+                  }, 500);
+                }
+                
+                if (!privacyAccepted && privacyCheckbox) {
+                  privacyCheckbox.style.animation = 'shake 0.5s ease-in-out';
+                  setTimeout(() => {
+                    privacyCheckbox.style.animation = '';
+                  }, 500);
+                }
+                return;
+              }
+              // TODO: Реализовать авторизацию через VK
+              console.log('VK authorization');
+            }}
+          />
         </div>
 
         {/* Чекбоксы согласия */}
@@ -160,7 +214,7 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
               id="terms"
               checked={termsAccepted}
               onCheckedChange={(checked) => setTermsAccepted(checked === true)}
-              className="mt-0.5"
+              className="mt-0.5 transition-all duration-200"
             />
             <label htmlFor="terms" className="text-xs text-muted-foreground leading-relaxed">
               Я принимаю{' '}
@@ -175,7 +229,7 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
               id="privacy"
               checked={privacyAccepted}
               onCheckedChange={(checked) => setPrivacyAccepted(checked === true)}
-              className="mt-0.5"
+              className="mt-0.5 transition-all duration-200"
             />
             <label htmlFor="privacy" className="text-xs text-muted-foreground leading-relaxed">
               Я принимаю{' '}
@@ -198,10 +252,20 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
             Условия
           </Link>
           {' & '}
+          <br />
           <Link href="/privacy-policy" className="underline underline-offset-2 hover:text-foreground">
             Политику обработки персональных данных
           </Link>
         </p>
+        
+        {/* CSS для анимации shake */}
+        <style jsx>{`
+          @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+          }
+        `}</style>
       </DialogContent>
     </Dialog>
   );

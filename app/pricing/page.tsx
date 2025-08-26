@@ -8,11 +8,11 @@ export default async function PricingPage() {
   const user = await getCurrentUser();
 
   // Extract subscription details from unified user data
-  const subscriptionDetails = user?.polarSubscription
+  const subscriptionDetails = user?.cloudPaymentsSubscription
     ? {
         hasSubscription: true,
         subscription: {
-          ...user.polarSubscription,
+          ...user.cloudPaymentsSubscription,
           organizationId: null,
         },
       }

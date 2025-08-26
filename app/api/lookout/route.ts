@@ -29,25 +29,29 @@ import { extremeSearchTool } from '@/lib/tools';
 // Helper function to check if a user is pro by userId
 async function checkUserIsProById(userId: string): Promise<boolean> {
   try {
-    // Check for active Polar subscription
-    const polarSubscriptions = await db.select().from(subscription).where(eq(subscription.userId, userId));
+    // Check for active subscriptions (CloudPayments)
+    const userSubscriptions = await db.select().from(subscription).where(eq(subscription.userId, userId));
 
-    // Check if any Polar subscription is active
-    const activePolarSubscription = polarSubscriptions.find((sub) => {
+    // Check for active CloudPayments subscription first (new system)
+    const activeCloudPaymentsSubscription = userSubscriptions.find((sub) => {
       const now = new Date();
-      const isActive = sub.status === 'active' && new Date(sub.currentPeriodEnd) > now;
+      const isActive = sub.status === 'active' && 
+                      sub.paymentProvider === 'cloudpayments' && 
+                      new Date(sub.currentPeriodEnd) > now;
       return isActive;
     });
 
-    if (activePolarSubscription) {
+    if (activeCloudPaymentsSubscription) {
       return true;
     }
 
-    // Check for Dodo payments (Indian users)
+    // Legacy Polar subscriptions are no longer supported
+
+    // Check for Dodo payments (legacy Indian users)
     const dodoPayments = await db.select().from(payment).where(eq(payment.userId, userId));
 
     const successfulDodoPayments = dodoPayments
-      .filter((p) => p.status === 'succeeded')
+      .filter((p) => p.status === 'succeeded' && (p.paymentProvider === 'dodo' || !p.paymentProvider))
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     if (successfulDodoPayments.length > 0) {

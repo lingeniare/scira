@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, CreditCard, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { betterauthClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { useLocation } from '@/hooks/use-location';
 import { useSession } from '@/lib/auth-client';
@@ -128,31 +128,42 @@ export default function CheckoutPage() {
   const onSubmit = async (data: CheckoutFormData) => {
     setIsLoading(true);
     try {
-      const { data: checkout, error } = await betterauthClient.dodopayments.checkout({
-        slug: process.env.NEXT_PUBLIC_PREMIUM_SLUG,
-        customer: {
-          email: data.customer.email,
-          name: data.customer.name,
+      // Create CloudPayments subscription
+      const response = await fetch('/api/cloudpayments/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        billing: {
-          city: data.billing.city,
-          country: 'IN', // Always India
-          state: data.billing.state,
-          street: data.billing.street,
-          zipcode: data.billing.zipcode,
-        },
-        referenceId: `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        body: JSON.stringify({
+          planType: 'pro',
+          duration: 12, // 12 months
+          customerData: {
+            email: data.customer.email,
+            name: data.customer.name,
+          },
+          billing: {
+            city: data.billing.city,
+            country: 'IN',
+            state: data.billing.state,
+            street: data.billing.street,
+            zipcode: data.billing.zipcode,
+          },
+        }),
       });
 
-      if (error) {
-        throw new Error(error.message || 'Checkout failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Subscription creation failed');
       }
 
-      if (checkout?.url) {
-        // Redirect to DodoPayments checkout
-        window.location.href = checkout.url;
+      const result = await response.json();
+      
+      if (result.success && result.subscriptionId) {
+        toast.success('Subscription created successfully!');
+        // Redirect to success page or dashboard
+        router.push('/?subscription=created');
       } else {
-        throw new Error('No checkout URL received');
+        throw new Error(result.error || 'Failed to create subscription');
       }
     } catch (error) {
       console.error('Checkout error:', error);

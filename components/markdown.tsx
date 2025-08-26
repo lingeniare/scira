@@ -1,6 +1,6 @@
 import 'katex/dist/katex.min.css';
 
-import { Geist_Mono } from 'next/font/google';
+// import { Geist_Mono } from 'next/font/google';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from 'next-themes';
@@ -35,12 +35,13 @@ interface CitationSourceConfig {
   urlGenerator: (title: string, source: string) => string | null;
 }
 
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  preload: true,
-  display: 'swap',
-});
+// Временно используем системный моноширинный шрифт
+// const geistMono = Geist_Mono({
+//   subsets: ['latin'],
+//   variable: '--font-mono',
+//   preload: true,
+//   display: 'swap',
+// });
 
 const citationSources: CitationSourceConfig[] = [
   {
@@ -377,7 +378,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
               backgroundColor: 'transparent !important',
               fontSize: '0.875rem',
               lineHeight: '1.6',
-              fontFamily: geistMono.style.fontFamily,
+              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
             }}
             showLineNumbers={!isWrapped}
             lineNumberStyle={{
@@ -386,12 +387,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
               minWidth: '2.5rem',
               textAlign: 'right',
               userSelect: 'none',
-              fontFamily: geistMono.style.fontFamily,
+              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
               fontSize: '0.75rem',
             }}
             codeTagProps={{
               style: {
-                fontFamily: geistMono.style.fontFamily,
+                fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                 whiteSpace: isWrapped ? 'pre-wrap' : 'pre',
                 wordBreak: isWrapped ? 'break-word' : 'normal',
                 overflowWrap: isWrapped ? 'break-word' : 'normal',
@@ -480,7 +481,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
           isCopied && 'ring-1 ring-primary/30 bg-primary/5',
         )}
         style={{
-          fontFamily: geistMono.style.fontFamily,
+          fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
           fontSize: '0.85em',
           lineHeight: 'inherit',
         }}

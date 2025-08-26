@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { authClient, betterauthClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/auth-client';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -44,6 +44,7 @@ interface PricingTableProps {
 export default function PricingTable({ subscriptionDetails, user }: PricingTableProps) {
   const router = useRouter();
   const location = useLocation();
+  const [isYearly, setIsYearly] = useState(false);
 
   const [discountConfig, setDiscountConfig] = useState<DiscountConfig>({ enabled: false });
 
@@ -100,7 +101,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
           (discountConfig.percentage || discountConfig.inrPrice);
   };
 
-  const handleCheckout = async (productId: string, slug: string, paymentMethod?: 'dodo' | 'polar') => {
+  const handleCheckout = async (productId: string, slug: string, paymentMethod?: 'dodo' | 'cloudpayments') => {
     if (!user) {
       router.push('/sign-in');
       return;
@@ -109,11 +110,16 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
     try {
       if (paymentMethod === 'dodo') {
         router.push('/checkout');
+      } else if (paymentMethod === 'cloudpayments') {
+        // Redirect to CloudPayments subscription creation
+        const planType = productId === ULTRA_TIER ? 'ultra' : 'pro';
+        const duration = isYearly ? 'yearly' : 'monthly';
+        router.push(`/api/cloudpayments/create-subscription?plan=${planType}&duration=${duration}`);
       } else {
-        await authClient.checkout({
-          products: [productId],
-          slug: slug,
-        });
+        // Default CloudPayments checkout
+        const planType = productId === ULTRA_TIER ? 'ultra' : 'pro';
+        const duration = isYearly ? 'yearly' : 'monthly';
+        router.push(`/api/cloudpayments/create-subscription?plan=${planType}&duration=${duration}`);
       }
     } catch (error) {
       console.error('Checkout failed:', error);
@@ -124,10 +130,17 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
   const handleManageSubscription = async () => {
     try {
       const proSource = getProAccessSource();
-      if (proSource === 'dodo') {
-        await betterauthClient.dodopayments.customer.portal();
+      const ultraSource = getUltraAccessSource();
+      
+      if (proSource === 'cloudpayments' || ultraSource === 'cloudpayments') {
+        // Redirect to CloudPayments management API
+        router.push('/api/cloudpayments/manage-subscription');
+      } else if (proSource === 'dodo') {
+        // Legacy DodoPayments portal - redirect to CloudPayments management
+        router.push('/api/cloudpayments/manage-subscription');
       } else {
-        await authClient.customer.portal();
+        // Default CloudPayments management
+        router.push('/api/cloudpayments/manage-subscription');
       }
     } catch (error) {
       console.error('Failed to open customer portal:', error);
@@ -137,9 +150,11 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
 
   const STARTER_TIER = process.env.NEXT_PUBLIC_STARTER_TIER;
   const STARTER_SLUG = process.env.NEXT_PUBLIC_STARTER_SLUG;
+  const ULTRA_TIER = process.env.NEXT_PUBLIC_ULTRA_TIER;
+  const ULTRA_SLUG = process.env.NEXT_PUBLIC_ULTRA_SLUG;
 
-  if (!STARTER_TIER || !STARTER_SLUG) {
-    throw new Error('Missing required environment variables for Starter tier');
+  if (!STARTER_TIER || !STARTER_SLUG || !ULTRA_TIER || !ULTRA_SLUG) {
+    throw new Error('Missing required environment variables for Starter and Ultra tiers');
   }
 
   const isCurrentPlan = (tierProductId: string) => {
@@ -150,17 +165,29 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
     );
   };
 
-  // Check if user has any Pro status (Polar or DodoPayments)
+  // Check if user has any Pro status (DodoPayments or CloudPayments)
   const hasProAccess = () => {
-    const hasPolarSub = isCurrentPlan(STARTER_TIER);
     const hasDodoProAccess = user?.isProUser && user?.proSource === 'dodo';
-    return hasPolarSub || hasDodoProAccess;
+    const hasCloudPaymentsProAccess = user?.isProUser && user?.proSource === 'cloudpayments';
+    return hasDodoProAccess || hasCloudPaymentsProAccess;
+  };
+
+  // Check if user has Ultra access (CloudPayments)
+  const hasUltraAccess = () => {
+    const hasCloudPaymentsUltraAccess = user?.isUltraUser && user?.ultraSource === 'cloudpayments';
+    return hasCloudPaymentsUltraAccess;
   };
 
   // Get the source of Pro access for display
   const getProAccessSource = () => {
-    if (isCurrentPlan(STARTER_TIER)) return 'polar';
     if (user?.proSource === 'dodo') return 'dodo';
+    if (user?.proSource === 'cloudpayments') return 'cloudpayments';
+    return null;
+  };
+
+  // Get the source of Ultra access for display
+  const getUltraAccessSource = () => {
+    if (user?.ultraSource === 'cloudpayments') return 'cloudpayments';
     return null;
   };
 
@@ -197,6 +224,31 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               🇮🇳 Special India pricing available
             </Badge>
           )}
+          
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center mt-8 p-1 bg-muted rounded-lg w-fit mx-auto">
+            <button
+              onClick={() => setIsYearly(false)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                !isYearly 
+                  ? 'bg-background text-foreground shadow-sm' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              onClick={() => setIsYearly(true)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                isYearly 
+                  ? 'bg-background text-foreground shadow-sm' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Yearly
+              <Badge variant="secondary" className="ml-2 text-xs">20% OFF</Badge>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -280,20 +332,25 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                     {/* INR Option */}
                     <div className="p-3 border rounded-lg bg-muted/50">
                       <div className="space-y-1">
-                        {shouldShowDiscount() ? (
+                        {(shouldShowDiscount() || isYearly) ? (
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground line-through">
                               ₹{PRICING.PRO_MONTHLY_INR}
                             </span>
                             <span className="text-xl font-light">
-                              ₹{getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)}
+                              ₹{isYearly 
+                                ? Math.round(getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true) * 0.8) 
+                                : getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)
+                              }
                             </span>
                           </div>
                         ) : (
                           <span className="text-xl font-light">₹{PRICING.PRO_MONTHLY_INR}</span>
                         )}
-                        <div className="text-xs text-muted-foreground">+18% GST</div>
-                        <div className="text-xs">1 month access</div>
+                        <div className="text-xs text-muted-foreground">
+                          {isYearly ? '/месяц (оплата за год)' : '+18% GST'}
+                        </div>
+                        <div className="text-xs">{isYearly ? '12 months access' : '1 month access'}</div>
                         <div className="text-xs text-muted-foreground">🇮🇳 UPI, Cards, QR</div>
                       </div>
                     </div>
@@ -301,16 +358,21 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                     {/* USD Option */}
                     <div className="p-3 border rounded-lg">
                       <div className="space-y-1">
-                        {shouldShowDiscount() ? (
+                        {(shouldShowDiscount() || isYearly) ? (
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground line-through">${PRICING.PRO_MONTHLY}</span>
-                            <span className="text-xl font-light">${getDiscountedPrice(PRICING.PRO_MONTHLY)}</span>
+                            <span className="text-xl font-light">
+                              ${isYearly 
+                                ? Math.round(getDiscountedPrice(PRICING.PRO_MONTHLY) * 0.8) 
+                                : getDiscountedPrice(PRICING.PRO_MONTHLY)
+                              }
+                            </span>
                           </div>
                         ) : (
                           <span className="text-xl font-light">${PRICING.PRO_MONTHLY}</span>
                         )}
                         <div className="text-xs text-muted-foreground">USD</div>
-                        <div className="text-xs">Monthly subscription</div>
+                        <div className="text-xs">{isYearly ? 'Yearly subscription' : 'Monthly subscription'}</div>
                         <div className="text-xs text-muted-foreground">💳 Card payment</div>
                       </div>
                     </div>
@@ -318,15 +380,22 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 </div>
               ) : (
                 <div className="flex items-baseline">
-                  {shouldShowDiscount() ? (
+                  {(shouldShowDiscount() || isYearly) ? (
                     <div className="flex items-baseline gap-3">
                       <span className="text-xl text-muted-foreground line-through">₽{PRICING.PRO_MONTHLY_INR}</span>
-                      <span className="text-4xl font-light">₽{getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)}</span>
+                      <span className="text-4xl font-light">
+                        ₽{isYearly 
+                          ? Math.round(getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true) * 0.8) 
+                          : getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)
+                        }
+                      </span>
                     </div>
                   ) : (
                     <span className="text-4xl font-light">₽{PRICING.PRO_MONTHLY_INR}</span>
                   )}
-                  <span className="text-muted-foreground ml-2">/месяц</span>
+                  <span className="text-muted-foreground ml-2">
+                    {isYearly ? '/месяц (оплата за год)' : '/месяц'}
+                  </span>
                 </div>
               )}
             </CardHeader>
@@ -358,18 +427,17 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               {hasProAccess() ? (
                 <div className="space-y-4">
                   <Button className="w-full" onClick={handleManageSubscription}>
-                    {getProAccessSource() === 'dodo' ? 'Manage payment' : 'Manage subscription'}
+                    {getProAccessSource() === 'dodo' ? 'Manage payment' : 
+                     getProAccessSource() === 'cloudpayments' ? 'Manage CloudPayments' : 'Manage subscription'}
                   </Button>
-                  {getProAccessSource() === 'polar' && subscriptionDetails.subscription && (
-                    <p className="text-sm text-muted-foreground text-center">
-                      {subscriptionDetails.subscription.cancelAtPeriodEnd
-                        ? `Subscription expires ${formatDate(subscriptionDetails.subscription.currentPeriodEnd)}`
-                        : `Renews ${formatDate(subscriptionDetails.subscription.currentPeriodEnd)}`}
-                    </p>
-                  )}
                   {getProAccessSource() === 'dodo' && user?.expiresAt && (
                     <p className="text-sm text-muted-foreground text-center">
                       Access expires {formatDate(new Date(user.expiresAt))}
+                    </p>
+                  )}
+                  {getProAccessSource() === 'cloudpayments' && user?.expiresAt && (
+                    <p className="text-sm text-muted-foreground text-center">
+                      CloudPayments subscription expires {formatDate(new Date(user.expiresAt))}
                     </p>
                   )}
                 </div>
@@ -386,15 +454,17 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Button
-                      variant="outline"
                       className="w-full group"
-                      onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG, 'polar')}
+                      onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG, 'cloudpayments')}
                     >
-                      💳 Subscribe ${getDiscountedPrice(PRICING.PRO_MONTHLY)}/month
+                      💳 CloudPayments ₽{isYearly 
+                        ? Math.round(getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true) * 0.8) 
+                        : getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)
+                      }{isYearly ? '/месяц (год)' : '/месяц'}
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <p className="text-xs text-muted-foreground text-center">
-                      One-time payment vs Monthly subscription
+                      {isYearly ? 'Годовая подписка • Ежемесячное списание' : 'Месячная подписка • CloudPayments'}
                     </p>
                     {shouldShowDiscount() && discountConfig.discountAvail && (
                       <p className="text-xs text-green-600 dark:text-green-400 text-center font-medium">
@@ -431,9 +501,24 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               </div>
 
               <div className="flex items-baseline">
-                <span className="text-4xl font-light">₽{PRICING.ULTRA_MONTHLY_INR}</span>
-                <span className="text-muted-foreground ml-2">/месяц</span>
+                <span className="text-4xl font-light">
+                  ₽{isYearly 
+                    ? Math.round(PRICING.ULTRA_MONTHLY_INR * 0.8) 
+                    : PRICING.ULTRA_MONTHLY_INR
+                  }
+                </span>
+                <span className="text-muted-foreground ml-2">
+                  {isYearly ? '/месяц (оплата за год)' : '/месяц'}
+                </span>
               </div>
+              {isYearly && (
+                <div className="flex items-center text-sm">
+                  <span className="line-through text-muted-foreground mr-2">
+                    ₽{PRICING.ULTRA_MONTHLY_INR}
+                  </span>
+                  <Badge variant="green" className="text-xs">20% OFF</Badge>
+                </div>
+              )}
             </CardHeader>
 
             <CardContent className="space-y-6">
@@ -464,10 +549,33 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 </li>
               </ul>
 
-              <Button className="w-full group bg-yellow-500 hover:bg-yellow-600 text-yellow-900">
-                {!user ? 'Sign up for Ultra' : 'Upgrade to Ultra'}
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              {hasUltraAccess() ? (
+                <div className="space-y-4">
+                  <Button className="w-full" onClick={handleManageSubscription}>
+                    {getUltraAccessSource() === 'cloudpayments' ? 'Manage CloudPayments' : 'Manage subscription'}
+                  </Button>
+                  {getUltraAccessSource() === 'cloudpayments' && user?.ultraExpiresAt && (
+                    <p className="text-sm text-muted-foreground text-center">
+                      CloudPayments Ultra expires {formatDate(new Date(user.ultraExpiresAt))}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <Button 
+                    className="w-full group bg-yellow-500 hover:bg-yellow-600 text-yellow-900"
+                    onClick={() => handleCheckout(ULTRA_TIER, ULTRA_SLUG, 'cloudpayments')}
+                  >
+                    💳 {!user ? 'Sign up for Ultra' : 'Upgrade to Ultra'} 
+                    ₽{isYearly ? Math.round(PRICING.ULTRA_MONTHLY_INR * 0.8) : PRICING.ULTRA_MONTHLY_INR}
+                    {isYearly ? '/месяц (год)' : '/месяц'}
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <p className="text-xs text-muted-foreground text-center">
+                    {isYearly ? 'Годовая подписка • Ежемесячное списание' : 'Месячная подписка • CloudPayments'}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

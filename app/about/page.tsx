@@ -647,12 +647,12 @@ export default function AboutPage() {
                 <p className="text-muted-foreground/70 mb-4">Maximum power for professionals</p>
                 <div className="space-y-1">
                   <div className="flex items-baseline">
-                    <span className="text-3xl font-light tracking-tight">${PRICING.ULTRA_MONTHLY}</span>
-                    <span className="text-muted-foreground/70 ml-2">/month</span>
+                    <span className="text-3xl font-light tracking-tight">₹{PRICING.ULTRA_MONTHLY_INR}</span>
+                    <span className="text-muted-foreground/70 ml-2">/месяц</span>
                   </div>
                   <div className="flex items-baseline">
-                    <span className="text-2xl font-medium text-muted-foreground/60">₹{PRICING.ULTRA_MONTHLY_INR}</span>
-                    <span className="text-muted-foreground/60 ml-2 text-sm">1 month access</span>
+                    <span className="text-2xl font-medium text-muted-foreground/60">${PRICING.ULTRA_MONTHLY}</span>
+                    <span className="text-muted-foreground/60 ml-2 text-sm">USD</span>
                   </div>
                 </div>
               </div>
@@ -699,12 +699,12 @@ export default function AboutPage() {
                 <p className="text-muted-foreground/70 mb-4">Everything you need for serious work</p>
                 <div className="space-y-1">
                   <div className="flex items-baseline">
-                    <span className="text-3xl font-light tracking-tight">${PRICING.PRO_MONTHLY}</span>
-                    <span className="text-muted-foreground/70 ml-2">/month</span>
+                    <span className="text-3xl font-light tracking-tight">₹{PRICING.PRO_MONTHLY_INR}</span>
+                    <span className="text-muted-foreground/70 ml-2">/месяц</span>
                   </div>
                   <div className="flex items-baseline">
-                    <span className="text-2xl font-medium text-muted-foreground/60">₹{PRICING.PRO_MONTHLY_INR}</span>
-                    <span className="text-muted-foreground/60 ml-2 text-sm">1 month access</span>
+                    <span className="text-2xl font-medium text-muted-foreground/60">${PRICING.PRO_MONTHLY}</span>
+                    <span className="text-muted-foreground/60 ml-2 text-sm">USD</span>
                   </div>
                 </div>
               </div>
@@ -753,7 +753,7 @@ export default function AboutPage() {
               <div className="flex-1">
                 <h3 className="font-medium mb-2">Student Pricing</h3>
                 <p className="text-muted-foreground/80 mb-4 text-sm">
-                  Students can access Pro features for $5/month (₹500/month). Contact us with your student verification.
+                  Студенты могут получить доступ к Pro функциям за ₹500/месяц ($5/месяц). Свяжитесь с нами для подтверждения студенческого статуса.
                 </p>
                 <a
                   href="mailto:zaid@scira.ai?subject=Student%20Discount%20Request"

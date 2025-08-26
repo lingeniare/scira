@@ -38,19 +38,9 @@ export function useUserData() {
     proSource: userData?.proSource || 'none',
     subscriptionStatus: userData?.subscriptionStatus || 'none',
 
-    // Polar subscription details
-    polarSubscription: userData?.polarSubscription,
-    hasPolarSubscription: Boolean(userData?.polarSubscription),
-
-    // DodoPayments details
-    dodoPayments: userData?.dodoPayments,
-    hasDodoPayments: Boolean(userData?.dodoPayments?.hasPayments),
-    dodoExpiresAt: userData?.dodoPayments?.expiresAt,
-    isDodoExpiring: Boolean(userData?.dodoPayments?.isExpiringSoon),
-    isDodoExpired: Boolean(userData?.dodoPayments?.isExpired),
-
-    // Payment history
-    paymentHistory: userData?.paymentHistory || [],
+    // CloudPayments subscription details
+    cloudPaymentsSubscription: userData?.cloudPaymentsSubscription,
+    hasCloudPaymentsSubscription: Boolean(userData?.cloudPaymentsSubscription),
 
     // Rate limiting helpers
     shouldCheckLimits: !isLoading && userData && !userData.isProUser,
@@ -63,28 +53,14 @@ export function useUserData() {
     hasNoSubscription: userData?.subscriptionStatus === 'none',
 
     // Legacy compatibility helpers
-    subscriptionData: userData?.polarSubscription
+    subscriptionData: userData?.cloudPaymentsSubscription
       ? {
           hasSubscription: true,
-          subscription: userData.polarSubscription,
+          subscription: userData.cloudPaymentsSubscription,
         }
       : { hasSubscription: false },
 
-    // Map dodoPayments to legacy dodoProStatus structure for settings dialog
-    dodoProStatus: userData?.dodoPayments
-      ? {
-          isProUser: userData.proSource === 'dodo' && userData.isProUser,
-          hasPayments: userData.dodoPayments.hasPayments,
-          expiresAt: userData.dodoPayments.expiresAt,
-          mostRecentPayment: userData.dodoPayments.mostRecentPayment,
-          daysUntilExpiration: userData.dodoPayments.daysUntilExpiration,
-          isExpired: userData.dodoPayments.isExpired,
-          isExpiringSoon: userData.dodoPayments.isExpiringSoon,
-          source: userData.proSource,
-        }
-      : null,
-
-    expiresAt: userData?.dodoPayments?.expiresAt,
+    expiresAt: userData?.cloudPaymentsSubscription?.currentPeriodEnd,
   };
 }
 

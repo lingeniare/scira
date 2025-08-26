@@ -1132,10 +1132,10 @@ export async function getSubDetails() {
 
   if (!userData) return { hasSubscription: false };
 
-  return userData.polarSubscription
+  return userData.cloudPaymentsSubscription
     ? {
         hasSubscription: true,
-        subscription: userData.polarSubscription,
+        subscription: userData.cloudPaymentsSubscription,
       }
     : { hasSubscription: false };
 }
@@ -1378,37 +1378,7 @@ export async function getPaymentHistory() {
   }
 }
 
-export async function getDodoPaymentsProStatus() {
-  'use server';
 
-  // Import here to avoid issues with SSR
-  const { getComprehensiveUserData } = await import('@/lib/user-data-server');
-  const userData = await getComprehensiveUserData();
-
-  if (!userData) return { isProUser: false, hasPayments: false };
-
-  const isDodoProUser = userData.proSource === 'dodo' && userData.isProUser;
-
-  return {
-    isProUser: isDodoProUser,
-    hasPayments: Boolean(userData.dodoPayments?.hasPayments),
-    expiresAt: userData.dodoPayments?.expiresAt,
-    source: userData.proSource,
-    daysUntilExpiration: userData.dodoPayments?.daysUntilExpiration,
-    isExpired: userData.dodoPayments?.isExpired,
-    isExpiringSoon: userData.dodoPayments?.isExpiringSoon,
-  };
-}
-
-export async function getDodoExpirationDate() {
-  'use server';
-
-  // Import here to avoid issues with SSR
-  const { getComprehensiveUserData } = await import('@/lib/user-data-server');
-  const userData = await getComprehensiveUserData();
-
-  return userData?.dodoPayments?.expiresAt || null;
-}
 
 // Initialize QStash client
 const qstash = new Client({ token: serverEnv.QSTASH_TOKEN });

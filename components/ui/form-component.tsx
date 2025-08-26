@@ -37,10 +37,12 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { UseChatHelpers } from '@ai-sdk/react';
 import { ChatMessage } from '@/lib/types';
+import TemperatureButton from './temperature-button';
 
 interface ModelSwitcherProps {
   selectedModel: string;
   setSelectedModel: (value: string) => void;
+  setIsModelManuallySelected?: (value: boolean) => void;
   className?: string;
   attachments: Array<Attachment>;
   messages: Array<ChatMessage>;
@@ -54,6 +56,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
   ({
     selectedModel,
     setSelectedModel,
+    setIsModelManuallySelected,
     className,
     attachments,
     messages,
@@ -122,34 +125,35 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
     }, [attachments, messages, isFilePart]);
 
     const filteredModels = useMemo(() => {
-      // Сначала фильтруем по доступу пользователя
-      let accessibleModels = availableModels.filter((model) => {
+      // Показываем все модели, кроме экспериментальных
+      let allModels = availableModels.filter((model) => {
         // Скрываем экспериментальные модели
         if (model.experimental) return false;
-        
-        // Проверяем доступ к модели
-        const requiresAuth = model.requiresAuth && !user;
-        // Временно делаем Ultra модели доступными всем пользователям для тестирования
-        // const requiresUltra = model.ultra && !isUltraUser;
-        const requiresPro = model.pro && !isProUser && !isUltraUser;
-        
-        // Показываем модель только если у пользователя есть доступ
-        return !requiresAuth && !requiresPro;
+        return true;
       });
       
-      // Затем фильтруем по вложениям
+      // Фильтруем по вложениям (если есть вложения, показываем только совместимые модели)
       if (!hasImageAttachments && !hasPdfAttachments) {
-        return accessibleModels;
+        return allModels;
       }
       if (hasImageAttachments && hasPdfAttachments) {
-        return accessibleModels.filter((model) => model.vision && model.pdf);
+        return allModels.filter((model) => model.vision && model.pdf);
       }
       if (hasImageAttachments) {
-        return accessibleModels.filter((model) => model.vision);
+        return allModels.filter((model) => model.vision);
       }
       // Only PDFs attached
-      return accessibleModels.filter((model) => model.pdf);
-    }, [availableModels, hasImageAttachments, hasPdfAttachments, user, isProUser, isUltraUser]);
+      return allModels.filter((model) => model.pdf);
+    }, [availableModels, hasImageAttachments, hasPdfAttachments]);
+
+    // Функция для проверки доступности модели
+    const isModelAccessible = useCallback((model: typeof availableModels[0]) => {
+      const requiresAuth = model.requiresAuth && !user;
+      const requiresUltra = model.ultra && !isUltraUser;
+      const requiresPro = model.pro && !isProUser && !isUltraUser;
+      
+      return !requiresAuth && !requiresUltra && !requiresPro;
+    }, [user, isUltraUser, isProUser]);
 
     const sortedModels = useMemo(() => filteredModels, [filteredModels]);
 
@@ -191,42 +195,69 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
           return;
         }
 
-        // Поскольку недоступные модели уже скрыты из списка,
-        // мы можем сразу устанавливать выбранную модель
+        // Проверяем доступность модели
+        if (!isModelAccessible(model)) {
+          // Определяем тип требуемого доступа и показываем соответствующий диалог
+          if (model.requiresAuth && !user) {
+            setSelectedAuthModel(model);
+            setShowSignInDialog(true);
+          } else if (model.ultra && !isUltraUser) {
+            setSelectedUltraModel(model);
+            setShowUltraUpgradeDialog(true);
+          } else if (model.pro && !isProUser && !isUltraUser) {
+            setSelectedProModel(model);
+            setShowUpgradeDialog(true);
+          }
+          return;
+        }
+
+        // Модель доступна - устанавливаем её
         console.log('Selected model:', model.value);
         setSelectedModel(model.value.trim());
+        
+        // Отмечаем, что модель была выбрана пользователем вручную
+        if (setIsModelManuallySelected) {
+          setIsModelManuallySelected(true);
+        }
 
         if (onModelSelect) {
           onModelSelect(model);
         }
       },
-      [availableModels, isSubscriptionLoading, setSelectedModel, onModelSelect],
+      [availableModels, isSubscriptionLoading, isModelAccessible, user, isUltraUser, isProUser, setSelectedModel, setIsModelManuallySelected, onModelSelect],
     );
 
     return (
       <>
         <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              size="sm"
-              className={cn(
-                'flex items-center gap-2 px-3 h-7.5 rounded-lg',
-                'border border-border',
-                'bg-background text-foreground',
-                'hover:bg-accent transition-colors',
-                'focus:!outline-none focus:!ring-0',
-                'shadow-none',
-                className,
-              )}
-            >
-              <HugeiconsIcon icon={CpuIcon} size={24} color="currentColor" strokeWidth={2} />
-              <span className="text-xs font-medium sm:block hidden">{currentModel?.label || 'Select Model'}</span>
-              <ChevronsUpDown className="h-4 w-4 opacity-50" />
-            </Button>
-          </PopoverTrigger>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  size="sm"
+                  className={cn(
+                    'flex items-center gap-2 px-3 h-7.5 rounded-lg',
+                    'border border-border',
+                    'bg-background text-foreground',
+                    'hover:bg-accent transition-colors',
+                    'focus:!outline-none focus:!ring-0',
+                    'shadow-none',
+                    className,
+                  )}
+                >
+                  <HugeiconsIcon icon={CpuIcon} size={24} color="currentColor" strokeWidth={2} />
+                  <span className="text-xs font-medium sm:block hidden">{currentModel?.label || 'Select Model'}</span>
+                  <ChevronsUpDown className="h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Выберите AI-модель</p>
+            </TooltipContent>
+          </Tooltip>
           <PopoverContent
             className="w-[90vw] sm:w-[16em] max-w-[16em] p-0 font-sans rounded-lg bg-popover z-40 border !shadow-none"
             align="start"
@@ -251,12 +282,18 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   model.pdf ? 'pdf' : '',
                   model.experimental ? 'experimental' : '',
                   model.pro ? 'pro' : '',
+                  model.ultra ? 'ultra' : '',
                   model.requiresAuth ? 'auth' : '',
                 ]
+                  .filter(Boolean)
                   .join(' ')
                   .toLowerCase();
 
-                return searchableFields.includes(searchTerm) ? 1 : 0;
+                // Используем более гибкий поиск - проверяем, содержит ли строка поисковый термин
+                return searchableFields.includes(searchTerm) || 
+                       model.label.toLowerCase().includes(searchTerm) ||
+                       model.description.toLowerCase().includes(searchTerm) ||
+                       model.category.toLowerCase().includes(searchTerm) ? 1 : 0;
               }}
             >
               <CommandInput placeholder="Search models..." className="h-9" />
@@ -267,7 +304,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                     {categoryIndex > 0 && <div className="my-1 border-t border-border" />}
                     <div className="px-2 py-1 text-[10px] font-medium text-muted-foreground">{category} Models</div>
                     {categoryModels.map((model) => {
-                      // Поскольку недоступные модели уже отфильтрованы, показываем все модели как доступные
+                      const isAccessible = isModelAccessible(model);
                       return (
                         <CommandItem
                           key={model.value}
@@ -279,15 +316,19 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                           className={cn(
                             'flex items-center justify-between px-2 py-1.5 mb-0.5 rounded-lg text-xs',
                             'transition-all duration-200',
-                            'hover:bg-accent',
+                            isAccessible ? 'hover:bg-accent cursor-pointer' : 'opacity-60 cursor-pointer',
                             'data-[selected=true]:bg-accent',
                           )}
                         >
                           <div className="flex flex-col min-w-0 flex-1">
                             <div className="font-medium truncate text-[11px] flex items-center gap-1">
                               {model.label}
+                              {!isAccessible && <StarIcon size={10} />}
                             </div>
-                            <div className="text-[9px] text-muted-foreground truncate leading-tight">
+                            <div className={cn(
+                              "text-[9px] truncate leading-tight",
+                              isAccessible ? "text-muted-foreground" : "text-muted-foreground/60"
+                            )}>
                               {model.description}
                             </div>
                           </div>
@@ -561,6 +602,17 @@ const StopIcon = ({ size = 16 }: { size?: number }) => {
   );
 };
 
+const StarIcon = ({ size = 12 }: { size?: number }) => {
+  return (
+    <svg height={size} viewBox="0 0 24 24" width={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-400">
+      <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+      <path d="M20 2v4"/>
+      <path d="M22 4h-4"/>
+      <circle cx="4" cy="20" r="2"/>
+    </svg>
+  );
+};
+
 const PaperclipIcon = ({ size = 16 }: { size?: number }) => {
   return (
     <svg
@@ -785,6 +837,7 @@ interface FormComponentProps {
   sendMessage: UseChatHelpers<ChatMessage>['sendMessage'];
   selectedModel: string;
   setSelectedModel: (value: string) => void;
+  setIsModelManuallySelected?: (value: boolean) => void;
   resetSuggestedQuestions: () => void;
   lastSubmittedQueryRef: React.MutableRefObject<string>;
   selectedGroup: SearchGroupId;
@@ -793,6 +846,9 @@ interface FormComponentProps {
   status: UseChatHelpers<ChatMessage>['status'];
   setHasSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
   isLimitBlocked?: boolean;
+  // Пропсы для управления температурой AI
+  temperature?: number;
+  setTemperature?: (temperature: number) => void;
 }
 
 interface GroupSelectorProps {
@@ -995,6 +1051,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
   stop,
   selectedModel,
   setSelectedModel,
+  setIsModelManuallySelected,
   resetSuggestedQuestions,
   lastSubmittedQueryRef,
   selectedGroup,
@@ -1003,6 +1060,8 @@ const FormComponent: React.FC<FormComponentProps> = ({
   status,
   setHasSubmitted,
   isLimitBlocked = false,
+  temperature = 0.7,
+  setTemperature,
 }) => {
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
   const isMounted = useRef(true);
@@ -2120,22 +2179,33 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 <div className={cn('flex items-center gap-2')}>
                   <GroupModeToggle selectedGroup={selectedGroup} onGroupSelect={handleGroupSelect} status={status} />
 
-                  <ModelSwitcher
-                    selectedModel={selectedModel}
-                    setSelectedModel={setSelectedModel}
-                    attachments={attachments}
-                    messages={messages}
-                    status={status}
-                    onModelSelect={(model) => {
-                      setSelectedModel(model.value);
-                      const isVisionModel = hasVisionSupport(model.value);
-                      toast.message(`Switched to ${model.label}`, {
-                        description: isVisionModel ? 'You can now upload images to the model.' : undefined,
-                      });
-                    }}
-                    subscriptionData={subscriptionData}
-                    user={user}
-                  />
+                  <TooltipProvider>
+                    <ModelSwitcher
+                      selectedModel={selectedModel}
+                      setSelectedModel={setSelectedModel}
+                      attachments={attachments}
+                      messages={messages}
+                      status={status}
+                      onModelSelect={(model) => {
+                        setSelectedModel(model.value);
+                        const isVisionModel = hasVisionSupport(model.value);
+                        toast.message(`Switched to ${model.label}`, {
+                          description: isVisionModel ? 'You can now upload images to the model.' : undefined,
+                        });
+                      }}
+                      subscriptionData={subscriptionData}
+                      user={user}
+                    />
+                  </TooltipProvider>
+
+                  {/* Кнопка температуры - показывается только в режиме Chat */}
+                  {selectedGroup === 'chat' && setTemperature && (
+                    <TemperatureButton
+                      temperature={temperature}
+                      onTemperatureChange={setTemperature}
+                      disabled={status === 'streaming' || status === 'submitted'}
+                    />
+                  )}
                 </div>
 
                 <div className={cn('flex items-center flex-shrink-0 gap-2')}>

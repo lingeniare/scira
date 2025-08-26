@@ -24,9 +24,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith('/polar/webhooks')) {
-    return NextResponse.next();
-  }
+
 
   const sessionCookie = getSessionCookie(request);
 

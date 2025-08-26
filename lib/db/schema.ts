@@ -89,11 +89,12 @@ export const stream = pgTable('stream', {
   createdAt: timestamp('createdAt').notNull().defaultNow(),
 });
 
-// Subscription table for Polar webhook data
+// Subscription table for CloudPayments webhook data
 export const subscription = pgTable('subscription', {
   id: text('id').primaryKey(),
   createdAt: timestamp('createdAt').notNull(),
   modifiedAt: timestamp('modifiedAt'),
+  updatedAt: timestamp('updatedAt').defaultNow(),
   amount: integer('amount').notNull(),
   currency: text('currency').notNull(),
   recurringInterval: text('recurringInterval').notNull(),
@@ -105,14 +106,24 @@ export const subscription = pgTable('subscription', {
   startedAt: timestamp('startedAt').notNull(),
   endsAt: timestamp('endsAt'),
   endedAt: timestamp('endedAt'),
-  customerId: text('customerId').notNull(),
+  customerId: text('customerId'),
   productId: text('productId').notNull(),
   discountId: text('discountId'),
-  checkoutId: text('checkoutId').notNull(),
+  checkoutId: text('checkoutId'),
   customerCancellationReason: text('customerCancellationReason'),
   customerCancellationComment: text('customerCancellationComment'),
   metadata: text('metadata'), // JSON string
   customFieldData: text('customFieldData'), // JSON string
+  // CloudPayments specific fields
+  cloudpaymentsSubscriptionId: text('cloudpayments_subscription_id'), // ID подписки в CloudPayments
+  cloudpaymentsAccountId: text('cloudpayments_account_id'), // AccountId в CloudPayments
+  paymentProvider: text('payment_provider').notNull().default('cloudpayments'), // 'cloudpayments'
+  maxPeriods: integer('max_periods'), // Максимальное количество платежей (для годовых подписок)
+  successfulTransactions: integer('successful_transactions').default(0), // Количество успешных транзакций
+  failedTransactions: integer('failed_transactions').default(0), // Количество неудачных транзакций
+  lastTransactionDate: timestamp('last_transaction_date'), // Дата последней транзакции
+  nextTransactionDate: timestamp('next_transaction_date'), // Дата следующей транзакции
+  pausedUntil: timestamp('paused_until'), // Дата окончания заморозки
   userId: text('userId').references(() => user.id),
 });
 
@@ -159,7 +170,7 @@ export const customInstructions = pgTable('custom_instructions', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
-// Payment table for Dodo Payments webhook data
+// Payment table for CloudPayments webhook data
 export const payment = pgTable('payment', {
   id: text('id').primaryKey(), // payment_id from webhook
   createdAt: timestamp('created_at').notNull(),
@@ -192,6 +203,25 @@ export const payment = pgTable('payment', {
   metadata: json('metadata'), // Metadata object
   productCart: json('product_cart'), // Product cart array
   refunds: json('refunds'), // Refunds array
+  // CloudPayments specific fields
+  cloudpaymentsTransactionId: text('cloudpayments_transaction_id'), // ID транзакции в CloudPayments
+  cloudpaymentsInvoiceId: text('cloudpayments_invoice_id'), // ID счета в CloudPayments
+  cloudpaymentsSubscriptionId: text('cloudpayments_subscription_id'), // ID подписки в CloudPayments
+  paymentProvider: text('payment_provider').notNull().default('cloudpayments'), // 'cloudpayments'
+  cardToken: text('card_token'), // Токен карты для рекуррентных платежей
+  testMode: boolean('test_mode').default(false), // Тестовый режим
+  ipAddress: text('ip_address'), // IP адрес плательщика
+  ipCountry: text('ip_country'), // Страна по IP
+  ipCity: text('ip_city'), // Город по IP
+  ipRegion: text('ip_region'), // Регион по IP
+  ipDistrict: text('ip_district'), // Район по IP
+  ipLatitude: text('ip_latitude'), // Широта по IP
+  ipLongitude: text('ip_longitude'), // Долгота по IP
+  cardFirstSix: text('card_first_six'), // Первые 6 цифр карты
+  cardExpDate: text('card_exp_date'), // Срок действия карты
+  issuer: text('issuer'), // Банк-эмитент
+  issuerBankCountry: text('issuer_bank_country'), // Страна банка-эмитента
+  description: text('description'), // Описание платежа
   // Foreign key to user
   userId: text('user_id').references(() => user.id),
 });

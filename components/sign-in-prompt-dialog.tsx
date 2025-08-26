@@ -29,18 +29,14 @@ const VKButton = ({ disabled, loading, onClick }: { disabled: boolean; loading: 
       disabled={loading}
       onClick={onClick}
     >
-      <div className="flex items-center justify-center w-full gap-3">
-        {loading ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <>
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-.908-1.49.402v1.608c0 .432-.138.69-1.276.69-1.898 0-4.004-1.15-5.494-3.29-2.242-3.229-2.856-5.648-2.856-6.134 0-.432.174-.624.462-.624h1.744c.346 0 .476.174.61.58.675 2.074 1.744 3.894 2.186 2.448.35-1.148.35-3.674-.174-4.158-.35-.346-.99-.268-1.398-.19.99-1.496 2.884-1.51 3.554-1.51 1.744 0 2.23.174 2.23 1.38v2.23c0 .346.158 1.49.726 1.49.432 0 .864-.268 2.174-1.588 1.24-1.24 2.07-2.91 2.07-2.91.138-.268.346-.432.726-.432h1.744c1.05 0 .864.538.432 1.27-.692 1.183-3.207 4.026-3.207 4.026-.432.538-.346.778 0 1.27 0 0 2.515 2.701 2.784 3.623.138.462-.268.924-.578.924z"/>
-            </svg>
-            <span>Войти через VK</span>
-          </>
-        )}
-      </div>
+      {loading ? (
+        <>
+          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+          Загрузка...
+        </>
+      ) : (
+        'Войти через VK'
+      )}
     </Button>
   );
 };
@@ -99,25 +95,23 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
 
             <Button
               variant="outline"
-              className="relative w-full h-10 px-4 font-normal text-sm justify-start"
+              className="relative w-full h-10 px-4 font-normal text-sm justify-center"
               disabled={magicLinkLoading}
               onClick={() => {
                 // Фокус на поле ввода при клике на кнопку
                 document.getElementById('email')?.focus();
               }}
             >
-              <div className="flex items-center justify-center w-full gap-3">
-                <Mail className="w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Войти через Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border-0 bg-transparent p-0 h-auto text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
-                  disabled={magicLinkLoading}
-                />
-              </div>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Войти через Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border-0 bg-transparent p-0 h-auto text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-center w-full"
+                style={{ backgroundColor: 'transparent' }}
+                disabled={magicLinkLoading}
+              />
             </Button>
           </div>
           

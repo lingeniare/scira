@@ -19,6 +19,8 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [shakeCheckboxes, setShakeCheckboxes] = useState(false);
+  const [shakeEmailField, setShakeEmailField] = useState(false);
 
   // Проверка валидности email
   const isValidEmail = (email: string) => {
@@ -29,8 +31,30 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
   // Проверка готовности формы
   const isFormReady = isValidEmail(email) && privacyAccepted && termsAccepted;
 
+  // Функция для анимации вибрации чекбоксов
+  const triggerCheckboxShake = () => {
+    setShakeCheckboxes(true);
+    setTimeout(() => setShakeCheckboxes(false), 600);
+  };
+
+  // Функция для анимации поля email
+  const triggerEmailFieldShake = () => {
+    setShakeEmailField(true);
+    setTimeout(() => setShakeEmailField(false), 600);
+  };
+
   const handleMagicLinkSignIn = async () => {
-    if (!isFormReady) return;
+    // Проверяем согласие с условиями
+    if (!privacyAccepted || !termsAccepted) {
+      triggerCheckboxShake();
+      return;
+    }
+
+    // Проверяем валидность email
+    if (!isValidEmail(email)) {
+      triggerEmailFieldShake();
+      return;
+    }
 
     setLoading(true);
     try {
@@ -49,7 +73,11 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
 
   // Авторизация через VK
   const handleVKSignIn = async () => {
-    if (!privacyAccepted || !termsAccepted) return;
+    // Проверяем согласие с условиями
+    if (!privacyAccepted || !termsAccepted) {
+      triggerCheckboxShake();
+      return;
+    }
 
     try {
       await authClient.signIn.social({
@@ -106,13 +134,13 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
 
         <div className="pt-6 space-y-4">
           {/* Email поле */}
-          <div className="space-y-2">
+          <div className={`space-y-2 transition-transform duration-150 ${shakeEmailField ? 'animate-pulse' : ''}`}>
             <Input
               type="email"
-              placeholder="Email"
+              placeholder="Войти через Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="text-center"
+              className={`text-center ${shakeEmailField ? 'animate-bounce ring-2 ring-red-400 ring-opacity-75' : ''}`}
               disabled={loading}
             />
           </div>
@@ -120,10 +148,10 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
           {/* Кнопка входа по ссылке */}
           <Button
             onClick={handleMagicLinkSignIn}
-            disabled={!isFormReady || loading}
+            disabled={loading}
             className="w-full"
           >
-            {loading ? 'Отправляем...' : 'Войти по ссылке'}
+            {loading ? 'Отправляем...' : 'Клик'}
           </Button>
 
           {/* Разделитель */}
@@ -139,7 +167,6 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
           {/* Кнопка авторизации через VK */}
           <Button
             onClick={handleVKSignIn}
-            disabled={!privacyAccepted || !termsAccepted}
             variant="outline"
             className="w-full"
           >
@@ -147,13 +174,13 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
           </Button>
 
           {/* Чекбоксы */}
-          <div className="space-y-3">
-            <div className="flex items-start space-x-2">
+          <div className={`space-y-3 transition-transform duration-150 ${shakeCheckboxes ? 'animate-pulse' : ''}`}>
+            <div className={`flex items-start space-x-2 ${shakeCheckboxes ? 'animate-bounce' : ''}`}>
               <Checkbox
                 id="privacy"
                 checked={privacyAccepted}
                 onCheckedChange={(checked) => setPrivacyAccepted(checked as boolean)}
-                className="mt-0.5"
+                className={`mt-0.5 ${shakeCheckboxes ? 'ring-2 ring-red-400 ring-opacity-75' : ''}`}
               />
               <label htmlFor="privacy" className="text-[11px] text-muted-foreground/60 leading-relaxed">
                 Согласие с{' '}
@@ -167,12 +194,12 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
               </label>
             </div>
 
-            <div className="flex items-start space-x-2">
+            <div className={`flex items-start space-x-2 ${shakeCheckboxes ? 'animate-bounce' : ''}`}>
               <Checkbox
                 id="terms"
                 checked={termsAccepted}
                 onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
-                className="mt-0.5"
+                className={`mt-0.5 ${shakeCheckboxes ? 'ring-2 ring-red-400 ring-opacity-75' : ''}`}
               />
               <label htmlFor="terms" className="text-[11px] text-muted-foreground/60 leading-relaxed">
                 Согласие с{' '}
@@ -190,7 +217,7 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
           {/* Забыли Email */}
           <div className="pt-4">
             <p className="text-sm text-center text-muted-foreground">
-              Забыли Email?{' '}
+              Забыли Email? {' '}
               <Link 
                 href="mailto:help@vega.chat" 
                 className="text-foreground font-medium hover:underline underline-offset-4"

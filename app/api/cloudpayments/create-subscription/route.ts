@@ -252,32 +252,3 @@ async function createSubscriptionLogic(session: any, planType: string, duration:
     );
   }
 }
-
-// GET endpoint для получения информации о доступных планах
-export async function GET() {
-  const plans = {
-    pro: {
-      name: 'Scira Pro',
-      amount: 990,
-      currency: 'RUB',
-      features: [
-        'Безлимитные поисковые запросы',
-        'Доступ к премиум моделям ИИ',
-        'Приоритетная поддержка',
-      ],
-    },
-    ultra: {
-      name: 'Scira Ultra',
-      amount: 1990,
-      currency: 'RUB',
-      features: [
-        'Все возможности Pro',
-        'Расширенные инструменты поиска',
-        'API доступ',
-        'Персональный менеджер',
-      ],
-    },
-  };
-
-  return NextResponse.json({ plans });
-}

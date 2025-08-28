@@ -252,7 +252,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-center gap-3 mb-8">
               <SciraLogo className="size-12" />
-              <h1 className="text-4xl font-bold">Scira</h1>
+              <h1 className="text-4xl font-bold">Vega</h1>
             </div>
 
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground max-w-3xl mx-auto">

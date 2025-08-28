@@ -27,8 +27,8 @@ export function Navbar({ user, isProUser, isProStatusLoading, showProBadge = fal
             className="rounded-lg bg-accent hover:bg-accent/80 group transition-all hover:scale-105"
           >
             <HugeiconsIcon icon={ArrowLeft01Icon} size={16} color="currentColor" strokeWidth={1.5} />
-            <span className="text-sm ml-1.5 hidden sm:inline">Back to Search</span>
-            <span className="text-sm ml-1.5 sm:hidden">Back</span>
+            <span className="text-sm ml-1.5 hidden sm:inline">Назад к поиску</span>
+            <span className="text-sm ml-1.5 sm:hidden">Назад</span>
           </Button>
         </Link>
       </div>

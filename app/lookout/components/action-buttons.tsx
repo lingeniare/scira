@@ -46,7 +46,7 @@ export function ActionButtons({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Delete lookout</p>
+          <p>Удалить lookout</p>
         </TooltipContent>
       </Tooltip>
     );
@@ -69,7 +69,7 @@ export function ActionButtons({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Pause lookout</p>
+            <p>Приостановить lookout</p>
           </TooltipContent>
         </Tooltip>
       )}
@@ -88,7 +88,7 @@ export function ActionButtons({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Resume lookout</p>
+            <p>Возобновить lookout</p>
           </TooltipContent>
         </Tooltip>
       )}
@@ -116,7 +116,7 @@ export function ActionButtons({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Lookout is currently running</p>
+            <p>Lookout выполняется</p>
           </TooltipContent>
         </Tooltip>
       )}
@@ -135,7 +135,7 @@ export function ActionButtons({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{status === 'running' ? 'Cannot test while running' : 'Test lookout now'}</p>
+          <p>{status === 'running' ? 'Нельзя тестировать во время выполнения' : 'Протестировать lookout сейчас'}</p>
         </TooltipContent>
       </Tooltip>
 
@@ -153,7 +153,7 @@ export function ActionButtons({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{status === 'running' ? 'Cannot archive while running' : 'Archive lookout'}</p>
+          <p>{status === 'running' ? 'Нельзя архивировать во время выполнения' : 'Архивировать lookout'}</p>
         </TooltipContent>
       </Tooltip>
 
@@ -171,7 +171,7 @@ export function ActionButtons({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{status === 'running' ? 'Cannot delete while running' : 'Delete lookout'}</p>
+          <p>{status === 'running' ? 'Нельзя удалить во время выполнения' : 'Удалить lookout'}</p>
         </TooltipContent>
       </Tooltip>
     </div>

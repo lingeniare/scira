@@ -47,8 +47,8 @@ export default function TermsPage() {
             </motion.div>
 
             <motion.div variants={item} className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight">Terms of Service</h1>
-              <p className="text-muted-foreground mt-3">Last updated: July 24, 2025</p>
+              <h1 className="text-4xl font-bold tracking-tight">Условия использования</h1>
+              <p className="text-muted-foreground mt-3">Последнее обновление: 24 июля 2025</p>
             </motion.div>
           </motion.div>
         </div>

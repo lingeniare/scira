@@ -123,7 +123,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
       }
     } catch (error) {
       console.error('Checkout failed:', error);
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Что-то пошло не так. Попробуйте еще раз.');
     }
   };
 
@@ -144,7 +144,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
       }
     } catch (error) {
       console.error('Failed to open customer portal:', error);
-      toast.error('Failed to open subscription management');
+      toast.error('Не удалось открыть управление подпиской');
     }
   };
 
@@ -201,7 +201,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
 
   const handleDiscountClaim = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast.success(`Discount code "${code}" copied to clipboard!`);
+    toast.success(`Код скидки "${code}" скопирован в буфер обмена!`);
   };
 
   return (
@@ -213,15 +213,15 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Home
+          Назад на главную
         </Link>
 
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-medium text-foreground mb-4 font-be-vietnam-pro">Pricing</h1>
-          <p className="text-xl text-muted-foreground">Choose the plan that works for you</p>
+          <h1 className="text-4xl font-medium text-foreground mb-4 font-be-vietnam-pro">Тарифы</h1>
+          <p className="text-xl text-muted-foreground">Выберите подходящий план</p>
           {!location.loading && location.isIndia && (
             <Badge variant="secondary" className="mt-4">
-              🇮🇳 Special India pricing available
+              🇮🇳 Доступны специальные цены для Индии
             </Badge>
           )}
           
@@ -235,7 +235,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              Monthly
+              Ежемесячно
             </button>
             <button
               onClick={() => setIsYearly(true)}
@@ -245,8 +245,8 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              Yearly
-              <Badge variant="secondary" className="ml-2 text-xs">20% OFF</Badge>
+              Ежегодно
+              <Badge variant="secondary" className="ml-2 text-xs">Скидка 20%</Badge>
             </button>
           </div>
         </div>
@@ -265,30 +265,30 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
           {/* Free Plan */}
           <Card className="relative">
             <CardHeader className="pb-4">
-              <h3 className="text-xl font-medium">Free</h3>
+              <h3 className="text-xl font-medium">Бесплатный</h3>
               <div className="flex items-baseline">
                 <span className="text-4xl font-light">$0</span>
-                <span className="text-muted-foreground ml-2">/month</span>
+                <span className="text-muted-foreground ml-2">/месяц</span>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <ul className="space-y-3">
                 <li className="flex items-center text-muted-foreground">
                   <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
-                  20 searches per day
+                  20 поисков в день
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
-                  Basic AI models
+                  Базовые AI модели
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
-                  Search history
+                  История поиска
                 </li>
               </ul>
 
               <Button variant="outline" className="w-full" disabled={!hasProAccess()}>
-                {!hasProAccess() ? 'Current plan' : 'Free plan'}
+                {!hasProAccess() ? 'Текущий план' : 'Бесплатный план'}
               </Button>
             </CardContent>
           </Card>
@@ -297,7 +297,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
           <Card className="relative border-2 border-primary">
             {hasProAccess() && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <Badge className="bg-primary text-primary-foreground">Current plan</Badge>
+                <Badge className="bg-primary text-primary-foreground">Текущий план</Badge>
               </div>
             )}
             {!hasProAccess() && shouldShowDiscount() && (
@@ -309,7 +309,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-medium">Scira Pro</h3>
-                <Badge variant="secondary">Popular</Badge>
+                <Badge variant="secondary">Популярный</Badge>
               </div>
 
               {/* Pricing Display */}
@@ -350,7 +350,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                         <div className="text-xs text-muted-foreground">
                           {isYearly ? '/месяц (оплата за год)' : '+18% GST'}
                         </div>
-                        <div className="text-xs">{isYearly ? '12 months access' : '1 month access'}</div>
+                        <div className="text-xs">{isYearly ? 'Доступ на 12 месяцев' : 'Доступ на 1 месяц'}</div>
                         <div className="text-xs text-muted-foreground">🇮🇳 UPI, Cards, QR</div>
                       </div>
                     </div>
@@ -372,7 +372,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                           <span className="text-xl font-light">${PRICING.PRO_MONTHLY}</span>
                         )}
                         <div className="text-xs text-muted-foreground">USD</div>
-                        <div className="text-xs">{isYearly ? 'Yearly subscription' : 'Monthly subscription'}</div>
+                        <div className="text-xs">{isYearly ? 'Годовая подписка' : 'Месячная подписка'}</div>
                         <div className="text-xs text-muted-foreground">💳 Card payment</div>
                       </div>
                     </div>
@@ -404,19 +404,19 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               <ul className="space-y-3">
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Unlimited searches
+                  Неограниченный поиск
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Pro AI models
+                  Pro AI модели
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  PDF analysis
+                  Анализ PDF
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Priority support
+                  Приоритетная поддержка
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
@@ -427,30 +427,30 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               {hasProAccess() ? (
                 <div className="space-y-4">
                   <Button className="w-full" onClick={handleManageSubscription}>
-                    {getProAccessSource() === 'dodo' ? 'Manage payment' : 
-                     getProAccessSource() === 'cloudpayments' ? 'Manage CloudPayments' : 'Manage subscription'}
+                    {getProAccessSource() === 'dodo' ? 'Управление платежами' : 
+                     getProAccessSource() === 'cloudpayments' ? 'Управление CloudPayments' : 'Управление подпиской'}
                   </Button>
                   {getProAccessSource() === 'dodo' && user?.expiresAt && (
                     <p className="text-sm text-muted-foreground text-center">
-                      Access expires {formatDate(new Date(user.expiresAt))}
+                      Доступ истекает {formatDate(new Date(user.expiresAt))}
                     </p>
                   )}
                   {getProAccessSource() === 'cloudpayments' && user?.expiresAt && (
                     <p className="text-sm text-muted-foreground text-center">
-                      CloudPayments subscription expires {formatDate(new Date(user.expiresAt))}
+                      Подписка CloudPayments истекает {formatDate(new Date(user.expiresAt))}
                     </p>
                   )}
                 </div>
               ) : !location.loading && location.isIndia ? (
                 !user ? (
                   <Button className="w-full group" onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG)}>
-                    Sign up for Pro
+                    Зарегистрироваться на Pro
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 ) : (
                   <div className="space-y-3">
                     <Button className="w-full group" onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG, 'dodo')}>
-                      🇮🇳 Pay ₹{getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)}
+                      🇮🇳 Оплатить ₹{getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)}
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Button
@@ -479,7 +479,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                   onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG)}
                   disabled={location.loading}
                 >
-                  {location.loading ? 'Loading...' : !user ? 'Sign up for Pro' : 'Upgrade to Pro'}
+                  {location.loading ? 'Загрузка...' : !user ? 'Зарегистрироваться на Pro' : 'Перейти на Pro'}
                   {!location.loading && (
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   )}
@@ -497,7 +497,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-medium">Scira Ultra</h3>
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Premium</Badge>
+                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Премиум</Badge>
               </div>
 
               <div className="flex items-baseline">
@@ -529,11 +529,11 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  All AI models + Ultra models
+                  Все AI модели + Ultra модели
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Advanced PDF analysis
+                  Расширенный анализ PDF
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
@@ -545,18 +545,18 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Early access to new features
+                  Ранний доступ к новым функциям
                 </li>
               </ul>
 
               {hasUltraAccess() ? (
                 <div className="space-y-4">
                   <Button className="w-full" onClick={handleManageSubscription}>
-                    {getUltraAccessSource() === 'cloudpayments' ? 'Manage CloudPayments' : 'Manage subscription'}
+                    {getUltraAccessSource() === 'cloudpayments' ? 'Управление CloudPayments' : 'Управление подпиской'}
                   </Button>
                   {getUltraAccessSource() === 'cloudpayments' && user?.ultraExpiresAt && (
                     <p className="text-sm text-muted-foreground text-center">
-                      CloudPayments Ultra expires {formatDate(new Date(user.ultraExpiresAt))}
+                      CloudPayments Ultra истекает {formatDate(new Date(user.ultraExpiresAt))}
                     </p>
                   )}
                 </div>
@@ -566,7 +566,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                     className="w-full group bg-yellow-500 hover:bg-yellow-600 text-yellow-900"
                     onClick={() => handleCheckout(ULTRA_TIER, ULTRA_SLUG, 'cloudpayments')}
                   >
-                    💳 {!user ? 'Sign up for Ultra' : 'Upgrade to Ultra'} 
+                    💳 {!user ? 'Зарегистрироваться на Ultra' : 'Перейти на Ultra'} 
                     ₽{isYearly ? Math.round(PRICING.ULTRA_MONTHLY_INR * 0.8) : PRICING.ULTRA_MONTHLY_INR}
                     {isYearly ? '/месяц (год)' : '/месяц'}
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -584,10 +584,10 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
         <Card className="max-w-2xl mx-auto mt-16">
           <CardContent className="p-6">
             <div className="text-center">
-              <h3 className="font-medium mb-2">Student discount available</h3>
-              <p className="text-sm text-muted-foreground mb-4">Get Pro for $5/month with valid student verification</p>
+              <h3 className="font-medium mb-2">Доступна скидка для студентов</h3>
+              <p className="text-sm text-muted-foreground mb-4">Получите Pro за $5/месяц с действующим студенческим удостоверением</p>
               <Button variant="outline" asChild>
-                <a href="mailto:zaid@scira.ai?subject=Student%20Discount%20Request">Apply for discount</a>
+                <a href="mailto:zaid@scira.ai?subject=Student%20Discount%20Request">Подать заявку на скидку</a>
               </Button>
             </div>
           </CardContent>
@@ -596,19 +596,19 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
         {/* Footer */}
         <div className="text-center mt-16 space-y-4">
           <p className="text-sm text-muted-foreground">
-            By subscribing, you agree to our{' '}
+            Подписываясь, вы соглашаетесь с нашими{' '}
             <Link href="/terms" className="text-foreground hover:underline">
-              Terms of Service
+              Условиями обслуживания
             </Link>{' '}
-            and{' '}
+            и{' '}
             <Link href="/privacy-policy" className="text-foreground hover:underline">
-              Privacy Policy
+              Политикой конфиденциальности
             </Link>
           </p>
           <p className="text-sm text-muted-foreground">
-            Questions?{' '}
+            Вопросы?{' '}
             <a href="mailto:zaid@scira.ai" className="text-foreground hover:underline">
-              Get in touch
+              Свяжитесь с нами
             </a>
           </p>
         </div>

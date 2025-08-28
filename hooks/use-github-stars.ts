@@ -13,7 +13,7 @@ export function useGitHubStars() {
       try {
         const response = await fetch('https://api.github.com/repos/zaidmukaddam/scira');
         if (!response.ok) {
-          throw new Error('Failed to fetch GitHub stars');
+          throw new Error('Не удалось получить звезды GitHub');
         }
         const data: GitHubRepo = await response.json();
         return data.stargazers_count;

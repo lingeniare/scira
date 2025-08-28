@@ -199,7 +199,7 @@ export function DiscountBanner({ discountConfig, onClose, onClaim, className }: 
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-foreground leading-tight">
-                  {discountConfig.message || 'Special Offer Available'}
+                  {discountConfig.message || 'Доступно специальное предложение'}
                 </p>
                 {pricing && (
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mt-0.5">
@@ -346,10 +346,10 @@ export function DiscountBanner({ discountConfig, onClose, onClaim, className }: 
               <AccordionContent className="pt-2 pb-0">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
                   {[
-                    { step: '1', text: 'Click upgrade' },
-                    { step: '2', text: 'Find discount section' },
-                    { step: '3', text: `Enter ${discountConfig.code}` },
-                    { step: '4', text: 'Click apply' },
+                    { step: '1', text: 'Нажмите обновить' },
+                    { step: '2', text: 'Найдите раздел скидок' },
+                    { step: '3', text: `Введите ${discountConfig.code}` },
+                    { step: '4', text: 'Нажмите применить' },
                   ].map(({ step, text }) => (
                     <div key={step} className="flex items-center gap-2">
                       <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-[10px] font-medium flex-shrink-0">

@@ -62,7 +62,7 @@ export function useLookouts() {
       if (result.success) {
         return (result.lookouts || []) as Lookout[];
       }
-      throw new Error(result.error || 'Failed to load lookouts');
+      throw new Error(result.error || 'Не удалось загрузить наблюдения');
     },
     staleTime: 1000 * 2, // Consider data fresh for 2 seconds
     refetchInterval: 1000 * 5, // Refetch every 5 seconds for real-time updates
@@ -110,7 +110,7 @@ export function useLookouts() {
       const completionKey = `${lookout.id}-${lookout.lastRunAt?.getTime()}`;
       recentCompletionsRef.current.add(completionKey);
 
-      const statusText = lookout.frequency === 'once' ? 'completed' : 'run finished';
+      const statusText = lookout.frequency === 'once' ? 'завершено' : 'выполнение завершено';
       toast.success(`Lookout "${lookout.title}" ${statusText} successfully!`);
 
       // Clear completion key after 30 seconds to allow future notifications
@@ -136,14 +136,14 @@ export function useLookouts() {
       const { onSuccess: successCallback, ...mutationParams } = params;
       const result = await createScheduledLookout(mutationParams);
       if (!result.success) {
-        throw new Error(result.error || 'Failed to create lookout');
+        throw new Error(result.error || 'Не удалось создать наблюдение');
       }
       return { result, onSuccess: successCallback };
     },
     onSuccess: (data) => {
       // Only show create toast for actual user-initiated creation
       if (isActualCreateRef.current) {
-        toast.success('Lookout created successfully!');
+        toast.success('Наблюдение успешно создано!');
         isActualCreateRef.current = false; // Reset flag
       }
       // Immediate cache invalidation for real-time updates
@@ -164,7 +164,7 @@ export function useLookouts() {
     mutationFn: async (params: { id: string; status: 'active' | 'paused' | 'archived' | 'running' }) => {
       const result = await updateLookoutStatusAction(params);
       if (!result.success) {
-        throw new Error(result.error || 'Failed to update lookout');
+        throw new Error(result.error || 'Не удалось обновить наблюдение');
       }
       return { ...params, result };
     },
@@ -185,12 +185,12 @@ export function useLookouts() {
     onSuccess: (data) => {
       const statusText =
         data.status === 'active'
-          ? 'activated'
-          : data.status === 'paused'
-            ? 'paused'
-            : data.status === 'archived'
-              ? 'archived'
-              : 'updated';
+          ? 'активировано'
+        : data.status === 'paused'
+        ? 'приостановлено'
+        : data.status === 'archived'
+        ? 'архивировано'
+        : 'обновлено';
       toast.success(`Lookout ${statusText}`);
     },
     onError: (error: Error, variables, context) => {
@@ -221,12 +221,12 @@ export function useLookouts() {
       const { onSuccess: successCallback, ...mutationParams } = params;
       const result = await updateLookoutAction(mutationParams);
       if (!result.success) {
-        throw new Error(result.error || 'Failed to update lookout');
+        throw new Error(result.error || 'Не удалось обновить наблюдение');
       }
       return { result, onSuccess: successCallback };
     },
     onSuccess: (data) => {
-      toast.success('Lookout updated successfully!');
+      toast.success('Наблюдение успешно обновлено!');
       // Immediate cache invalidation and refetch for real-time updates
       queryClient.invalidateQueries({ queryKey: lookoutKeys.lists() });
       queryClient.refetchQueries({ queryKey: lookoutKeys.lists() });
@@ -244,7 +244,7 @@ export function useLookouts() {
     mutationFn: async (params: { id: string }) => {
       const result = await deleteLookoutAction(params);
       if (!result.success) {
-        throw new Error(result.error || 'Failed to delete lookout');
+        throw new Error(result.error || 'Не удалось удалить наблюдение');
       }
       return params;
     },
@@ -263,7 +263,7 @@ export function useLookouts() {
       return { previousLookouts };
     },
     onSuccess: () => {
-      toast.success('Lookout deleted successfully');
+      toast.success('Наблюдение успешно удалено');
       // Force immediate refetch after delete
       queryClient.refetchQueries({ queryKey: lookoutKeys.lists() });
     },
@@ -286,7 +286,7 @@ export function useLookouts() {
     mutationFn: async (params: { id: string }) => {
       const result = await testLookoutAction(params);
       if (!result.success) {
-        throw new Error(result.error || 'Failed to test lookout');
+        throw new Error(result.error || 'Не удалось протестировать наблюдение');
       }
       return params;
     },
@@ -305,7 +305,7 @@ export function useLookouts() {
       return { previousLookouts };
     },
     onSuccess: () => {
-      toast.success("Test run started - you'll be notified when complete!");
+      toast.success('Тестовый запуск начат - вы получите уведомление по завершении!');
     },
     onError: (error: Error, variables, context) => {
       // Rollback on error

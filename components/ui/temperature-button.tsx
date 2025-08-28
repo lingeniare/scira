@@ -51,9 +51,9 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
 
   // Функция для получения описания температуры
   const getTemperatureDescription = (temp: number) => {
-    if (temp <= 0.3) return 'Conservative - More focused and deterministic';
-    if (temp <= 0.7) return 'Balanced - Good mix of creativity and focus';
-    return 'Creative - More random and creative responses';
+    if (temp <= 0.3) return 'Консервативный - Более сфокусированный и детерминированный';
+    if (temp <= 0.7) return 'Сбалансированный - Хорошее сочетание креативности и фокуса';
+    return 'Креативный - Более случайные и творческие ответы';
   };
 
   return (
@@ -117,7 +117,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
                 strokeWidth={2}
                 className="transition-colors duration-200"
               />
-              <span className="font-medium text-sm">AI Temperature</span>
+              <span className="font-medium text-sm">Температура ИИ</span>
             </div>
             <span className="text-sm font-mono bg-accent/20 px-2 py-1 rounded">
               {temperature.toFixed(2)}
@@ -135,9 +135,9 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
             />
             
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>0.0 (Focused)</span>
-              <span>1.0 (Balanced)</span>
-              <span>2.0 (Creative)</span>
+              <span>0.0 (Фокусированный)</span>
+              <span>1.0 (Сбалансированный)</span>
+              <span>2.0 (Креативный)</span>
             </div>
           </div>
           
@@ -154,7 +154,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
               onClick={() => onTemperatureChange(0.1)}
               className="flex-1 text-xs"
             >
-              Conservative
+              Консервативный
             </Button>
             <Button
               variant="outline"
@@ -162,7 +162,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
               onClick={() => onTemperatureChange(0.7)}
               className="flex-1 text-xs"
             >
-              Balanced
+              Сбалансированный
             </Button>
             <Button
               variant="outline"
@@ -170,7 +170,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
               onClick={() => onTemperatureChange(1.2)}
               className="flex-1 text-xs"
             >
-              Creative
+              Креативный
             </Button>
           </div>
         </div>

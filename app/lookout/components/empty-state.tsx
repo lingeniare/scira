@@ -45,8 +45,8 @@ export function NoActiveLookoutsEmpty() {
   return (
     <EmptyState
       icon={BinocularsIcon}
-      title="Get started by adding a lookout"
-      description="Schedule a lookout to automate searches and get reminders when they complete."
+      title="Начните с добавления lookout"
+      description="Запланируйте lookout для автоматизации поиска и получения уведомлений о завершении."
     />
   );
 }
@@ -55,8 +55,8 @@ export function NoArchivedLookoutsEmpty() {
   return (
     <EmptyState
       icon={Archive01Icon}
-      title="No archived lookouts"
-      description="Archived lookouts will appear here."
+      title="Нет архивированных lookout"
+      description="Архивированные lookout будут отображаться здесь."
       variant="default"
     />
   );

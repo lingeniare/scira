@@ -36,10 +36,9 @@ export function ProUpgradeScreen({ user, isProUser, isProStatusLoading }: ProUpg
                   className="text-primary-foreground"
                 />
               </div>
-              <CardTitle className="text-xl">Pro Feature</CardTitle>
+              <CardTitle className="text-xl">Pro функция</CardTitle>
               <CardDescription>
-                Lookouts are available for Pro users only. Schedule automated searches and get notified when they
-                complete.
+                Lookouts доступны только для Pro пользователей. Планируйте автоматические поиски и получайте уведомления об их завершении.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -52,7 +51,7 @@ export function ProUpgradeScreen({ user, isProUser, isProStatusLoading }: ProUpg
                     strokeWidth={1.5}
                     className="text-primary"
                   />
-                  <span>Automated scheduled searches</span>
+                  <span>Автоматические запланированные поиски</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <HugeiconsIcon
@@ -62,21 +61,21 @@ export function ProUpgradeScreen({ user, isProUser, isProStatusLoading }: ProUpg
                     strokeWidth={1.5}
                     className="text-primary"
                   />
-                  <span>Custom frequency and timezone</span>
+                  <span>Настраиваемая частота и часовой пояс</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Lightning className="h-4 w-4 text-primary" />
-                  <span>Up to 10 active lookouts</span>
+                  <span>До 10 активных lookout</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2">
                 <Button variant="outline" className="flex-1" onClick={() => router.push('/new')}>
-                  Back to Search
+                  Назад к поиску
                 </Button>
                 <Button className="flex-1" onClick={() => router.push('/pricing')}>
                   <HugeiconsIcon icon={Crown02Icon} size={16} color="currentColor" strokeWidth={1.5} className="mr-2" />
-                  Upgrade to Pro
+                  Перейти на Pro
                 </Button>
               </div>
             </CardContent>

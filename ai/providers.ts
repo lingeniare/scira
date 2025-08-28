@@ -340,22 +340,22 @@ export function canUseModel(modelValue: string, user: any, isProUser: boolean, i
   const model = getModelConfig(modelValue);
 
   if (!model) {
-    return { canUse: false, reason: 'Model not found' };
+    return { canUse: false, reason: 'Модель не найдена' };
   }
 
   // Check if model requires authentication
   if (model.requiresAuth && !user) {
-    return { canUse: false, reason: 'authentication_required' };
+    return { canUse: false, reason: 'Требуется аутентификация' };
   }
 
   // Check if model requires Ultra subscription
   if (model.ultra && !isUltraUser) {
-    return { canUse: false, reason: 'ultra_subscription_required' };
+    return { canUse: false, reason: 'Требуется Ultra подписка' };
   }
 
   // Check if model requires Pro subscription (but not Ultra)
   if (model.pro && !isProUser && !isUltraUser) {
-    return { canUse: false, reason: 'pro_subscription_required' };
+    return { canUse: false, reason: 'Требуется Pro подписка' };
   }
 
   return { canUse: true };

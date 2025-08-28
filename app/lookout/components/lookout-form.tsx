@@ -75,7 +75,7 @@ export function LookoutForm({
       <div>
         <Input
           name="title"
-          placeholder="Enter lookout name"
+          placeholder="Введите название наблюдения"
           className="h-9"
           defaultValue={editingLookout?.title || selectedExample?.title || ''}
           required
@@ -84,11 +84,11 @@ export function LookoutForm({
 
       {/* Instructions */}
       <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
-        <Label className="text-sm font-medium sm:pt-2 sm:w-20 sm:flex-shrink-0">Instructions</Label>
+        <Label className="text-sm font-medium sm:pt-2 sm:w-20 sm:flex-shrink-0">Инструкции</Label>
         <div className="flex-1">
           <Textarea
             name="prompt"
-            placeholder="Enter detailed instructions for what you want the lookout to search for and analyze..."
+            placeholder="Введите подробные инструкции о том, что должно искать и анализировать наблюдение..."
             rows={6}
             className="resize-none text-sm h-40"
             defaultValue={editingLookout?.prompt || selectedExample?.prompt || ''}
@@ -99,7 +99,7 @@ export function LookoutForm({
 
       {/* Frequency Selection */}
       <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
-        <Label className="text-sm font-medium sm:pt-2 sm:w-20 sm:flex-shrink-0">Frequency</Label>
+        <Label className="text-sm font-medium sm:pt-2 sm:w-20 sm:flex-shrink-0">Частота</Label>
         <div className="flex-1">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-1">
             {frequencyOptions.map((option) => (
@@ -129,7 +129,7 @@ export function LookoutForm({
       <div className="space-y-4">
         {/* On/Time/Date row */}
         <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
-          <Label className="text-sm font-medium sm:pt-2 sm:w-20 sm:flex-shrink-0">On</Label>
+          <Label className="text-sm font-medium sm:pt-2 sm:w-20 sm:flex-shrink-0">Когда</Label>
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row gap-3">
               {/* Time Picker */}
@@ -154,7 +154,7 @@ export function LookoutForm({
                         size="sm"
                         className={cn('w-full text-left font-normal h-9', !selectedDate && 'text-muted-foreground')}
                       >
-                        {selectedDate ? format(selectedDate, 'MMM d, yyyy') : <span>Pick date</span>}
+                        {selectedDate ? format(selectedDate, 'MMM d, yyyy') : <span>Select date</span>}
                         <HugeiconsIcon
                           icon={Calendar01Icon}
                           size={12}
@@ -184,7 +184,7 @@ export function LookoutForm({
                   <input type="hidden" name="dayOfWeek" value={selectedDayOfWeek} />
                   <Select value={selectedDayOfWeek} onValueChange={setSelectedDayOfWeek}>
                     <SelectTrigger className="h-9">
-                      <SelectValue placeholder="Select day" />
+                      <SelectValue placeholder="Выберите день" />
                     </SelectTrigger>
                     <SelectContent>
                       {dayOfWeekOptions.map((option) => (
@@ -202,7 +202,7 @@ export function LookoutForm({
 
         {/* Timezone row */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <Label className="text-sm font-medium sm:w-20 sm:flex-shrink-0">Timezone</Label>
+          <Label className="text-sm font-medium sm:w-20 sm:flex-shrink-0">Часовой пояс</Label>
           <div className="flex-1">
             <TimezoneSelector value={selectedTimezone} onChange={setSelectedTimezone} />
           </div>
@@ -214,7 +214,7 @@ export function LookoutForm({
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/20 rounded-md p-2">
         <HugeiconsIcon icon={AlarmClockIcon} size={12} color="currentColor" strokeWidth={1.5} />
-        <span>Email notifications enabled</span>
+        <span>Уведомления по email включены</span>
       </div>
 
       {/* Footer */}
@@ -255,8 +255,8 @@ export function LookoutForm({
               )}
               <div className="text-xs text-muted-foreground">
                 {selectedFrequency === 'daily'
-                  ? `${Math.max(0, LOOKOUT_LIMITS.DAILY_LOOKOUTS - activeDailyLookouts)} daily remaining`
-                  : `${LOOKOUT_LIMITS.TOTAL_LOOKOUTS - totalLookouts} remaining`}
+                  ? `${Math.max(0, LOOKOUT_LIMITS.DAILY_LOOKOUTS - activeDailyLookouts)} ежедневных осталось`
+                  : `${LOOKOUT_LIMITS.TOTAL_LOOKOUTS - totalLookouts} осталось`}
               </div>
             </div>
           )}
@@ -265,11 +265,11 @@ export function LookoutForm({
         <Button type="submit" size="sm" disabled={isSubmitDisabled} className="w-full sm:w-auto">
           {editingLookout
             ? isMutating
-              ? 'Updating...'
-              : 'Update'
+              ? 'Обновление...'
+              : 'Обновить'
             : selectedFrequency === 'once'
-              ? 'Create Task'
-              : 'Create'}
+              ? 'Создать задачу'
+              : 'Создать'}
         </Button>
       </div>
     </form>

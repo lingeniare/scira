@@ -102,7 +102,7 @@ export function LookoutCard({
           {/* Next run information */}
           {lookout.nextRunAt && lookout.status === 'active' && (
             <p className="text-xs text-muted-foreground">
-              Next Run: {formatNextRun(lookout.nextRunAt, lookout.timezone)}
+              Следующий запуск: {formatNextRun(lookout.nextRunAt, lookout.timezone)}
             </p>
           )}
 
@@ -110,7 +110,7 @@ export function LookoutCard({
           {lookout.lastRunAt && (
             <div className="flex items-center gap-2">
               <p className="text-xs text-muted-foreground">
-                Last Run: {formatNextRun(lookout.lastRunAt, lookout.timezone)}
+                Последний запуск: {formatNextRun(lookout.lastRunAt, lookout.timezone)}
               </p>
               {lookout.lastRunChatId && (
                 <Link
@@ -119,7 +119,7 @@ export function LookoutCard({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <HugeiconsIcon icon={BinocularsIcon} size={12} color="currentColor" strokeWidth={1.5} />
-                  View Results
+                  Посмотреть результаты
                 </Link>
               )}
             </div>
@@ -127,7 +127,7 @@ export function LookoutCard({
 
           {/* Completed state for once frequency */}
           {!lookout.lastRunAt && lookout.frequency === 'once' && lookout.status === 'paused' && (
-            <p className="text-xs text-muted-foreground">Completed</p>
+            <p className="text-xs text-muted-foreground">Завершено</p>
           )}
         </div>
       </CardContent>

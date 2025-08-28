@@ -59,15 +59,15 @@ export default function SuccessPage() {
         </div>
 
         {/* Content */}
-        <h1 className="text-2xl font-light text-foreground mb-4 tracking-tight">Welcome to Vega Pro</h1>
-        <p className="text-muted-foreground mb-8">Your subscription is active. Start unlimited searching.</p>
+        <h1 className="text-2xl font-light text-foreground mb-4 tracking-tight">Добро пожаловать в Vega Pro</h1>
+        <p className="text-muted-foreground mb-8">Ваша подписка активна. Начните неограниченный поиск.</p>
 
         {/* Action */}
         <Button
           onClick={() => router.push('/')}
           className="bg-primary hover:bg-primary/90 text-primary-foreground h-9 px-6 text-sm font-normal"
         >
-          Start searching
+          Начать поиск
           <ArrowRight className="ml-2 h-3.5 w-3.5" />
         </Button>
       </div>

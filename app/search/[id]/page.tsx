@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const user = await getUser();
   // if not chat, return Scira Chat
   if (!chat) {
-    return { title: 'Scira Chat' };
+    return { title: 'Scira Чат' };
   }
   let title;
   // if chat is public, return title
@@ -47,20 +47,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   // if chat is private, return title
   if (chat.visibility === 'private') {
     if (!user) {
-      title = 'Scira Chat';
+      title = 'Scira Чат';
     }
     if (user!.id !== chat.userId) {
-      title = 'Scira Chat';
+      title = 'Scira Чат';
     }
     title = chat.title;
   }
   return {
     title: title,
-    description: 'A search in scira.ai',
+    description: 'Поиск в scira.ai',
     openGraph: {
       title: title,
       url: `https://scira.ai/search/${id}`,
-      description: 'A search in scira.ai',
+      description: 'Поиск в scira.ai',
       siteName: 'scira.ai',
       images: [
         {
@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       card: 'summary_large_image',
       title: title,
       url: `https://scira.ai/search/${id}`,
-      description: 'A search in scira.ai',
+      description: 'Поиск в scira.ai',
       siteName: 'scira.ai',
       creator: '@sciraai',
       images: [

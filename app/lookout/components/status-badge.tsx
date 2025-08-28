@@ -19,25 +19,25 @@ export function StatusBadge({ status, size = 'sm' }: StatusBadgeProps) {
     active: {
       variant: 'default' as const,
       icon: Clock01Icon,
-      label: 'Scheduled',
+      label: 'Запланирован',
       className: badgeClasses,
     },
     paused: {
       variant: 'secondary' as const,
       icon: PauseIcon,
-      label: 'Paused',
+      label: 'Приостановлен',
       className: badgeClasses,
     },
     running: {
       variant: 'outline' as const,
       icon: PlayIcon,
-      label: 'Running',
+      label: 'Выполняется',
       className: `${badgeClasses} bg-primary/10 text-primary border-primary/20 hover:bg-primary/15 transition-colors relative overflow-hidden`,
     },
     archived: {
       variant: 'outline' as const,
       icon: Archive01Icon,
-      label: 'Archived',
+      label: 'Архивирован',
       className: badgeClasses,
     },
   };

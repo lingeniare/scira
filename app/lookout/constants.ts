@@ -1,8 +1,8 @@
 export const frequencyOptions = [
-  { value: 'once', label: 'Once' },
-  { value: 'daily', label: 'Daily' },
-  { value: 'weekly', label: 'Weekly' },
-  { value: 'monthly', label: 'Monthly' },
+  { value: 'once', label: 'Однократно' },
+  { value: 'daily', label: 'Ежедневно' },
+  { value: 'weekly', label: 'Еженедельно' },
+  { value: 'monthly', label: 'Ежемесячно' },
 ];
 
 export const timezoneOptions = [
@@ -81,121 +81,118 @@ export const timezoneOptions = [
 
 export const allExampleLookouts = [
   {
-    title: 'Daily AI News Digest',
+    title: 'Ежедневная сводка новостей ИИ',
     prompt:
-      'Summarize the most important AI & Tech developments from the past 24 hours, including new product launches, funding rounds, and breakthrough research papers. Focus on practical applications and industry impact. Include any major announcements from OpenAI, Google, Microsoft, Meta, and emerging AI startups.',
+      'Суммируйте самые важные разработки в области ИИ и технологий за последние 24 часа, включая запуски новых продуктов, раунды финансирования и прорывные исследовательские работы. Сосредоточьтесь на практических применениях и влиянии на индустрию. Включите любые крупные объявления от OpenAI, Google, Microsoft, Meta и развивающихся ИИ-стартапов.',
     frequency: 'daily',
     time: '09:00',
     timezone: 'America/New_York',
   },
   {
-    title: 'Weekly Crypto Market Analysis',
+    title: 'Еженедельный анализ криптовалютного рынка',
     prompt:
-      'Provide a comprehensive analysis of the cryptocurrency market over the past week. Include price movements for major coins (BTC, ETH, SOL), significant news events, regulatory updates, and emerging trends in DeFi and NFTs. Highlight any major institutional adoptions, regulatory changes, or market-moving events.',
+      'Предоставьте комплексный анализ криптовалютного рынка за прошедшую неделю. Включите движения цен основных монет (BTC, ETH, SOL), значимые новостные события, регулятивные обновления и новые тренды в DeFi и NFT. Выделите любые крупные институциональные принятия, регулятивные изменения или события, влияющие на рынок.',
     frequency: 'weekly',
     time: '18:00',
     timezone: 'UTC',
     dayOfWeek: '0', // Sunday
   },
   {
-    title: 'Monthly Climate Tech Report',
+    title: 'Ежемесячный отчет по климатическим технологиям',
     prompt:
-      'Research and summarize the latest developments in climate technology and sustainability. Cover new renewable energy projects, carbon capture innovations, green tech funding rounds, and policy changes affecting the climate tech sector. Include updates on clean energy adoption rates and breakthrough technologies.',
+      'Исследуйте и суммируйте последние разработки в области климатических технологий и устойчивости. Охватите новые проекты возобновляемой энергии, инновации в области улавливания углерода, раунды финансирования зеленых технологий и изменения политики, влияющие на сектор климатических технологий. Включите обновления по темпам принятия чистой энергии и прорывным технологиям.',
     frequency: 'monthly',
     time: '10:00',
     timezone: 'Europe/London',
   },
   {
-    title: 'Daily Stock Market Summary',
+    title: 'Ежедневная сводка фондового рынка',
     prompt:
-      "Provide a comprehensive summary of today's stock market performance. Include major index movements (S&P 500, NASDAQ, DOW), notable earnings announcements, significant corporate news, and any economic indicators that moved markets. Focus on actionable insights for investors.",
+      'Предоставьте комплексную сводку сегодняшних показателей фондового рынка. Включите движения основных индексов (S&P 500, NASDAQ, DOW), заметные объявления о доходах, значимые корпоративные новости и любые экономические индикаторы, которые повлияли на рынки. Сосредоточьтесь на практических выводах для инвесторов.',
     frequency: 'daily',
     time: '16:30',
     timezone: 'America/New_York',
   },
   {
-    title: 'Weekly Startup Funding Roundup',
+    title: 'Еженедельная сводка финансирования стартапов',
     prompt:
-      'Compile a detailed report of all significant startup funding rounds from the past week. Include Series A, B, C rounds and notable seed funding. Focus on emerging sectors like AI, fintech, healthtech, and climate tech. Provide insights on funding trends and investor sentiment.',
+      'Составьте подробный отчет о всех значимых раундах финансирования стартапов за прошедшую неделю. Включите раунды Series A, B, C и заметное посевное финансирование. Сосредоточьтесь на развивающихся секторах, таких как ИИ, финтех, здравоохранение и климатические технологии. Предоставьте выводы о трендах финансирования и настроениях инвесторов.',
     frequency: 'weekly',
     time: '11:00',
     timezone: 'America/Los_Angeles',
     dayOfWeek: '1', // Monday
   },
   {
-    title: 'Daily Tech Acquisitions & Mergers',
+    title: 'Ежедневные поглощения и слияния в сфере технологий',
     prompt:
-      'Monitor and report on any technology company acquisitions, mergers, or strategic partnerships announced in the past 24 hours. Include deal values, strategic rationale, and potential market impact. Cover both public companies and notable private transactions.',
+      'Отслеживайте и сообщайте о любых поглощениях технологических компаний, слияниях или стратегических партнерствах, объявленных за последние 24 часа. Включите стоимость сделок, стратегическое обоснование и потенциальное влияние на рынок. Охватите как публичные компании, так и заметные частные транзакции.',
     frequency: 'daily',
     time: '14:00',
     timezone: 'Europe/Berlin',
   },
   {
-    title: 'Weekly Gaming Industry News',
+    title: 'Еженедельные новости игровой индустрии',
     prompt:
-      'Summarize the most important developments in the gaming industry over the past week. Include new game releases, studio acquisitions, platform updates, esports news, and emerging gaming technologies like VR/AR. Focus on industry trends and major business developments.',
+      'Суммируйте самые важные события в игровой индустрии за прошедшую неделю. Включите новые релизы игр, поглощения студий, обновления платформ, новости киберспорта и новые игровые технологии, такие как VR/AR. Сосредоточьтесь на трендах индустрии и крупных бизнес-событиях.',
     frequency: 'weekly',
     time: '20:00',
     timezone: 'Asia/Tokyo',
     dayOfWeek: '5', // Friday
   },
   {
-    title: 'Monthly SaaS Market Analysis',
+    title: 'Ежемесячный анализ рынка SaaS',
     prompt:
-      'Provide an in-depth analysis of the SaaS market trends over the past month. Include new product launches, pricing changes, market consolidation, and emerging SaaS categories. Analyze growth metrics, customer acquisition trends, and competitive landscape shifts.',
+      'Предоставьте углубленный анализ трендов рынка SaaS за прошедший месяц. Включите запуски новых продуктов, изменения цен, консолидацию рынка и новые категории SaaS. Проанализируйте метрики роста, тренды привлечения клиентов и изменения в конкурентной среде.',
     frequency: 'monthly',
     time: '08:00',
     timezone: 'America/Chicago',
   },
   {
-    title: 'Daily Regulatory & Policy Updates',
+    title: 'Ежедневные регулятивные и политические обновления',
     prompt:
-      'Track and summarize important regulatory and policy changes affecting the technology sector from the past 24 hours. Include updates on data privacy laws, antitrust investigations, AI regulations, and international trade policies impacting tech companies.',
+      'Отслеживайте и суммируйте важные регулятивные и политические изменения, влияющие на технологический сектор за последние 24 часа. Включите обновления по законам о конфиденциальности данных, антимонопольным расследованиям, регулированию ИИ и международной торговой политике, влияющей на технологические компании.',
     frequency: 'daily',
     time: '07:00',
     timezone: 'America/New_York',
   },
   {
-    title: 'Weekly Cybersecurity Incidents',
+    title: 'Еженедельные инциденты кибербезопасности',
     prompt:
-      'Compile a comprehensive report of significant cybersecurity incidents, breaches, and vulnerabilities discovered in the past week. Include impact assessment, affected companies, attack vectors, and recommended security measures. Focus on lessons learned and prevention strategies.',
+      'Составьте комплексный отчет о значимых инцидентах кибербезопасности, утечках и уязвимостях, обнаруженных за прошедшую неделю. Включите оценку воздействия, затронутые компании, векторы атак и рекомендуемые меры безопасности. Сосредоточьтесь на извлеченных уроках и стратегиях предотвращения.',
     frequency: 'weekly',
     time: '15:30',
     timezone: 'UTC',
     dayOfWeek: '3', // Wednesday
   },
   {
-    title: 'Monthly Real Estate Tech Trends',
+    title: 'Ежемесячные тренды технологий недвижимости',
     prompt:
-      'Analyze the latest trends in real estate technology over the past month. Cover PropTech innovations, virtual tour technologies, blockchain applications in real estate, and market digitization trends. Include funding activities and major platform launches.',
+      'Проанализируйте последние тренды в технологиях недвижимости за прошедший месяц. Охватите инновации PropTech, технологии виртуальных туров, применение блокчейна в недвижимости и тренды цифровизации рынка. Включите финансовую активность и запуски крупных платформ.',
     frequency: 'monthly',
     time: '12:00',
     timezone: 'America/Los_Angeles',
   },
   {
-    title: 'Daily Healthcare Innovation News',
+    title: 'Ежедневные новости инноваций в здравоохранении',
     prompt:
-      'Monitor and report on breakthrough healthcare innovations, medical device approvals, telemedicine developments, and digital health funding from the past 24 hours. Include regulatory approvals, clinical trial results, and emerging healthtech trends.',
+      'Отслеживайте и сообщайте о прорывных инновациях в здравоохранении, одобрениях медицинских устройств, развитии телемедицины и финансировании цифрового здравоохранения за последние 24 часа. Включите регулятивные одобрения, результаты клинических испытаний и новые тренды в области здравоохранения.',
     frequency: 'daily',
     time: '11:30',
     timezone: 'America/New_York',
   },
 ];
 
-// Function to get 3 random examples using Fisher-Yates shuffle
+/**
+ * Get random examples from the full list
+ */
 export function getRandomExamples(count: number = 3) {
-  const shuffled = [...allExampleLookouts];
-
-  // Fisher-Yates shuffle algorithm
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
+  const shuffled = [...allExampleLookouts].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
 
-// For backward compatibility, export a default set of examples
+/**
+ * Get 3 random examples for display
+ */
 export const exampleLookouts = getRandomExamples(3);
 
 export const LOOKOUT_LIMITS = {
@@ -211,11 +208,11 @@ export const DEFAULT_FORM_VALUES = {
 } as const;
 
 export const dayOfWeekOptions = [
-  { value: '0', label: 'Sunday' },
-  { value: '1', label: 'Monday' },
-  { value: '2', label: 'Tuesday' },
-  { value: '3', label: 'Wednesday' },
-  { value: '4', label: 'Thursday' },
-  { value: '5', label: 'Friday' },
-  { value: '6', label: 'Saturday' },
+  { value: '0', label: 'Воскресенье' },
+  { value: '1', label: 'Понедельник' },
+  { value: '2', label: 'Вторник' },
+  { value: '3', label: 'Среда' },
+  { value: '4', label: 'Четверг' },
+  { value: '5', label: 'Пятница' },
+  { value: '6', label: 'Суббота' },
 ];

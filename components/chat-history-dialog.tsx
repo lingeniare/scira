@@ -905,17 +905,17 @@ export function ChatHistoryDialog({ open, onOpenChange, user }: ChatHistoryDialo
       <CommandDialog open={open} onOpenChange={onOpenChange}>
         <div className="flex flex-col items-center justify-center p-6 text-center h-full min-h-[250px]">
           <History className="size-8 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-semibold mb-1">Access Your Chat History</h3>
+          <h3 className="text-lg font-semibold mb-1">Доступ к вашей истории чатов</h3>
           <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-            Sign in to view, search, and manage all your previous conversations seamlessly.
+            Войдите, чтобы просмотреть, искать и управлять вашей истории.
           </p>
 
           <Button onClick={handleSignIn} className="w-full max-w-[200px]">
-            Sign In
+            Вход и регистрация
           </Button>
 
           <p className="text-xs text-muted-foreground mt-4">
-            Your conversations are automatically saved when you are signed in.
+            Ваши чаты автоматически сохраняются, когда вы входите в систему.
           </p>
         </div>
       </CommandDialog>

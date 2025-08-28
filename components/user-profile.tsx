@@ -153,7 +153,7 @@ const UserProfile = memo(
               </DropdownMenuTrigger>
             </TooltipTrigger>
             <TooltipContent side="bottom" sideOffset={4}>
-              {isAuthenticated ? 'Account' : 'Sign In'}
+              {isAuthenticated ? 'Аккаунт' : 'Войти'}
             </TooltipContent>
           </Tooltip>
           <DropdownMenuContent className="w-[240px] z-[110] mr-5">
@@ -189,7 +189,7 @@ const UserProfile = memo(
                         className="size-6 text-muted-foreground hover:text-foreground"
                       >
                         {showEmail ? <EyeSlash size={12} /> : <Eye size={12} />}
-                        <span className="sr-only">{showEmail ? 'Hide email' : 'Show email'}</span>
+                        <span className="sr-only">{showEmail ? 'Скрыть email' : 'Показать email'}</span>
                       </Button>
                     </div>
                   </div>
@@ -204,8 +204,8 @@ const UserProfile = memo(
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col min-w-0">
-                    <p className="font-medium text-sm leading-none">Guest</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Sign in to save your progress</p>
+                    <p className="font-medium text-sm leading-none">Гость</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">добро пожаловать</p>
                   </div>
                 </div>
               </div>
@@ -216,13 +216,13 @@ const UserProfile = memo(
                 <DropdownMenuItem className="cursor-pointer" onClick={() => setSettingsOpen(true)}>
                   <div className="w-full flex items-center gap-2">
                     <Gear size={16} />
-                    <span>Settings</span>
+                    <span>Настройки</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/lookout')}>
                   <div className="w-full flex items-center gap-2">
                     <HugeiconsIcon size={16} icon={BinocularsIcon} />
-                    <span>Lookout</span>
+                    <span>Обзор</span>
                   </div>
                 </DropdownMenuItem>
               </>
@@ -244,7 +244,7 @@ const UserProfile = memo(
               <div className="flex items-center justify-between w-full px-0" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center gap-2">
                   <Sun size={16} />
-                  <span className="text-sm">Theme</span>
+                  <span className="text-sm">Тема</span>
                 </div>
                 <ThemeSwitcher />
               </div>
@@ -334,7 +334,7 @@ const UserProfile = memo(
                 className="w-full flex items-center gap-2"
               >
                 <Bug className="size-4" />
-                <span>Feature/Bug Request</span>
+                <span>Сообщить о баге</span>
               </a>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -348,25 +348,25 @@ const UserProfile = memo(
                     fetchOptions: {
                       onRequest: () => {
                         setSigningOut(true);
-                        toast.loading('Signing out...');
+                        toast.loading('Выход из системы...');
                       },
                       onSuccess: () => {
                         setSigningOut(false);
                         localStorage.clear();
-                        toast.success('Signed out successfully');
+                        toast.success('Успешный выход из системы');
                         toast.dismiss();
                         window.location.href = '/new';
                       },
                       onError: () => {
                         setSigningOut(false);
-                        toast.error('Failed to sign out');
+                        toast.error('Не удалось выйти из системы');
                         window.location.reload();
                       },
                     },
                   })
                 }
               >
-                <span>Sign Out</span>
+                <span>Выйти</span>
                 <SignOut className="size-4" />
               </DropdownMenuItem>
             ) : (
@@ -377,7 +377,7 @@ const UserProfile = memo(
                   redirect('/sign-in');
                 }}
               >
-                <span>Sign In</span>
+                <span>Войти</span>
                 <SignIn className="size-4" />
               </DropdownMenuItem>
             )}

@@ -249,7 +249,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   )}
                 >
                   <HugeiconsIcon icon={CpuIcon} size={24} color="currentColor" strokeWidth={2} />
-                  <span className="text-xs font-medium sm:block hidden">{currentModel?.label || 'Select Model'}</span>
+                  <span className="text-xs font-medium sm:block hidden">{currentModel?.label || 'Выберите модель'}</span>
                   <ChevronsUpDown className="h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -277,13 +277,13 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   model.label,
                   model.description,
                   model.category,
-                  model.vision ? 'vision' : '',
-                  model.reasoning ? 'reasoning' : '',
-                  model.pdf ? 'pdf' : '',
-                  model.experimental ? 'experimental' : '',
-                  model.pro ? 'pro' : '',
-                  model.ultra ? 'ultra' : '',
-                  model.requiresAuth ? 'auth' : '',
+                  model.vision ? 'зрение' : '',
+                  model.reasoning ? 'рассуждение' : '',
+                  model.pdf ? 'пдф' : '',
+                  model.experimental ? 'экспериментальная' : '',
+                  model.pro ? 'про' : '',
+                  model.ultra ? 'ультра' : '',
+                  model.requiresAuth ? 'авторизация' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')
@@ -296,8 +296,8 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                        model.category.toLowerCase().includes(searchTerm) ? 1 : 0;
               }}
             >
-              <CommandInput placeholder="Search models..." className="h-9" />
-              <CommandEmpty>No model found.</CommandEmpty>
+              <CommandInput placeholder="Поиск моделей..." className="h-9" />
+              <CommandEmpty>Модель не найдена.</CommandEmpty>
               <CommandList className="max-h-[15em]">
                 {orderedGroupEntries.map(([category, categoryModels], categoryIndex) => (
                   <CommandGroup key={category}>
@@ -398,7 +398,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   <span className="text-xl font-medium text-foreground">2000₽</span>
                   <span className="text-sm text-muted-foreground">/month</span>
                 </div>
-                <p className="text-xs text-muted-foreground">Cancel anytime</p>
+                <p className="text-xs text-muted-foreground">Отменить в любое время</p>
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -407,7 +407,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   onClick={() => setShowUltraUpgradeDialog(false)}
                   className="flex-1 h-9 text-sm font-normal"
                 >
-                  Maybe later
+                  Может быть позже
                 </Button>
                 <Button
                   onClick={() => {
@@ -415,7 +415,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   }}
                   className="flex-1 h-9 text-sm font-normal"
                 >
-                  Upgrade to Ultra
+                  Обновить до Ультра
                 </Button>
               </div>
             </div>
@@ -437,8 +437,8 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                     />
                   </div>
                   <div>
-                    <h2 className="text-lg font-medium text-foreground">{selectedProModel?.label} requires Pro</h2>
-                    <p className="text-sm text-muted-foreground">Upgrade to access premium AI models</p>
+                    <h2 className="text-lg font-medium text-foreground">{selectedProModel?.label} требует Pro</h2>
+                    <p className="text-sm text-muted-foreground">Обновитесь для доступа к премиум AI-моделям</p>
                   </div>
                 </div>
               </div>
@@ -447,22 +447,22 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                 <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Unlimited searches</p>
-                    <p className="text-xs text-muted-foreground">No daily limits or restrictions</p>
+                    <p className="text-sm font-medium text-foreground">Неограниченный поиск</p>
+                    <p className="text-xs text-muted-foreground">Без дневных лимитов и ограничений</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Premium AI models</p>
-                    <p className="text-xs text-muted-foreground">Claude 4 Sonnet, Grok 4, advanced reasoning</p>
+                    <p className="text-sm font-medium text-foreground">Премиум AI-модели</p>
+                    <p className="text-xs text-muted-foreground">Claude 4 Sonnet, Grok 4, продвинутые рассуждения</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">PDF analysis</p>
-                    <p className="text-xs text-muted-foreground">Upload and analyze documents</p>
+                    <p className="text-sm font-medium text-foreground">Анализ PDF</p>
+                    <p className="text-xs text-muted-foreground">Загружайте и анализируйте документы</p>
                   </div>
                 </div>
               </div>
@@ -489,7 +489,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   }}
                   className="flex-1 h-9 text-sm font-normal"
                 >
-                  Upgrade now
+                  Обновить сейчас
                 </Button>
               </div>
             </div>
@@ -517,8 +517,8 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg font-medium text-foreground">{selectedAuthModel?.label} requires sign in</h2>
-                    <p className="text-sm text-muted-foreground">Create an account to access this AI model</p>
+                    <h2 className="text-lg font-medium text-foreground">{selectedAuthModel?.label} требует входа в систему</h2>
+                    <p className="text-sm text-muted-foreground">Создайте аккаунт для доступа к этой AI-модели</p>
                   </div>
                 </div>
               </div>
@@ -527,22 +527,22 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                 <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Access better models</p>
-                    <p className="text-xs text-muted-foreground">Gemini 2.5 Flash Lite and GPT-4o Mini</p>
+                    <p className="text-sm font-medium text-foreground">Доступ к лучшим моделям</p>
+                    <p className="text-xs text-muted-foreground">Gemini 2.5 Flash Lite и GPT-4o Mini</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Save search history</p>
-                    <p className="text-xs text-muted-foreground">Keep track of your conversations</p>
+                    <p className="text-sm font-medium text-foreground">Сохранение истории поиска</p>
+                    <p className="text-xs text-muted-foreground">Отслеживайте свои разговоры</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Free to start</p>
-                    <p className="text-xs text-muted-foreground">No payment required for basic features</p>
+                    <p className="text-sm font-medium text-foreground">Бесплатный старт</p>
+                    <p className="text-xs text-muted-foreground">Оплата не требуется для базовых функций</p>
                   </div>
                 </div>
               </div>
@@ -553,7 +553,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   onClick={() => setShowSignInDialog(false)}
                   className="flex-1 h-9 text-sm font-normal"
                 >
-                  Cancel
+                  Отмена
                 </Button>
                 <Button
                   onClick={() => {
@@ -561,7 +561,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   }}
                   className="flex-1 h-9 text-sm font-normal"
                 >
-                  Sign in
+                  Войти
                 </Button>
               </div>
             </div>
@@ -940,7 +940,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
               </PopoverTrigger>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{isExtreme ? 'Switch back to search modes' : 'Choose search mode'}</p>
+              <p>{isExtreme ? 'Вернуться к режимам поиска' : 'Выберите режим поиска'}</p>
             </TooltipContent>
           </Tooltip>
           <PopoverContent
@@ -1025,7 +1025,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            <p>{isExtreme ? 'Extreme Search mode on' : 'Switch to Extreme Search mode'}</p>
+            <p>{isExtreme ? 'Extreme Search mode on' : 'Переключиться в режим глубокого поиска'}</p>
           </TooltipContent>
         </Tooltip>
       </div>
@@ -1797,12 +1797,12 @@ const FormComponent: React.FC<FormComponentProps> = ({
           console.log('Pasted images passed moderation check');
         } catch (error) {
           console.error('Error during pasted image moderation:', error);
-          toast.error('Unable to verify pasted image safety. Please try again.');
+          toast.error('Не удалось проверить безопасность вставленного изображения. Попробуйте еще раз.');
           return;
         }
       }
 
-      setUploadQueue(filesToUpload.map((file, i) => file.name || `Pasted Image ${i + 1}`));
+      setUploadQueue(filesToUpload.map((file, i) => file.name || `Вставленное изображение ${i + 1}`));
 
       try {
         const uploadPromises = filesToUpload.map((file) => uploadFile(file));
@@ -1810,10 +1810,10 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
         setAttachments((currentAttachments) => [...currentAttachments, ...uploadedAttachments]);
 
-        toast.success('Image pasted successfully');
+        toast.success('Изображение успешно вставлено');
       } catch (error) {
         console.error('Error uploading pasted files!', error);
-        toast.error('Failed to upload pasted image. Please try again.');
+        toast.error('Не удалось загрузить вставленное изображение. Попробуйте еще раз.');
       } finally {
         setUploadQueue([]);
       }
@@ -1840,24 +1840,24 @@ const FormComponent: React.FC<FormComponentProps> = ({
       event.preventDefault();
 
       if (status !== 'ready') {
-        toast.error('Please wait for the current response to complete!');
+        toast.error('Пожалуйста, дождитесь завершения текущего ответа!');
         return;
       }
 
       if (isRecording) {
-        toast.error('Please stop recording before submitting!');
+        toast.error('Пожалуйста, остановите запись перед отправкой!');
         return;
       }
 
       const shouldBypassLimitsForThisModel = shouldBypassRateLimits(selectedModel, user);
 
       if (isLimitBlocked && !shouldBypassLimitsForThisModel) {
-        toast.error('Daily search limit reached. Please upgrade to Pro for unlimited searches.');
+        toast.error('Достигнут дневной лимит поиска. Обновитесь до Pro для неограниченного поиска.');
         return;
       }
 
       if (input.length > MAX_INPUT_CHARS) {
-        toast.error(`Your input exceeds the maximum of ${MAX_INPUT_CHARS} characters. Please shorten your message.`);
+        toast.error(`Ваш ввод превышает максимум в ${MAX_INPUT_CHARS} символов. Пожалуйста, сократите сообщение.`);
         return;
       }
 
@@ -1895,7 +1895,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
           fileInputRef.current.value = '';
         }
       } else {
-        toast.error('Please enter a search query or attach an image.');
+        toast.error('Пожалуйста, введите поисковый запрос или прикрепите изображение.');
       }
     },
     [
@@ -1924,7 +1924,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
   const triggerFileInput = useCallback(() => {
     if (attachments.length >= MAX_FILES) {
-      toast.error(`You can only attach up to ${MAX_FILES} images.`);
+      toast.error(`Вы можете прикрепить не более ${MAX_FILES} изображений.`);
       return;
     }
 
@@ -1940,14 +1940,14 @@ const FormComponent: React.FC<FormComponentProps> = ({
       if (event.key === 'Enter' && !event.shiftKey && !isCompositionActive.current) {
         event.preventDefault();
         if (isProcessing) {
-          toast.error('Please wait for the response to complete!');
+          toast.error('Пожалуйста, дождитесь завершения ответа!');
         } else if (isRecording) {
-          toast.error('Please stop recording before submitting!');
+          toast.error('Пожалуйста, остановите запись перед отправкой!');
         } else {
           const shouldBypassLimitsForThisModel = shouldBypassRateLimits(selectedModel, user);
 
           if (isLimitBlocked && !shouldBypassLimitsForThisModel) {
-            toast.error('Daily search limit reached. Please upgrade to Pro for unlimited searches.');
+            toast.error('Достигнут дневной лимит поиска. Обновитесь до Pro для неограниченного поиска.');
           } else {
             submitForm();
             setTimeout(() => {
@@ -2110,7 +2110,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
               ) : (
                 <Textarea
                   ref={inputRef}
-                  placeholder={hasInteracted ? 'Ask a new question...' : 'Ask a question...'}
+                  placeholder={hasInteracted ? 'Ask a new question...' : 'Напишите ваш запрос..'}
                   value={input}
                   onChange={handleInput}
                   onInput={(e) => {
@@ -2231,9 +2231,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
                         className="border-0 backdrop-blur-xs py-2 px-3 !shadow-none"
                       >
                         <div className="flex flex-col gap-0.5">
-                          <span className="font-medium text-[11px]">Attach File</span>
+                          <span className="font-medium text-[11px]">Прикрепить файл</span>
                           <span className="text-[10px] text-accent leading-tight">
-                            {hasPdfSupport(selectedModel) ? 'Upload an image or PDF document' : 'Upload an image'}
+                            {hasPdfSupport(selectedModel) ? 'Загрузите изображение или PDF документ' : 'Загрузите изображение'}
                           </span>
                         </div>
                       </TooltipContent>
@@ -2263,7 +2263,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                         sideOffset={6}
                         className="border-0 backdrop-blur-xs py-2 px-3 !shadow-none"
                       >
-                        <span className="font-medium text-[11px]">Stop Generation</span>
+                        <span className="font-medium text-[11px]">Остановить генерацию</span>
                       </TooltipContent>
                     </Tooltip>
                   ) : input.length === 0 && attachments.length === 0 ? (
@@ -2292,10 +2292,10 @@ const FormComponent: React.FC<FormComponentProps> = ({
                       >
                         <div className="flex flex-col gap-0.5">
                           <span className="font-medium text-[11px]">
-                            {isRecording ? 'Stop Recording' : 'Voice Input'}
+                            {isRecording ? 'Остановить запись' : 'Голосовой ввод'}
                           </span>
                           <span className="text-[10px] text-accent leading-tight">
-                            {isRecording ? 'Click to stop recording' : 'Record your voice message'}
+                            {isRecording ? 'Нажмите, чтобы остановить запись' : 'Запишите голосовое сообщение'}
                           </span>
                         </div>
                       </TooltipContent>
@@ -2330,7 +2330,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                         sideOffset={6}
                         className="border-0 backdrop-blur-xs py-2 px-3 !shadow-none"
                       >
-                        <span className="font-medium text-[11px]">Send Message</span>
+                        <span className="font-medium text-[11px]">Отправить сообщение</span>
                       </TooltipContent>
                     </Tooltip>
                   )}

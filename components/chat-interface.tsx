@@ -38,6 +38,7 @@ import { useOptimizedScroll } from '@/hooks/use-optimized-scroll';
 import { SEARCH_LIMITS } from '@/lib/constants';
 import { ChatSDKError } from '@/lib/errors';
 import { cn, SearchGroupId, invalidateChatsCache } from '@/lib/utils';
+import { Sparkles } from 'lucide-react';
 
 // State management imports
 import { chatReducer, createInitialState } from '@/components/chat-state';
@@ -620,11 +621,24 @@ const ChatInterface = memo(
         >
           <div className={`w-full max-w-[95%] sm:max-w-2xl space-y-6 p-0 mx-auto transition-all duration-300`}>
             {status === 'ready' && messages.length === 0 && (
-              <div className="text-center m-0 mb-2">
+              <div className="text-center m-0 mb-8">
                 <div className="inline-flex items-center gap-3">
-                  <h1 className="text-4xl sm:text-5xl !mb-0 text-foreground dark:text-foreground font-be-vietnam-pro! font-light tracking-tighter">
-                    scira
-                  </h1>
+                  <button 
+                    className="group transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-full p-2"
+                    onClick={() => {
+                      // Интерактивность - можно добавить анимацию или действие
+                      const sparkles = document.querySelectorAll('.sparkle-icon');
+                      sparkles.forEach(sparkle => {
+                        sparkle.classList.add('animate-pulse');
+                        setTimeout(() => sparkle.classList.remove('animate-pulse'), 1000);
+                      });
+                    }}
+                  >
+                    <Sparkles 
+                      className="sparkle-icon w-12 h-12 sm:w-16 sm:h-16 text-foreground dark:text-foreground group-hover:text-primary transition-colors duration-300" 
+                      strokeWidth={1.5}
+                    />
+                  </button>
                   {isUserPro && (
                     <h1 className="text-2xl font-baumans! leading-4 inline-block !px-3 !pt-1 !pb-2.5 rounded-xl shadow-sm !m-0 !mt-2 bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground ring-1 ring-ring/35 ring-offset-1 ring-offset-background dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground">
                       pro

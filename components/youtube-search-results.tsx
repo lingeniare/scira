@@ -158,7 +158,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
         target="_blank"
         rel="noopener noreferrer"
         className="relative aspect-video block bg-neutral-100 dark:bg-neutral-800 overflow-hidden"
-        aria-label={`Watch ${video.details?.title || 'YouTube video'}`}
+        aria-label={`Смотреть ${video.details?.title || 'YouTube видео'}`}
       >
         {video.details?.thumbnail_url ? (
           <img
@@ -175,7 +175,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
           <div className="absolute bottom-2 left-2 right-2 text-white text-xs font-medium line-clamp-2">
-            {video.details?.title || 'YouTube Video'}
+            {video.details?.title || 'YouTube Видео'}
           </div>
           <div className="rounded-full bg-white/90 p-2">
             <PlayIcon className="h-6 w-6 text-red-600" />
@@ -192,7 +192,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
             rel="noopener noreferrer"
             className="text-sm font-medium line-clamp-2 hover:text-red-500 transition-colors dark:text-neutral-100"
           >
-            {video.details?.title || 'YouTube Video'}
+            {video.details?.title || 'YouTube Видео'}
           </Link>
 
           {/* Channel Info */}
@@ -300,8 +300,8 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
 
                     <div className="text-sm text-neutral-600 dark:text-neutral-400">
                       {chapterSearch.trim()
-                        ? `${filteredChapters.length} of ${video.timestamps?.length || 0} chapters found`
-                        : 'Search by time (e.g., "1:30") or content to find specific moments'}
+                        ? `Найдено ${filteredChapters.length} из ${video.timestamps?.length || 0} глав`
+                        : 'Поиск по времени (например, "1:30") или содержанию для поиска конкретных моментов'}
                     </div>
 
                     <ScrollArea className="h-[400px] pr-4">

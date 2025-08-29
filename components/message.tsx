@@ -91,12 +91,12 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
     ? parsedError.message
     : typeof error === 'string'
       ? error
-      : (error as any).message || 'Something went wrong while processing your message';
+      : (error as any).message || 'Что-то пошло не так при обработке вашего сообщения';
   const errorCause = isChatSDKError ? parsedError.cause : typeof error === 'string' ? undefined : (error as any).cause;
   const errorCode = isChatSDKError ? `${parsedError.type}:${parsedError.surface}` : null;
   const actions = isChatSDKError
     ? getErrorActions(parsedError as any)
-    : { primary: { label: 'Try Again', action: 'retry' } };
+    : { primary: { label: 'Попробовать снова', action: 'retry' } };
 
   // Get icon component based on error type
   const getIconComponent = () => {
@@ -231,8 +231,8 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground dark:text-muted-foreground text-xs">
               {!user && selectedVisibilityType === 'public'
-                ? 'Please sign in to retry or try a different prompt'
-                : 'You can retry your request or try a different approach'}
+                ? 'Пожалуйста, войдите в систему, чтобы повторить попытку, или введите другой запрос'
+                : 'Вы можете повторить свой запрос или попробовать другой подход'}
             </p>
             <div className="flex gap-2">
               {actions.secondary && canPerformAction(actions.secondary.action) && (
@@ -354,7 +354,7 @@ const MessageEditor: React.FC<MessageEditorProps> = ({
         onSubmit={async (e) => {
           e.preventDefault();
           if (!draftContent.trim()) {
-            toast.error('Please enter a valid message.');
+            toast.error('Пожалуйста, введите корректный запрос.');
             return;
           }
 
@@ -411,8 +411,8 @@ const MessageEditor: React.FC<MessageEditorProps> = ({
 
             await regenerate();
           } catch (error) {
-            console.error('Error updating message:', error);
-            toast.error('Failed to update message. Please try again.');
+            console.error('Сообщение об ошибке обновления:', error);
+            toast.error('Не удалось обновить сообщение. Пожалуйста, попробуйте снова.');
           } finally {
             setIsSubmitting(false);
           }
@@ -988,7 +988,7 @@ export const Message: React.FC<MessageProps> = ({
           <div className="w-full max-w-xl sm:max-w-2xl mt-4">
             <div className="flex items-center gap-1.5 mb-2 pr-3">
               <AlignLeft size={16} className="text-muted-foreground dark:text-muted-foreground" />
-              <h2 className="font-medium texl-lg text-foreground dark:text-foreground">Suggested questions</h2>
+              <h2 className="font-medium texl-lg text-foreground dark:text-foreground">Релевантные вопросы</h2>
             </div>
             <div className="flex flex-col border-t border-border dark:border-border">
               {suggestedQuestions.map((question, i) => (

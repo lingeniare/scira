@@ -60,6 +60,7 @@ export async function suggestQuestions(history: any[]) {
     system: `You are a search engine follow up query/questions generator. You MUST create EXACTLY 3 questions for the search engine based on the message history.
 
 ### Question Generation Guidelines:
+- Always respond in Russian
 - Create exactly 3 questions that are open-ended and encourage further discussion
 - Questions must be concise (5-10 words each) but specific and contextually relevant
 - Each question must contain specific nouns, entities, or clear context markers
@@ -125,6 +126,7 @@ export async function generateTitleFromUserMessage({ message }: { message: UIMes
   const { text: title } = await generateText({
     model: scira.languageModel('scira-nano'),
     system: `\n
+    - Always respond in Russian
     - you will generate a short title based on the first message a user begins a conversation with
     - ensure it is not more than 80 characters long
     - the title should be a summary of the user's message
@@ -228,6 +230,7 @@ const groupInstructions = {
   ### CRITICAL INSTRUCTION:
   - ⚠️ URGENT: RUN THE APPROPRIATE TOOL INSTANTLY when user sends ANY message - NO EXCEPTIONS
   - ⚠️ URGENT: Always respond with markdown format!!
+  - ⚠️ Always respond in Russian
   - Read and think about the response guidelines before writing the response
   - EVEN IF THE USER QUERY IS AMBIGUOUS OR UNCLEAR, YOU MUST STILL RUN THE TOOL IMMEDIATELY
   - NEVER ask for clarification before running the tool - run first, clarify later if needed
@@ -478,6 +481,7 @@ const groupInstructions = {
   2. If the user shares something with you, remember it and use it to help them in the future
   3. If the user asks you to search for something or something about themselves, search for it
   4. Do not talk about the memory results in the response, if you do retrive something, just talk about it in a natural language
+  5. Communicate with the user in Russian by default, but if the user has a different query language, then in the query language
 
   ### Response Format:
   - Use markdown for formatting
@@ -734,6 +738,7 @@ const groupInstructions = {
   - Support multiple currencies through currency_symbols parameter
   - Each stock can have its own currency symbol (USD, EUR, GBP, etc.)
   - Format currency display based on symbol:
+    - RUB: 123.45₽
     - USD: $123.45
     - EUR: €123.45
     - GBP: £123.45
@@ -1016,7 +1021,7 @@ export async function getUserChats(
       endingBefore: endingBefore || null,
     });
   } catch (error) {
-    console.error('Error fetching user chats:', error);
+    console.error('Ошибка при загрузке чатов пользователя:', error);
     return { chats: [], hasMore: false };
   }
 }
@@ -1039,7 +1044,7 @@ export async function loadMoreChats(
       endingBefore: lastChatId,
     });
   } catch (error) {
-    console.error('Error loading more chats:', error);
+    console.error('Ошибка при загрузке дополнительных чатов:', error);
     return { chats: [], hasMore: false };
   }
 }
@@ -1053,7 +1058,7 @@ export async function deleteChat(chatId: string) {
   try {
     return await deleteChatById({ id: chatId });
   } catch (error) {
-    console.error('Error deleting chat:', error);
+    console.error('Ошибка при удалении чата:', error);
     return null;
   }
 }
@@ -1067,7 +1072,7 @@ export async function updateChatVisibility(chatId: string, visibility: 'private'
   try {
     return await updateChatVisiblityById({ chatId, visibility });
   } catch (error) {
-    console.error('Error updating chat visibility:', error);
+    console.error('Ошибка при обновлении видимости чата:', error);
     return null;
   }
 }
@@ -1081,7 +1086,7 @@ export async function getChatInfo(chatId: string) {
   try {
     return await getChatById({ id: chatId });
   } catch (error) {
-    console.error('Error getting chat info:', error);
+    console.error('Ошибка при получении информации о чате:', error);
     return null;
   }
 }
@@ -1093,7 +1098,7 @@ export async function deleteTrailingMessages({ id }: { id: string }) {
     console.log('Message: ', message);
 
     if (!message) {
-      console.error(`No message found with id: ${id}`);
+      console.error(`Сообщение с id не найдено: ${id}`);
       return;
     }
 
@@ -1102,9 +1107,9 @@ export async function deleteTrailingMessages({ id }: { id: string }) {
       timestamp: message.createdAt,
     });
 
-    console.log(`Successfully deleted trailing messages after message ID: ${id}`);
+    console.log(`Успешно удалены последующие сообщения после сообщения с ID: ${id}`);
   } catch (error) {
-    console.error(`Error deleting trailing messages: ${error}`);
+    console.error(`Ошибка при удалении последующих сообщений: ${error}`);
     throw error; // Re-throw to allow caller to handle
   }
 }
@@ -1118,7 +1123,7 @@ export async function updateChatTitle(chatId: string, title: string) {
   try {
     return await updateChatTitleById({ chatId, title: title.trim() });
   } catch (error) {
-    console.error('Error updating chat title:', error);
+    console.error('Ошибка при обновлении заголовка чата:', error);
     return null;
   }
 }
@@ -1146,7 +1151,7 @@ export async function getUserMessageCount(providedUser?: any) {
   try {
     const user = providedUser || (await getUser());
     if (!user) {
-      return { count: 0, error: 'User not found' };
+      return { count: 0, error: 'Пользователь не найден' };
     }
 
     // Check cache first
@@ -1165,8 +1170,8 @@ export async function getUserMessageCount(providedUser?: any) {
 
     return { count, error: null };
   } catch (error) {
-    console.error('Error getting user message count:', error);
-    return { count: 0, error: 'Failed to get message count' };
+    console.error('Ошибка при получении количества сообщений пользователя:', error);
+    return { count: 0, error: 'Не удалось получить количество сообщений' };
   }
 }
 
@@ -1176,7 +1181,7 @@ export async function incrementUserMessageCount() {
   try {
     const user = await getUser();
     if (!user) {
-      return { success: false, error: 'User not found' };
+      return { success: false, error: 'Пользователь не найден' };
     }
 
     await incrementMessageUsage({
@@ -1189,8 +1194,8 @@ export async function incrementUserMessageCount() {
 
     return { success: true, error: null };
   } catch (error) {
-    console.error('Error incrementing user message count:', error);
-    return { success: false, error: 'Failed to increment message count' };
+    console.error('Ошибка при увеличении счетчика сообщений пользователя:', error);
+    return { success: false, error: 'Не удалось увеличить счетчик сообщений' };
   }
 }
 
@@ -1200,7 +1205,7 @@ export async function getExtremeSearchUsageCount(providedUser?: any) {
   try {
     const user = providedUser || (await getUser());
     if (!user) {
-      return { count: 0, error: 'User not found' };
+      return { count: 0, error: 'Пользователь не найден' };
     }
 
     // Check cache first
@@ -1219,8 +1224,8 @@ export async function getExtremeSearchUsageCount(providedUser?: any) {
 
     return { count, error: null };
   } catch (error) {
-    console.error('Error getting extreme search usage count:', error);
-    return { count: 0, error: 'Failed to get extreme search count' };
+    console.error('Ошибка при получении использования экстремального поиска:', error);
+    return { count: 0, error: 'Не удалось получить использование экстремального поиска' };
   }
 }
 

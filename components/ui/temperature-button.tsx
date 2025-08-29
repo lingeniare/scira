@@ -134,11 +134,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
               className="w-full"
             />
             
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>0.0 (Фокусированный)</span>
-              <span>1.0 (Сбалансированный)</span>
-              <span>2.0 (Креативный)</span>
-            </div>
+
           </div>
           
           <div className="p-3 bg-accent/10 rounded-lg">
@@ -147,32 +143,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
             </p>
           </div>
           
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onTemperatureChange(0.1)}
-              className="flex-1 text-xs"
-            >
-              Консервативный
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onTemperatureChange(0.7)}
-              className="flex-1 text-xs"
-            >
-              Сбалансированный
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onTemperatureChange(1.2)}
-              className="flex-1 text-xs"
-            >
-              Креативный
-            </Button>
-          </div>
+
         </div>
       </PopoverContent>
     </Popover>

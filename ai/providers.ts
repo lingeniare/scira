@@ -31,6 +31,10 @@ export const scira = customProvider({
   languageModels: {
     'scira-default': openrouter.chat('openai/gpt-5-nano'),
     'scira-grok-3': xai('grok-3-fast'),
+    'scira-grok-code': wrapLanguageModel({
+      model: xai('grok-code-fast-1'),
+      middleware,
+    }),
     'scira-grok-4': xai('grok-4'),
    
     // Новые модели через OpenRouter
@@ -61,6 +65,12 @@ export const scira = customProvider({
     'scira-deepseek-chat': deepseek.chat('deepseek-chat'),
     'scira-deepseek-reasoner': wrapLanguageModel({
       model: deepseek.chat('deepseek-reasoner'),
+      middleware,
+    }),
+    
+    // Qwen3 модель через OpenRouter
+    'scira-qwen-thinking': wrapLanguageModel({
+      model: openrouter.chat('qwen/qwen3-30b-a3b-thinking-2507'),
       middleware,
     })
   },
@@ -114,6 +124,21 @@ export const models: Model[] = [
     freeUnlimited: false,
     maxOutputTokens: 10000,
   },
+  {
+    value: 'scira-qwen-thinking',
+    label: 'Qwen3 30B A3B Thinking',
+    description: "Qwen's advanced reasoning model with thinking capabilities (via OpenRouter)",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Mini',
+    pdf: true,
+    pro: false,
+    ultra: false,
+    requiresAuth: false,
+    freeUnlimited: false,
+    maxOutputTokens: 262144,
+  },
 
   // Pro Models
   {
@@ -130,6 +155,21 @@ export const models: Model[] = [
     requiresAuth: false,
     freeUnlimited: false,
     maxOutputTokens: 16000,
+  },
+  {
+    value: 'scira-grok-code',
+    label: 'Grok Code Fast',
+    description: "xAI's speedy coding model with reasoning and function calling capabilities",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Pro',
+    pdf: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: false,
+    freeUnlimited: false,
+    maxOutputTokens: 256000,
   },
   {
     value: 'scira-5-mini',

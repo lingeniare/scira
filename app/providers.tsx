@@ -11,7 +11,7 @@ import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { UserProvider } from '@/contexts/user-context';
 import { DataStreamProvider } from '@/components/data-stream-provider';
 
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'development') {
   posthog.init(clientEnv.NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: clientEnv.NEXT_PUBLIC_POSTHOG_HOST,
     person_profiles: 'always',

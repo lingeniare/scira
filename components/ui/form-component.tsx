@@ -2213,7 +2213,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                         <Button
                           variant="outline"
                           size="icon"
-                          className="group rounded-full transition-colors duration-200 !size-8 border-0 !shadow-none hover:!bg-primary/30 hover:!border-0"
+                          className="group rounded-full transition-colors duration-200 !size-8 border-0 !shadow-none bg-transparent hover:!bg-primary/30 hover:!border-0"
                           onClick={(event) => {
                             event.preventDefault();
                             event.stopPropagation();

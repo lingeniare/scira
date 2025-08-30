@@ -44,6 +44,21 @@
    - Уменьшена ширина компонента с max-w-md на max-w-sm (примерно на 15%)
    - Убран фон у текста разделителя "или" (bg-background)
 
+=== УДАЛЕНИЕ БОРДЮРА И ОКАНТОВКИ У INPUT ЭЛЕМЕНТОВ ===
+Дата: 2025-01-17
+
+1. ОБНОВЛЕНИЕ SIGN-IN-PROMPT-DIALOG.TSX:
+   - Добавлены классы для удаления всех границ: border-0, focus-visible:border-0, focus:border-0
+   - Добавлены классы для удаления outline: focus:outline-none
+   - Добавлены классы для удаления ring эффектов: focus:ring-0, shadow-none
+   - Добавлены inline стили для полного удаления границ: border: 'none', outline: 'none', boxShadow: 'none'
+
+2. ОБНОВЛЕНИЕ AUTH-CARD.TSX:
+   - Добавлены аналогичные классы для удаления границ и окантовки у input элемента
+   - Добавлены классы: border-0, bg-transparent, focus-visible:ring-0, focus-visible:border-0, focus:border-0, focus:outline-none, focus:ring-0, shadow-none
+   - Добавлены inline стили для гарантированного удаления всех визуальных границ
+   - Сохранена функциональность анимации при ошибках (ring-2 ring-red-400)
+
 === ДОБАВЛЕНИЕ НОВЫХ AI МОДЕЛЕЙ ===
 Дата: 2025-01-17
 

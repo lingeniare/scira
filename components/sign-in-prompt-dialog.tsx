@@ -108,8 +108,8 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
                 placeholder="Войти через Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border-0 bg-transparent p-0 h-auto text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-center w-full"
-                style={{ backgroundColor: 'transparent' }}
+                className="border-0 bg-transparent p-0 h-auto text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 focus:border-0 focus:outline-none focus:ring-0 text-center w-full shadow-none"
+                style={{ backgroundColor: 'transparent', border: 'none', outline: 'none', boxShadow: 'none' }}
                 disabled={magicLinkLoading}
               />
             </Button>

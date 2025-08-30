@@ -140,7 +140,8 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
               placeholder="Войти через Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`text-center ${shakeEmailField ? 'animate-bounce ring-2 ring-red-400 ring-opacity-75' : ''}`}
+              className={`text-center border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 focus:border-0 focus:outline-none focus:ring-0 shadow-none ${shakeEmailField ? 'animate-bounce ring-2 ring-red-400 ring-opacity-75' : ''}`}
+              style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
               disabled={loading}
             />
           </div>

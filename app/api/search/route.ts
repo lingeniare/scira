@@ -343,7 +343,13 @@ export async function POST(req: Request) {
                   minP: 0,
                   presencePenalty: 1.5,
                 }
-              : temperature !== undefined ? { temperature } : {}),
+              : // Валидация температуры для моделей OpenRouter (scira-5, scira-default, scira-kimi-k2-new, scira-glm-4-5v, scira-qwen-thinking)
+                (model.includes('scira-5') || model === 'scira-default' || model.includes('scira-kimi-k2-new') || model.includes('scira-glm-4-5v') || model.includes('scira-qwen-thinking'))
+                ? {
+                    // OpenRouter модели поддерживают температуру от 0 до 1, ограничиваем значение
+                    temperature: temperature !== undefined ? Math.min(Math.max(temperature, 0), 1) : undefined,
+                  }
+                : temperature !== undefined ? { temperature } : {}),
         stopWhen: stepCountIs(3),
         maxRetries: 10,
         ...(model.includes('scira-5')

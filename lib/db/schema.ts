@@ -70,7 +70,7 @@ export const message = pgTable('message', {
     .primaryKey()
     .notNull()
     .$defaultFn(() => generateId()),
-  chatId: text('chat_id')
+  chatId: uuid('chat_id')
     .notNull()
     .references(() => chat.id, { onDelete: 'cascade' }),
   role: text('role').notNull(), // user, assistant, or tool
@@ -83,7 +83,7 @@ export const stream = pgTable('stream', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => generateId()),
-  chatId: text('chatId')
+  chatId: uuid('chatId')
     .notNull()
     .references(() => chat.id, { onDelete: 'cascade' }),
   createdAt: timestamp('createdAt').notNull().defaultNow(),

@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
 import { magicLink } from 'better-auth/plugins';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import {
   user,
   session,
@@ -30,7 +30,20 @@ config({
 });
 
 // Инициализация Resend для отправки email
-const resend = new Resend(serverEnv.RESEND_API_KEY);
+// Создание SMTP транспорта для mail.ru
+const transporter = nodemailer.createTransport({
+  host: serverEnv.SMTP_HOST,
+  port: parseInt(serverEnv.SMTP_PORT),
+  secure: true, // true для порта 465
+  auth: {
+    user: serverEnv.SMTP_USER,
+    pass: serverEnv.SMTP_PASS,
+  },
+  tls: {
+    // Игнорировать самоподписанные сертификаты
+    rejectUnauthorized: false,
+  },
+});
 
 // Экспортируемая функция для отправки Magic Link
 export async function sendMagicLink(email: string): Promise<void> {
@@ -63,6 +76,7 @@ function safeParseDate(value: string | Date | null | undefined): Date | null {
 
 
 export const auth = betterAuth({
+  baseURL: serverEnv.BETTER_AUTH_URL,
   rateLimit: {
     max: 50,
     window: 60,
@@ -101,12 +115,12 @@ export const auth = betterAuth({
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, url, token }, request) => {
-        // Отправка magic link через Resend
+        // Отправка magic link через SMTP mail.ru
         try {
-          await resend.emails.send({
-            from: 'Scira AI <noreply@scira.ai>',
-            to: [email],
-            subject: 'Войти в Scira AI',
+          await transporter.sendMail({
+            from: 'Vega AI <mail@vega.chat>',
+            to: email,
+            subject: 'Войти в Vega AI',
             html: `
               <!DOCTYPE html>
               <html>
@@ -121,11 +135,11 @@ export const auth = betterAuth({
                   </div>
                   
                   <div style="background: #f8fafc; border-radius: 8px; padding: 30px; margin-bottom: 30px;">
-                    <h2 style="margin: 0 0 20px 0; color: #1e293b;">Войти в аккаунт</h2>
-                    <p style="margin: 0 0 25px 0; color: #64748b;">Нажмите на кнопку ниже, чтобы войти в свой аккаунт Scira AI:</p>
+                    <h2 style="margin: 0 0 20px 0; color: #1e293b; text-align: center;">Войти в аккаунт</h2>
+                    <p style="margin: 0 0 25px 0; color: #64748b; text-align: center;">Нажмите на кнопку ниже, чтобы войти в свой аккаунт Vega AI:</p>
                     
                     <div style="text-align: center;">
-                      <a href="${url}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 500;">Войти в Scira AI</a>
+                      <a href="${url}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 500;">Войти в Vega AI</a>
                     </div>
                   </div>
                   
@@ -148,6 +162,6 @@ export const auth = betterAuth({
 
     nextCookies(),
   ],
-  trustedOrigins: ['https://localhost:3000', 'https://scira.ai', 'https://www.scira.ai'],
-  allowedOrigins: ['https://localhost:3000', 'https://scira.ai', 'https://www.scira.ai'],
+  trustedOrigins: ['http://localhost:3000', 'https://localhost:3000', 'https://vega.chat'],
+  allowedOrigins: ['http://localhost:3000', 'https://localhost:3000', 'https://vega.chat'],
 });

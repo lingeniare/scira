@@ -17,7 +17,7 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[420px]">
-        <DialogTitle className="sr-only">Upgrade to Scira Pro</DialogTitle>
+        <DialogTitle className="sr-only">Обновиться до Vega Pro</DialogTitle>
 
         {/* Header */}
         <div className="text-center space-y-2 pb-4">
@@ -30,8 +30,8 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
               className="text-primary"
             />
           </div>
-          <h2 className="text-xl font-semibold text-foreground">Unlock Pro Features</h2>
-          <p className="text-sm text-muted-foreground">Get unlimited access and enhanced capabilities</p>
+          <h2 className="text-xl font-semibold text-foreground">Разблокировать Vega функции</h2>
+          <p className="text-sm text-muted-foreground">Получите все инструменты и превосходный интеллект</p>
         </div>
 
         {/* Features */}
@@ -47,8 +47,8 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
               />
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-medium text-foreground">Scira Lookout</p>
-              <p className="text-xs text-muted-foreground">Automated search monitoring on your schedule</p>
+              <p className="text-sm font-medium text-foreground">Vega автоматиация</p>
+              <p className="text-xs text-muted-foreground">Автоматический мониторинг поиска по вашему расписанию</p>
             </div>
           </div>
 
@@ -65,8 +65,8 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
               </svg>
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-medium text-foreground">Unlimited Searches</p>
-              <p className="text-xs text-muted-foreground">No daily limits on your research</p>
+              <p className="text-sm font-medium text-foreground">Веб-инструменты и глубокий анализ</p>
+              <p className="text-xs text-muted-foreground">Плагины, расширяют возможности исследований</p>
             </div>
           </div>
 
@@ -83,8 +83,8 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
               </svg>
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-medium text-foreground">Advanced AI Models</p>
-              <p className="text-xs text-muted-foreground">Access to all AI models including Grok 4, Claude and o3</p>
+              <p className="text-sm font-medium text-foreground">Передовые AI модели</p>
+              <p className="text-xs text-muted-foreground">Доступ ко всем AI моделям, из одного чата, с одной подпиской. И это в Росии o_O</p>
             </div>
           </div>
 
@@ -101,8 +101,8 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
               </svg>
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-medium text-foreground">Priority Support</p>
-              <p className="text-xs text-muted-foreground">Get help when you need it most</p>
+              <p className="text-sm font-medium text-foreground">Компьютерное зрение</p>
+              <p className="text-xs text-muted-foreground">Работа с файлами изображений, pdf и Аine-Еuning</p>
             </div>
           </div>
         </div>
@@ -115,19 +115,19 @@ export const PostMessageUpgradeDialog = React.memo(({ open, onOpenChange }: Post
             }}
             className="w-full"
           >
-            Upgrade to Pro
+            Повыситить свой уровень
           </Button>
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}
             className="w-full text-muted-foreground hover:text-foreground"
           >
-            Not now
+            Не сейчас
           </Button>
         </div>
 
         {/* Additional info */}
-        <p className="text-xs text-muted-foreground text-center pt-2">Cancel anytime • Secure payment</p>
+        <p className="text-xs text-muted-foreground text-center pt-2">Отмена в любое время • Безопасная оплата</p>
       </DialogContent>
     </Dialog>
   );
@@ -170,50 +170,40 @@ export const LookoutAnnouncementDialog = React.memo(({ open, onOpenChange }: Loo
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg p-0 gap-0 max-h-[85svh] sm:max-h-[90vh] overflow-y-auto">
-        <DialogTitle className="sr-only">Introducing Scira Lookout</DialogTitle>
+        <DialogTitle className="sr-only">Представляем Vega Chat</DialogTitle>
         {/* Hero Image */}
-        <div className="relative h-40 sm:h-64">
-          <Image
-            src="/lookout-promo.png"
-            alt="Scira Lookout"
-            width={1200}
-            height={630}
-            className="w-full h-full object-cover"
-          />
-        </div>
 
         <div className="p-6 sm:p-8 space-y-6">
           {/* Header */}
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted text-muted-foreground text-sm font-medium">
-              New
+              Новости
             </div>
             <div className="space-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">
-                Introducing Scira Lookout
+                Представляем Автопоиск!
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Automated search monitoring that runs on your schedule. Set up searches that track trends, monitor
-                developments, and keep you informed without manual effort.
+                Автоматический мониторинг поиска, который работает по вашему расписанию. Настройте поиски для отслеживания трендов, мониторинга событий и получения информации без ручных усилий.
               </p>
             </div>
           </div>
 
           {/* Key capabilities */}
           <div className="space-y-4">
-            <h3 className="text-xs sm:text-sm font-medium text-foreground uppercase tracking-wide">Key Capabilities</h3>
+            <h3 className="text-xs sm:text-sm font-medium text-foreground uppercase tracking-wide">Ключевые возможности</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-foreground"></div>
-                <span className="text-foreground">Schedule searches to run automatically</span>
+                <span className="text-foreground">Планируйте автоматическое выполнение поисков</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-foreground"></div>
-                <span className="text-foreground">Receive notifications when results are ready</span>
+                <span className="text-foreground">Получайте уведомления о готовности результатов</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-foreground"></div>
-                <span className="text-foreground">Access comprehensive search history</span>
+                <span className="text-foreground">Доступ к полной истории поисков</span>
               </div>
             </div>
           </div>
@@ -229,7 +219,7 @@ export const LookoutAnnouncementDialog = React.memo(({ open, onOpenChange }: Loo
                 className="w-full sm:flex-1 group"
               >
                 <HugeiconsIcon icon={BinocularsIcon} size={16} color="currentColor" strokeWidth={2} className="mr-2" />
-                Explore Lookout
+                Изучить
                 <span className="sm:ml-auto text-base font-mono hidden sm:inline">⌘ ⏎</span>
               </Button>
               <Button
@@ -241,12 +231,12 @@ export const LookoutAnnouncementDialog = React.memo(({ open, onOpenChange }: Loo
                 className="w-full sm:flex-1 group shadow-none"
               >
                 <HugeiconsIcon icon={BookOpen01Icon} size={16} color="currentColor" strokeWidth={2} className="mr-2" />
-                Read Blog
+                Читать
                 <span className="sm:ml-auto font-mono text-base hidden sm:inline">{isMac ? '⌘' : 'Ctrl'} B</span>
               </Button>
             </div>
             <Button variant="ghost" onClick={() => onOpenChange(false)} size="sm" className="w-full">
-              Dismiss
+              Закрыть
             </Button>
           </div>
         </div>

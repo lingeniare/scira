@@ -157,6 +157,21 @@ export const messageUsage = pgTable('message_usage', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
+// Mini models usage tracking table
+export const miniModelUsage = pgTable('mini_model_usage', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => generateId()),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  modelCount: integer('model_count').notNull().default(0),
+  date: timestamp('date').notNull().defaultNow(),
+  resetAt: timestamp('reset_at').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
 // Custom instructions table
 export const customInstructions = pgTable('custom_instructions', {
   id: text('id')
@@ -273,5 +288,6 @@ export type Subscription = InferSelectModel<typeof subscription>;
 export type Payment = InferSelectModel<typeof payment>;
 export type ExtremeSearchUsage = InferSelectModel<typeof extremeSearchUsage>;
 export type MessageUsage = InferSelectModel<typeof messageUsage>;
+export type MiniModelUsage = InferSelectModel<typeof miniModelUsage>;
 export type CustomInstructions = InferSelectModel<typeof customInstructions>;
 export type Lookout = InferSelectModel<typeof lookout>;

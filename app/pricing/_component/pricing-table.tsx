@@ -4,7 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { authClient } from '@/lib/auth-client';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Info } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -157,6 +158,35 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
     throw new Error('Missing required environment variables for Starter and Ultra tiers');
   }
 
+  // Features for each plan
+  const freeFeatures = [
+    '150 запросов к Mini Models',
+    '30 запросов к web-поиску',
+    'История ваших запросов',
+    'Память ваших запросов',
+    'Настройка роли и ответов AI'
+  ];
+
+  const proFeatures = [
+    '900 запросов к Mini',
+    '600 запросов к Pro',
+    '600 запросов инструментов',
+    '10 наблюдений',
+    '10 глубоких исследований',
+    'Анализ PDF и картинок',
+    'Vega-инструменты',
+    'Все что включено в Free'
+  ];
+
+  const ultraFeatures = [
+    'Безлимит к mini',
+    'Безлимит web-поиска',
+    'Безлимит инструментов',
+    '300 запросов к Ultra',
+    '60 наблюдений',
+    'Все что включено в Free и Pro'
+  ];
+
   const isCurrentPlan = (tierProductId: string) => {
     return (
       subscriptionDetails.hasSubscription &&
@@ -192,11 +222,56 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
   };
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString('ru-RU', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
+  };
+
+  const vegaToolsContent = `
+    <p>Vega-инструменты включают в себя:</p>
+    <ul>
+      <li><strong>Stock charts</strong>: Генерация интерактивных графиков акций с интеграцией новостей.</li>
+      <li><strong>Currency converter</strong>: Конвертация валют с курсами в реальном времени.</li>
+      <li><strong>Code interpreter</strong>: Написание и выполнение кода Python с возможностью генерации графиков.</li>
+    </ul>
+  `;
+
+  const renderFeatures = (features: string[]) => (
+    <ul className="space-y-2 text-left text-sm">
+      {features.map((feature, index) => (
+        <li key={index} className="flex items-center">
+          <svg className="flex-shrink-0 w-4 h-4 me-2 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+          </svg>
+          {feature.includes('Vega-инструменты') ? (
+            <div className="flex items-center">
+              {feature}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="icon" className="ml-2 h-4 w-4">
+                    <Info className="h-4 w-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Vega-инструменты</DialogTitle>
+                    <DialogDescription dangerouslySetInnerHTML={{ __html: vegaToolsContent }} />
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ) : (
+            feature
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+
+  const renderPrice = (price: number) => {
+    return `${price} ₽`;
   };
 
   const handleDiscountClaim = (code: string) => {
@@ -265,9 +340,9 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
           {/* Free Plan */}
           <Card className="relative">
             <CardHeader className="pb-4">
-              <h3 className="text-xl font-medium">Бесплатный</h3>
+              <h3 className="text-xl font-medium">Free</h3>
               <div className="flex items-baseline">
-                <span className="text-4xl font-light">$0</span>
+                <span className="text-4xl font-light">0</span>
                 <span className="text-muted-foreground ml-2">/месяц</span>
               </div>
             </CardHeader>
@@ -275,15 +350,23 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               <ul className="space-y-3">
                 <li className="flex items-center text-muted-foreground">
                   <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
-                  20 поисков в день
+                  150 запросов к Mini Models
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
-                  Базовые AI модели
+                  30 запросов к web-поиску
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
-                  История поиска
+                  История ваших запросов
+                </li>
+                <li className="flex items-center text-muted-foreground">
+                  <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
+                  Память ваших запросов
+                </li>
+                <li className="flex items-center text-muted-foreground">
+                  <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3 flex-shrink-0"></div>
+                  Настройка роли и ответов AI
                 </li>
               </ul>
 
@@ -308,7 +391,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
 
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-medium">Scira Pro</h3>
+                <h3 className="text-xl font-medium">Pro</h3>
                 <Badge variant="secondary">Популярный</Badge>
               </div>
 
@@ -322,7 +405,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                   </div>
                 ) : (
                   <div className="flex items-baseline">
-                    <span className="text-4xl font-light">₽{PRICING.PRO_MONTHLY_INR}</span>
+                    <span className="text-4xl font-light">{PRICING.PRO_MONTHLY_INR} ₽</span>
                     <span className="text-muted-foreground ml-2">/месяц</span>
                   </div>
                 )
@@ -382,16 +465,16 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 <div className="flex items-baseline">
                   {(shouldShowDiscount() || isYearly) ? (
                     <div className="flex items-baseline gap-3">
-                      <span className="text-xl text-muted-foreground line-through">₽{PRICING.PRO_MONTHLY_INR}</span>
+                      <span className="text-xl text-muted-foreground line-through">{PRICING.PRO_MONTHLY_INR} ₽</span>
                       <span className="text-4xl font-light">
-                        ₽{isYearly 
+                        {isYearly 
                           ? Math.round(getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true) * 0.8) 
                           : getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)
-                        }
+                        } ₽
                       </span>
                     </div>
                   ) : (
-                    <span className="text-4xl font-light">₽{PRICING.PRO_MONTHLY_INR}</span>
+                    <span className="text-4xl font-light">{PRICING.PRO_MONTHLY_INR} ₽</span>
                   )}
                   <span className="text-muted-foreground ml-2">
                     {isYearly ? '/месяц (оплата за год)' : '/месяц'}
@@ -404,23 +487,35 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               <ul className="space-y-3">
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Неограниченный поиск
+                  900 запросов к Mini
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Pro AI модели
+                  600 запросов к Pro
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Анализ PDF
+                  600 запросов инструментов
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Приоритетная поддержка
+                  10 наблюдений
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  Scira Lookout
+                  10 глубоких исследований
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  Анализ PDF и картинок
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  Vega-инструменты
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  Все что включено в Free
                 </li>
               </ul>
 
@@ -450,21 +545,24 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                 ) : (
                   <div className="space-y-3">
                     <Button className="w-full group" onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG, 'dodo')}>
-                      🇮🇳 Оплатить ₹{getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)}
+                      🇮🇳 Оплатить {getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)} ₹
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Button
                       className="w-full group"
                       onClick={() => handleCheckout(STARTER_TIER, STARTER_SLUG, 'cloudpayments')}
                     >
-                      💳 CloudPayments ₽{isYearly 
+                      💳 CloudPayments {isYearly 
                         ? Math.round(getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true) * 0.8) 
                         : getDiscountedPrice(PRICING.PRO_MONTHLY_INR, true)
-                      }{isYearly ? '/месяц (год)' : '/месяц'}
+                      } ₽{isYearly ? '/месяц (год)' : '/месяц'}
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <p className="text-xs text-muted-foreground text-center">
-                      {isYearly ? 'Годовая подписка • Ежемесячное списание' : 'Месячная подписка • CloudPayments'}
+                      {isYearly ? 'Годовая подписка • Ежемесячное списание' : 'Месячная подписка • Ежемесячное списание'}
+                    <div className="text-xs text-muted-foreground mt-1">
+                      Подписку можно отменить в любой момент.
+                    </div>
                     </p>
                     {shouldShowDiscount() && discountConfig.discountAvail && (
                       <p className="text-xs text-green-600 dark:text-green-400 text-center font-medium">
@@ -502,10 +600,10 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
 
               <div className="flex items-baseline">
                 <span className="text-4xl font-light">
-                  ₽{isYearly 
+                  {isYearly 
                     ? Math.round(PRICING.ULTRA_MONTHLY_INR * 0.8) 
                     : PRICING.ULTRA_MONTHLY_INR
-                  }
+                  } ₽
                 </span>
                 <span className="text-muted-foreground ml-2">
                   {isYearly ? '/месяц (оплата за год)' : '/месяц'}
@@ -514,7 +612,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               {isYearly && (
                 <div className="flex items-center text-sm">
                   <span className="line-through text-muted-foreground mr-2">
-                    ₽{PRICING.ULTRA_MONTHLY_INR}
+                    {PRICING.ULTRA_MONTHLY_INR} ₽
                   </span>
                   <Badge variant="green" className="text-xs">20% OFF</Badge>
                 </div>
@@ -525,23 +623,35 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               <ul className="space-y-3">
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Unlimited searches
+                  Безлимит к mini
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Все AI модели + Ultra модели
+                  Безлимит web-поиска
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Расширенный анализ PDF
+                  Безлимит инструментов
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Priority support
+                  600 запросов к Pro
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
-                  Scira Lookout Pro
+                  300 запросов к Ultra
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  60 наблюдений
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Все что включено в Free и Pro
+                </li>
+                <li className="flex items-center">
+                  <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
+                  Vega автоматиация Pro
                 </li>
                 <li className="flex items-center">
                   <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3 flex-shrink-0"></div>
@@ -566,13 +676,14 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
                     className="w-full group bg-yellow-500 hover:bg-yellow-600 text-yellow-900"
                     onClick={() => handleCheckout(ULTRA_TIER, ULTRA_SLUG, 'cloudpayments')}
                   >
-                    💳 {!user ? 'Зарегистрироваться на Ultra' : 'Перейти на Ultra'} 
-                    ₽{isYearly ? Math.round(PRICING.ULTRA_MONTHLY_INR * 0.8) : PRICING.ULTRA_MONTHLY_INR}
-                    {isYearly ? '/месяц (год)' : '/месяц'}
+                    Перейти на Ultra
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">
-                    {isYearly ? 'Годовая подписка • Ежемесячное списание' : 'Месячная подписка • CloudPayments'}
+                    {isYearly ? 'Годовая подписка • Ежемесячное списание' : 'Месячная подписка • Ежемесячное списание'}
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Подписку можно отменить в любой момент.
+                  </div>
                   </p>
                 </div>
               )}
@@ -587,7 +698,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
               <h3 className="font-medium mb-2">Доступна скидка для студентов</h3>
               <p className="text-sm text-muted-foreground mb-4">Получите Pro за $5/месяц с действующим студенческим удостоверением</p>
               <Button variant="outline" asChild>
-                <a href="mailto:zaid@scira.ai?subject=Student%20Discount%20Request">Подать заявку на скидку</a>
+                <a href="mailto:mail@vega.chat?subject=Student%20Discount%20Request">Подать заявку на скидку</a>
               </Button>
             </div>
           </CardContent>
@@ -607,7 +718,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
           </p>
           <p className="text-sm text-muted-foreground">
             Вопросы?{' '}
-            <a href="mailto:zaid@scira.ai" className="text-foreground hover:underline">
+            <a href="mailto:mail@vega.chat" className="text-foreground hover:underline">
               Свяжитесь с нами
             </a>
           </p>

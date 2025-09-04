@@ -21,10 +21,19 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
   const [emailSent, setEmailSent] = useState(false);
   const [shakeCheckboxes, setShakeCheckboxes] = useState(false);
   const [shakeEmailField, setShakeEmailField] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false); // Состояние фокуса поля email
 
-  // Проверка валидности email
+  // Проверка валидности email с улучшенной валидацией
   const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // RFC 5322 совместимый regex для email валидации
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    
+    // Дополнительные проверки
+    if (!email || email.length > 254) return false; // Максимальная длина email
+    if (email.startsWith('.') || email.endsWith('.')) return false; // Не должен начинаться или заканчиваться точкой
+    if (email.includes('..')) return false; // Не должен содержать последовательные точки
+    if ((email.match(/@/g) || []).length !== 1) return false; // Должен содержать ровно один @
+    
     return emailRegex.test(email);
   };
 
@@ -137,10 +146,12 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
           <div className={`space-y-2 transition-transform duration-150 ${shakeEmailField ? 'animate-pulse' : ''}`}>
             <Input
               type="email"
-              placeholder="Войти через Email"
+              placeholder={isEmailFocused || email ? '' : 'Войти через Email'} // Убираем placeholder при фокусе или наличии текста
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`text-center ${shakeEmailField ? 'animate-bounce ring-2 ring-red-400 ring-opacity-75' : ''}`}
+              onFocus={() => setIsEmailFocused(true)} // Устанавливаем фокус
+              onBlur={() => setIsEmailFocused(false)} // Убираем фокус
+              className={`text-center transition-all duration-200 ${shakeEmailField ? 'animate-bounce ring-2 ring-red-400 ring-opacity-75' : ''} ${isEmailFocused ? 'ring-2 ring-primary ring-opacity-50' : ''}`}
               disabled={loading}
             />
           </div>

@@ -1,7 +1,10 @@
 // Search limits for free users
 export const SEARCH_LIMITS = {
-  DAILY_SEARCH_LIMIT: 10,
-  EXTREME_SEARCH_LIMIT: 5,
+  DAILY_SEARCH_LIMIT: 100,
+  EXTREME_SEARCH_LIMIT: 10,
+  // Лимиты для mini models
+  UNAUTHENTICATED_MINI_MODELS_LIMIT: 5, // Лимит для неаутентифицированных пользователей
+  FREE_USER_MINI_MODELS_LIMIT: 10, // Лимит для бесплатных пользователей
 } as const;
 
 export const PRICING = {

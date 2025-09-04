@@ -33,22 +33,22 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
         </div>
 
         <h1 className="text-4xl mb-4 text-neutral-800 dark:text-neutral-100 font-be-vietnam-pro">
-          Something went wrong
+          Что-то пошло не так
         </h1>
         <p className="text-lg mb-8 text-neutral-600 dark:text-neutral-300">
-          An error occurred while trying to load this page. Please try again later.
+          Произошла ошибка при загрузке этой страницы. Пожалуйста, попробуйте еще раз позже.
         </p>
 
         <div className="flex justify-center gap-4">
           <Button variant="default" className="flex items-center gap-2 px-4 py-2 rounded-full" onClick={reset}>
             <RefreshCw size={18} />
-            <span>Try again</span>
+            <span>Попробовать снова</span>
           </Button>
 
           <Link href="/">
             <Button variant="outline" className="flex items-center gap-2 px-4 py-2 rounded-full">
               <ArrowLeft size={18} />
-              <span>Return to home</span>
+              <span>Вернуться на главную</span>
             </Button>
           </Link>
         </div>

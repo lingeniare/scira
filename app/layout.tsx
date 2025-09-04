@@ -3,7 +3,7 @@ import 'katex/dist/katex.min.css';
 import 'leaflet/dist/leaflet.css';
 
 import { Metadata, Viewport } from 'next';
-// import { Be_Vietnam_Pro, Inter, Baumans } from 'next/font/google';
+import { Be_Vietnam_Pro, Inter, Baumans } from 'next/font/google';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Toaster } from 'sonner';
 import { Analytics } from '@vercel/analytics/react';
@@ -75,30 +75,29 @@ export const viewport: Viewport = {
   ],
 };
 
-// Временно используем системные шрифты из-за проблем с Google Fonts
-// const inter = Inter({
-//   subsets: ['latin'],
-//   variable: '--font-sans',
-//   preload: true,
-//   weight: 'variable',
-//   display: 'swap',
-// });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  preload: true,
+  weight: 'variable',
+  display: 'swap',
+});
 
-// const beVietnamPro = Be_Vietnam_Pro({
-//   subsets: ['latin'],
-//   variable: '--font-be-vietnam-pro',
-//   preload: true,
-//   display: 'swap',
-//   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-// });
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ['latin'],
+  variable: '--font-be-vietnam-pro',
+  preload: true,
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
 
-// const baumans = Baumans({
-//   subsets: ['latin'],
-//   variable: '--font-baumans',
-//   preload: true,
-//   display: 'swap',
-//   weight: ['400'],
-// });
+const baumans = Baumans({
+  subsets: ['latin'],
+  variable: '--font-baumans',
+  preload: true,
+  display: 'swap',
+  weight: ['400'],
+});
 
 export default function RootLayout({
   children,
@@ -108,7 +107,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className="font-sans antialiased"
+        className={`font-sans antialiased ${inter.variable} ${beVietnamPro.variable} ${baumans.variable}`}
         suppressHydrationWarning
       >
         <NuqsAdapter>

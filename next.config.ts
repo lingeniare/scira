@@ -3,6 +3,8 @@ import './env/server';
 import './env/client';
 
 const nextConfig: NextConfig = {
+  // Разрешить cross-origin запросы от vega.chat в dev режиме
+  allowedDevOrigins: ['vega.chat', '*.vega.chat'],
   compiler: {
     // if NODE_ENV is production, remove console.log
     removeConsole:

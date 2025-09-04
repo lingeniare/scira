@@ -32,18 +32,20 @@ export type SearchGroupId =
 
 export const searchGroups = [
   {
-    id: 'web' as const,
-    name: 'Web',
-    description: 'Поиск по всему интернету на базе Exa AI',
-    icon: GlobalSearchIcon,
-    show: true,
-  },
-    {
     id: 'chat' as const,
     name: 'Chat',
     description: 'Общение с моделью напрямую.',
     icon: ChattingIcon,
     show: true,
+    requiresPro: false, // Доступен всем пользователям
+  },
+  {
+    id: 'web' as const,
+    name: 'Web',
+    description: 'Поиск по всему интернету на базе Exa AI',
+    icon: GlobalSearchIcon,
+    show: true,
+    requiresPro: true, // Требует Pro подписку
   },
     {
     id: 'academic' as const,
@@ -51,6 +53,7 @@ export const searchGroups = [
     description: 'Поиск научных статей на базе Exa',
     icon: MicroscopeIcon,
     show: true,
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'x' as const,
@@ -58,6 +61,7 @@ export const searchGroups = [
     description: 'Поиск постов в X',
     icon: NewTwitterIcon,
     show: false, // Скрыто по запросу пользователя
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'stocks' as const,
@@ -65,6 +69,7 @@ export const searchGroups = [
     description: 'Информация об акциях и валютах',
     icon: AppleStocksIcon,
     show: true,
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'reddit' as const,
@@ -72,6 +77,7 @@ export const searchGroups = [
     description: 'Поиск постов в Reddit',
     icon: RedditIcon,
     show: false, // Скрыто по запросу пользователя
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'memory' as const,
@@ -80,6 +86,7 @@ export const searchGroups = [
     icon: Database02Icon,
     show: true,
     requireAuth: true,
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'crypto' as const,
@@ -87,6 +94,7 @@ export const searchGroups = [
     description: 'Исследование криптовалют на базе CoinGecko',
     icon: Bitcoin02Icon,
     show: true,
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'youtube' as const,
@@ -94,6 +102,7 @@ export const searchGroups = [
     description: 'Поиск видео YouTube на базе Exa',
     icon: YoutubeIcon,
     show: true,
+    requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'extreme' as const,
@@ -101,6 +110,7 @@ export const searchGroups = [
     description: 'Глубокое исследование с множественными источниками и анализом',
     icon: AtomicPowerIcon,
     show: true,
+    requiresPro: true, // Требует Pro подписку
   },
 ] as const;
 

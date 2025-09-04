@@ -55,7 +55,7 @@ export class ChatSDKError extends Error {
       });
 
       return Response.json(
-        { code: '', message: 'Something went wrong. Please try again later.' },
+        { code: '', message: 'Что-то пошло не так. Пожалуйста, попробуйте еще раз позже.' },
         { status: statusCode },
       );
     }
@@ -66,51 +66,51 @@ export class ChatSDKError extends Error {
 
 export function getMessageByErrorCode(errorCode: ErrorCode): string {
   if (errorCode.includes('database')) {
-    return 'An error occurred while executing a database query.';
+    return 'Произошла ошибка при выполнении запроса к базе данных.';
   }
 
   switch (errorCode) {
     case 'bad_request:api':
-      return "The request couldn't be processed. Please check your input and try again.";
+      return "Запрос не может быть обработан. Пожалуйста, проверьте введенные данные и попробуйте снова.";
     case 'rate_limit:api':
-      return 'You have reached your daily limit for this feature. Upgrade to Pro for unlimited access.';
+      return 'Вы достигли дневного лимита для этой функции. Обновитесь до Pro для неограниченного доступа.';
 
     case 'unauthorized:auth':
-      return 'You need to sign in before continuing.';
+      return 'Вам необходимо войти, прежде чем продолжить.';
     case 'forbidden:auth':
-      return 'Your account does not have access to this feature.';
+      return 'Ваша учетная запись не имеет доступа к этой функции.';
     case 'upgrade_required:auth':
-      return 'This feature requires a Pro subscription. Sign in and upgrade to continue.';
+      return 'Эта функция требует подписки Pro. Войдите и обновитесь, чтобы продолжить.';
 
     case 'rate_limit:chat':
-      return 'You have exceeded your maximum number of messages for the day. Please try again later.';
+      return 'Вы превысили максимальное количество сообщений за день. Пожалуйста, попробуйте еще раз позже.';
     case 'upgrade_required:chat':
-      return 'You have reached your daily search limit. Upgrade to Pro for unlimited searches.';
+      return 'Вы достигли дневного лимита поиска. Обновитесь до Pro для неограниченного поиска.';
     case 'not_found:chat':
-      return 'The requested chat was not found. Please check the chat ID and try again.';
+      return 'Запрошенный чат не найден. Пожалуйста, проверьте ID чата и попробуйте снова.';
     case 'forbidden:chat':
-      return 'This chat belongs to another user. Please check the chat ID and try again.';
+      return 'Этот чат принадлежит другому пользователю. Пожалуйста, проверьте ID чата и попробуйте снова.';
     case 'unauthorized:chat':
-      return 'You need to sign in to view this chat. Please sign in and try again.';
+      return 'Вам необходимо войти, чтобы просмотреть этот чат. Пожалуйста, войдите и попробуйте снова.';
     case 'offline:chat':
-      return "We're having trouble sending your message. Please check your internet connection and try again.";
+      return "У нас проблемы с отправкой вашего сообщения. Пожалуйста, проверьте подключение к интернету и попробуйте снова.";
 
     case 'unauthorized:model':
-      return 'You need to sign in to access this AI model.';
+      return 'Вам необходимо войти, чтобы получить доступ к этой модели ИИ.';
     case 'forbidden:model':
-      return 'This AI model requires a Pro subscription.';
+      return 'Эта модель ИИ требует подписки Pro.';
     case 'model_restricted:model':
-      return 'Access to this AI model is restricted. Please upgrade to Pro or contact support.';
+      return 'Доступ к этой модели ИИ ограничен. Пожалуйста, обновитесь до Pro или свяжитесь со службой поддержки.';
     case 'upgrade_required:model':
-      return 'This premium AI model is only available with a Pro subscription.';
+      return 'Эта премиальная модель ИИ доступна только с подпиской Pro.';
     case 'rate_limit:model':
-      return 'You have reached the usage limit for this AI model. Upgrade to Pro for unlimited access.';
+      return 'Вы достигли лимита использования для этой модели ИИ. Обновитесь до Pro для неограниченного доступа.';
 
     case 'forbidden:api':
-      return 'Access denied';
+      return 'Доступ запрещен';
 
     default:
-      return 'Something went wrong. Please try again later.';
+      return 'Что-то пошло не так. Пожалуйста, попробуйте еще раз позже.';
   }
 }
 
@@ -171,27 +171,27 @@ export function getErrorActions(error: ChatSDKError): {
 } {
   if (isSignInRequired(error)) {
     return {
-      primary: { label: 'Sign In', action: 'signin' },
-      secondary: { label: 'Try Again', action: 'retry' },
+      primary: { label: 'Войти', action: 'signin' },
+      secondary: { label: 'Попробовать снова', action: 'retry' },
     };
   }
 
   if (isProRequired(error)) {
     return {
-      primary: { label: 'Upgrade to Pro', action: 'upgrade' },
-      secondary: { label: 'Check Again', action: 'refresh' },
+      primary: { label: 'Обновиться до Pro', action: 'upgrade' },
+      secondary: { label: 'Проверить снова', action: 'refresh' },
     };
   }
 
   if (isRateLimited(error)) {
     return {
-      primary: { label: 'Upgrade to Pro', action: 'upgrade' },
-      secondary: { label: 'Try Again Later', action: 'retry' },
+      primary: { label: 'Обновиться до Pro', action: 'upgrade' },
+      secondary: { label: 'Попробовать позже', action: 'retry' },
     };
   }
 
   return {
-    primary: { label: 'Try Again', action: 'retry' },
+    primary: { label: 'Попробовать снова', action: 'retry' },
   };
 }
 

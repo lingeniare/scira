@@ -13,7 +13,7 @@ import { ChatHistoryButton } from '@/components/chat-history-dialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { LinkedinLogo, RedditLogo, XLogo } from '@phosphor-icons/react';
+
 import { ClassicLoader } from '@/components/ui/loading';
 import { useRouter, usePathname } from 'next/navigation';
 import { ComprehensiveUserData } from '@/lib/user-data-server';
@@ -82,22 +82,10 @@ const Navbar = memo(
     const shareUrl = chatId ? `https://scira.ai/search/${chatId}` : '';
 
     // Social media share handlers
-    const handleShareLinkedIn = (e: React.MouseEvent) => {
+    const handleShareVK = (e: React.MouseEvent) => {
       e.preventDefault();
-      const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
-      window.open(linkedInUrl, '_blank', 'noopener,noreferrer');
-    };
-
-    const handleShareTwitter = (e: React.MouseEvent) => {
-      e.preventDefault();
-      const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`;
-      window.open(twitterUrl, '_blank', 'noopener,noreferrer');
-    };
-
-    const handleShareReddit = (e: React.MouseEvent) => {
-      e.preventDefault();
-      const redditUrl = `https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}`;
-      window.open(redditUrl, '_blank', 'noopener,noreferrer');
+      const vkUrl = `https://vk.com/share.php?url=${encodeURIComponent(shareUrl)}`;
+      window.open(vkUrl, '_blank', 'noopener,noreferrer');
     };
 
     const handleVisibilityChange = async (newVisibility: VisibilityType) => {
@@ -161,14 +149,14 @@ const Navbar = memo(
               )}
             >
               <div className="flex items-center bg-muted/50 rounded-lg border border-border">
-                <span className="px-2 py-1.5 text-sm font-medium text-muted-foreground">Free Plan</span>
+                <span className="px-2 py-1.5 text-sm font-medium text-muted-foreground">Free</span>
                 <Button
                   variant="default"
                   size="sm"
                   className="rounded-md mr-1.5 h-6"
                   onClick={() => router.push('/pricing')}
                 >
-                  Upgrade
+                  Улучшить
                 </Button>
               </div>
             </div>
@@ -196,12 +184,12 @@ const Navbar = memo(
                             {isChangingVisibility ? (
                               <>
                                 <ClassicLoader size="sm" className="text-blue-600 dark:text-blue-400" />
-                                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Saving...</span>
+                                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Сохранено...</span>
                               </>
                             ) : (
                               <>
                                 <GlobeHemisphereWest size={16} className="text-blue-600 dark:text-blue-400" />
-                                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Shared</span>
+                                <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Ссылка активна</span>
                                 <Copy size={14} className="ml-1 text-blue-600 dark:text-blue-400 opacity-70" />
                               </>
                             )}
@@ -210,7 +198,7 @@ const Navbar = memo(
                         <DropdownMenuContent align="end" className="w-64 sm:w-72 p-3 ml-2 sm:m-auto">
                           <div className="space-y-3">
                             <header className="flex justify-between items-center">
-                              <h4 className="text-sm font-medium">Share Link</h4>
+                              <h4 className="text-sm font-medium">Поделиться</h4>
                               <div className="flex gap-2">
                                 <Button
                                   variant="secondary"
@@ -220,7 +208,7 @@ const Navbar = memo(
                                   disabled={isChangingVisibility}
                                 >
                                   <Lock size={12} className="mr-1" />
-                                  Make Private
+                                  Убрать ссылку
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -262,7 +250,7 @@ const Navbar = memo(
                             <footer className="flex flex-col space-y-2">
                               <div className="flex justify-center items-center">
                                 <p className="text-xs text-muted-foreground">
-                                  Anyone with this link can view this page
+                                  Страницу увидят все, у кого есть ссылка
                                 </p>
                               </div>
 
@@ -288,28 +276,12 @@ const Navbar = memo(
                                   variant="outline"
                                   size="icon"
                                   className="size-8"
-                                  onClick={handleShareLinkedIn}
-                                  title="Share on LinkedIn"
+                                  onClick={handleShareVK}
+                                  title="Share on VK"
                                 >
-                                  <LinkedinLogo size={16} />
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="size-8"
-                                  onClick={handleShareTwitter}
-                                  title="Share on X (Twitter)"
-                                >
-                                  <XLogo size={16} />
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="size-8"
-                                  onClick={handleShareReddit}
-                                  title="Share on Reddit"
-                                >
-                                  <RedditLogo size={16} />
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-.9-1.744-.9-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.441 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.204.169-.407.441-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.169.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.271.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
+                                  </svg>
                                 </Button>
                               </div>
                             </footer>
@@ -337,7 +309,7 @@ const Navbar = memo(
                             ) : (
                               <>
                                 <Share size={16} className="text-muted-foreground" />
-                                <span className="text-sm font-medium text-muted-foreground">Share</span>
+                                <span className="text-sm font-medium text-muted-foreground">Поделиться</span>
                               </>
                             )}
                           </Button>
@@ -345,7 +317,7 @@ const Navbar = memo(
                         <DropdownMenuContent align="end" className="w-64 sm:w-72 p-3 ml-2 sm:m-auto">
                           <div className="space-y-3">
                             <header className="flex justify-between items-center">
-                              <h4 className="text-sm font-medium">Share</h4>
+                              <h4 className="text-sm font-medium">Поделиться</h4>
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -371,7 +343,7 @@ const Navbar = memo(
 
                             <div className="space-y-2">
                               <p className="text-sm text-muted-foreground">
-                                Share this page to make it accessible to anyone with the link.
+                                Сделать страницу доступной для всех, у кого есть ссылка.
                               </p>
                             </div>
 
@@ -383,7 +355,7 @@ const Navbar = memo(
                                 onClick={() => setPrivateDropdownOpen(false)}
                                 disabled={isChangingVisibility}
                               >
-                                Cancel
+                                Отменить
                               </Button>
                               <Button
                                 variant="default"
@@ -393,7 +365,7 @@ const Navbar = memo(
                                 disabled={isChangingVisibility}
                               >
                                 <Share size={12} className="mr-1" />
-                                Share
+                                Поделитться
                               </Button>
                             </footer>
                           </div>

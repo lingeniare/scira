@@ -207,7 +207,7 @@ const AcademicPapersCard = ({ results }: AcademicPapersProps) => {
                       setSourcesSheetOpen(true);
                     }}
                   >
-                    View all
+                    Все ссылки
                     <ArrowUpRight className="w-3 h-3 ml-1" />
                   </Button>
                 )}

@@ -120,30 +120,30 @@ const formatCompactTime = (() => {
 
     let result: string;
     if (seconds < 60) {
-      result = `${seconds}s ago`;
+      result = `${seconds}с назад `;
     } else {
       const minutes = differenceInMinutes(now, date);
       if (minutes < 60) {
-        result = `${minutes}m ago`;
+        result = `${minutes} мин назад `;
       } else {
         const hours = differenceInHours(now, date);
         if (hours < 24) {
-          result = `${hours}h ago`;
+          result = `${hours} ч назад `;
         } else {
           const days = differenceInDays(now, date);
           if (days < 7) {
-            result = `${days}d ago`;
+            result = `${days} д назад `;
           } else {
             const weeks = differenceInWeeks(now, date);
             if (weeks < 4) {
-              result = `${weeks}w ago`;
+              result = `${weeks} нед назад `;
             } else {
               const months = differenceInMonths(now, date);
               if (months < 12) {
-                result = `${months}mo ago`;
+                result = `${months} мес назад `;
               } else {
                 const years = differenceInYears(now, date);
-                result = `${years}y ago`;
+                result = `${years} год назад `;
               }
             }
           }
@@ -543,7 +543,7 @@ export function ChatHistoryDialog({ open, onOpenChange, user }: ChatHistoryDialo
     (id: string, title: string) => {
       setNavigating(id);
       const displayTitle = title || 'Untitled Conversation';
-      toast.info(`Opening "${displayTitle}"...`);
+      toast.info(`Открытие "${displayTitle}"...`);
       invalidateChatsCache();
       onOpenChange(false);
       router.push(`/search/${id}`);

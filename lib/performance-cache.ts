@@ -106,6 +106,7 @@ export const createUserKey = (token: string) => `user:${token}`;
 export const createSubscriptionKey = (userId: string) => `subscription:${userId}`;
 export const createMessageCountKey = (userId: string) => `msg-count:${userId}`;
 export const createExtremeCountKey = (userId: string) => `extreme-count:${userId}`;
+export const createMiniModelCountKey = (userId: string) => `mini-model-count:${userId}`;
 export const createProUserKey = (userId: string) => `pro-user:${userId}`;
 
 // Extract session token from headers

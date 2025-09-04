@@ -97,7 +97,7 @@ export const models: Model[] = [
   {
     value: 'scira-5-nano',
     label: 'GPT 5 Nano',
-    description: "OpenAI's latest flagship nano LLM (via OpenRouter)",
+    description: "OpenAI's latest flagship nano LLM",
     vision: true,
     reasoning: false,
     experimental: false,
@@ -126,8 +126,8 @@ export const models: Model[] = [
   },
   {
     value: 'scira-qwen-thinking',
-    label: 'Qwen3 30B A3B Thinking',
-    description: "Qwen's advanced reasoning model with thinking capabilities (via OpenRouter)",
+    label: 'Qwen3 Thinking',
+    description: "Qwen's advanced reasoning model with thinking",
     vision: true,
     reasoning: true,
     experimental: false,
@@ -174,7 +174,7 @@ export const models: Model[] = [
   {
     value: 'scira-5-mini',
     label: 'GPT 5 Mini',
-    description: "OpenAI's latest flagship mini LLM (via OpenRouter)",
+    description: "OpenAI's latest flagship mini LLM",
     vision: true,
     reasoning: true,
     experimental: false,
@@ -266,7 +266,7 @@ export const models: Model[] = [
   {
     value: 'scira-5',
     label: 'GPT 5',
-    description: "OpenAI's latest flagship LLM (via OpenRouter)",
+    description: "OpenAI's latest flagship LLM",
     vision: true,
     reasoning: true,
     experimental: false,

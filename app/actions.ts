@@ -20,6 +20,8 @@ import {
   getExtremeSearchCount,
   incrementMessageUsage,
   getMessageCount,
+  getMiniModelCount,
+  incrementMiniModelUsage,
   getHistoricalUsageData,
   getCustomInstructionsByUserId,
   createCustomInstructions,
@@ -37,7 +39,7 @@ import { getDiscountConfig } from '@/lib/discount';
 import { groq } from '@ai-sdk/groq';
 import { Client } from '@upstash/qstash';
 // Removed old subscription imports - now using unified user data approach
-import { usageCountCache, createMessageCountKey, createExtremeCountKey } from '@/lib/performance-cache';
+import { usageCountCache, createMessageCountKey, createExtremeCountKey, createMiniModelCountKey } from '@/lib/performance-cache';
 import { CronExpressionParser } from 'cron-parser';
 import { getComprehensiveUserData } from '@/lib/user-data-server';
 
@@ -124,7 +126,7 @@ export async function checkImageModeration(images: string[]) {
 
 export async function generateTitleFromUserMessage({ message }: { message: UIMessage }) {
   const { text: title } = await generateText({
-    model: scira.languageModel('scira-nano'),
+    model: scira.languageModel('scira-5-nano'),
     system: `\n
     - Always respond in Russian
     - you will generate a short title based on the first message a user begins a conversation with

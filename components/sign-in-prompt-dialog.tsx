@@ -14,9 +14,17 @@ interface SignInPromptDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Функция валидации email
+// Функция валидации email с улучшенной проверкой
 const isValidEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Проверяем базовую структуру и отсутствие недопустимых символов
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  
+  // Дополнительные проверки
+  if (!email || email.length > 254) return false;
+  if (email.startsWith('.') || email.endsWith('.')) return false;
+  if (email.includes('..')) return false;
+  if (email.split('@').length !== 2) return false;
+  
   return emailRegex.test(email);
 };
 
@@ -48,6 +56,7 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
 
   // Проверка валидности email и согласия с условиями
   const isEmailValid = isValidEmail(email);
@@ -83,36 +92,67 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[400px] p-6 gap-0">
-        {/* Заголовок */}
-        <div className="mb-6 text-center">
-          <h2 className="text-lg font-medium text-foreground mb-1">Создать или войти в аккаунт</h2>
-          <p className="text-sm text-muted-foreground">чтобы получить больше возможностей</p>
-        </div>
+        {magicLinkSent ? (
+          // Уведомление об отправке Magic Link
+          <div className="text-center space-y-4">
+            <div className="w-12 h-12 mx-auto bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+              <Mail className="w-6 h-6 text-green-600 dark:text-green-400" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-lg font-medium text-foreground">Ссылка для входа отправлена</h2>
+              <p className="text-sm text-muted-foreground">
+                на <span className="font-medium text-foreground">{email}</span>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Проверьте почту и перейдите по ссылке для входа
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setMagicLinkSent(false);
+                setEmail('');
+              }}
+              className="w-full"
+            >
+              Отправить на другой email
+            </Button>
+          </div>
+        ) : (
+          // Основная форма авторизации
+          <>
+            {/* Заголовок */}
+            <div className="mb-6 text-center">
+              <h2 className="text-lg font-medium text-foreground mb-1">Создайте или войдите в аккаунт</h2>
+              <p className="text-sm text-muted-foreground">чтобы получить больше возможностей</p>
+            </div>
 
         {/* Magic Link секция */}
         <div className="space-y-3 mb-0">
           <div className="space-y-2 text-center">
-
-            <Button
-              variant="outline"
-              className="relative w-full h-10 px-4 font-normal text-sm justify-center"
-              disabled={magicLinkLoading}
-              onClick={() => {
-                // Фокус на поле ввода при клике на кнопку
-                document.getElementById('email')?.focus();
-              }}
-            >
+            {/* Поле ввода email без фона кнопки */}
+            <div className="relative w-full">
               <Input
                 id="email"
                 type="email"
-                placeholder="Войти через Email"
+                placeholder={isEmailFocused || email ? "" : "Войти через Email"}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border-0 bg-transparent p-0 h-auto text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-center w-full"
-                style={{ backgroundColor: 'transparent' }}
+                onFocus={() => setIsEmailFocused(true)}
+                onBlur={() => setIsEmailFocused(false)}
+                className="w-full h-10 px-4 text-sm text-center border border-input rounded-md bg-transparent placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 transition-colors"
                 disabled={magicLinkLoading}
               />
-            </Button>
+              {/* Показываем placeholder как отдельный элемент когда поле не в фокусе и пустое */}
+              {!isEmailFocused && !email && (
+                <div 
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none text-sm text-muted-foreground"
+                  onClick={() => document.getElementById('email')?.focus()}
+                >
+                  Войти через Email
+                </div>
+              )}
+            </div>
           </div>
           
           {/* Кнопка Magic Link появляется только при валидном email */}
@@ -228,7 +268,7 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
             <label htmlFor="privacy" className="text-xs text-muted-foreground leading-relaxed">
               Я принимаю{' '}
               <Link href="/privacy-policy" className="underline underline-offset-2 hover:text-foreground">
-                Политику обработки персональных данных
+                Политику обработки данных
               </Link>
             </label>
           </div>
@@ -252,14 +292,16 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
           </Link>
         </p>
         
-        {/* CSS для анимации shake */}
-        <style jsx>{`
-          @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-            20%, 40%, 60%, 80% { transform: translateX(2px); }
-          }
-        `}</style>
+            {/* CSS для анимации shake */}
+            <style jsx>{`
+              @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+                20%, 40%, 60%, 80% { transform: translateX(2px); }
+              }
+            `}</style>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

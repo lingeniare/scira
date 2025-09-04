@@ -437,7 +437,7 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Eye className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Scira Lookout</h3>
+              <h3 className="text-lg font-semibold mb-2">Vega автоматиация</h3>
               <p className="text-muted-foreground">
                 Schedule automated searches to monitor trends and get regular updates on topics that matter to you.
               </p>
@@ -729,7 +729,7 @@ export default function AboutPage() {
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                   <span className="text-muted-foreground">
-                    Scira Lookout ({LOOKOUT_LIMITS.TOTAL_LOOKOUTS} automated searches)
+                    Vega автоматиация ({LOOKOUT_LIMITS.TOTAL_LOOKOUTS} automated searches)
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -756,7 +756,7 @@ export default function AboutPage() {
                   Студенты могут получить доступ к Pro функциям за ₹500/месяц ($5/месяц). Свяжитесь с нами для подтверждения студенческого статуса.
                 </p>
                 <a
-                  href="mailto:zaid@scira.ai?subject=Student%20Discount%20Request"
+                  href="mailto:mail@vega.chat?subject=Student%20Discount%20Request"
                   className="inline-flex items-center justify-center h-9 px-4 rounded-md border border-border/60 bg-background hover:bg-accent/50 text-sm font-medium transition-colors"
                 >
                   Apply for Student Pricing
@@ -794,7 +794,7 @@ export default function AboutPage() {
             <ProAccordionItem value="item-3">
               <ProAccordionTrigger>Is there a student discount?</ProAccordionTrigger>
               <ProAccordionContent>
-                Yes, students can get $10 off the Pro plan, bringing it down to $5/month. Email zaid@scira.ai with your
+                Yes, students can get $10 off the Pro plan, bringing it down to $5/month. Email mail@vega.chat with your
                 student verification and a brief description of how you use Scira.
               </ProAccordionContent>
             </ProAccordionItem>
@@ -827,7 +827,7 @@ export default function AboutPage() {
           <div className="text-center mt-12">
             <p className="text-muted-foreground">
               Have more questions?{' '}
-              <a href="mailto:zaid@scira.ai" className="text-primary hover:text-primary/80 transition-colors">
+              <a href="mailto:mail@vega.chat" className="text-primary hover:text-primary/80 transition-colors">
                 Contact us
               </a>
             </p>

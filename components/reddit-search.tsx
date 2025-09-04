@@ -191,7 +191,7 @@ const SearchLoadingState = () => {
                   0
                 </Badge>
                 <Button variant="ghost" size="sm" className="h-7 px-2 text-xs opacity-50 cursor-not-allowed" disabled>
-                  View all
+                  Все ссылки
                   <ArrowUpRight className="w-3 h-3 ml-1" />
                 </Button>
               </div>
@@ -339,7 +339,7 @@ const RedditSearch: React.FC<{
                       setSourcesSheetOpen(true);
                     }}
                   >
-                    View all
+                    Все ссылки
                     <ArrowUpRight className="w-3 h-3 ml-1" />
                   </Button>
                 )}

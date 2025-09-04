@@ -5,22 +5,15 @@ import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
-import {
-  models,
-  requiresAuthentication,
-  requiresProSubscription,
-  hasVisionSupport,
-  hasPdfSupport,
-  getAcceptedFileTypes,
-  shouldBypassRateLimits,
-} from '@/ai/providers';
+import { models, requiresAuthentication, requiresProSubscription, hasVisionSupport, hasPdfSupport, getAcceptedFileTypes, shouldBypassRateLimits } from '@/ai/providers';
+import { useDailyLimit } from '@/hooks/useDailyLimit';
 import { X, Check, ChevronsUpDown } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { cn, SearchGroup, SearchGroupId, searchGroups } from '@/lib/utils';
 import { Upload } from 'lucide-react';
 import { track } from '@vercel/analytics';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ComprehensiveUserData } from '@/hooks/use-user-data';
+import { ComprehensiveUserData, useUserData } from '@/hooks/use-user-data';
 import { useSession } from '@/lib/auth-client';
 import { checkImageModeration } from '@/app/actions';
 import { LockIcon } from '@phosphor-icons/react';
@@ -84,6 +77,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
     const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
     const [showUltraUpgradeDialog, setShowUltraUpgradeDialog] = useState(false);
     const [showSignInDialog, setShowSignInDialog] = useState(false);
+    const [showSearchModeUpgradeDialog, setShowSearchModeUpgradeDialog] = useState(false);
     const [selectedProModel, setSelectedProModel] = useState<(typeof models)[0] | null>(null);
     const [selectedUltraModel, setSelectedUltraModel] = useState<(typeof models)[0] | null>(null);
     const [selectedAuthModel, setSelectedAuthModel] = useState<(typeof models)[0] | null>(null);
@@ -154,6 +148,23 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
       
       return !requiresAuth && !requiresUltra && !requiresPro;
     }, [user, isUltraUser, isProUser]);
+
+    // Функция для проверки доступности режима поиска
+    const isSearchModeAccessible = useCallback((group: typeof searchGroups[number]) => {
+      // Если режим требует аутентификации и пользователь не аутентифицирован
+      if ('requireAuth' in group && group.requireAuth && !user) return false;
+
+      // Если режим требует Pro подписку
+      if (group.requiresPro) {
+        // Неаутентифицированные пользователи не имеют доступа
+        if (!user) return false;
+        // Проверяем наличие Pro или Ultra подписки
+        return isProUser || isUltraUser;
+      }
+
+      // Режим доступен всем
+      return true;
+    }, [user, isProUser, isUltraUser]);
 
     const sortedModels = useMemo(() => filteredModels, [filteredModels]);
 
@@ -249,7 +260,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   )}
                 >
                   <HugeiconsIcon icon={CpuIcon} size={24} color="currentColor" strokeWidth={2} />
-                  <span className="text-xs font-medium sm:block hidden">{currentModel?.label || 'Выберите модель'}</span>
+                  <span className="text-xs font-medium sm:block hidden">{currentModel?.label || 'ите модель'}</span>
                   <ChevronsUpDown className="h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -277,13 +288,13 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   model.label,
                   model.description,
                   model.category,
-                  model.vision ? 'зрение' : '',
-                  model.reasoning ? 'рассуждение' : '',
-                  model.pdf ? 'пдф' : '',
-                  model.experimental ? 'экспериментальная' : '',
-                  model.pro ? 'про' : '',
-                  model.ultra ? 'ультра' : '',
-                  model.requiresAuth ? 'авторизация' : '',
+                  model.vision ? 'vision' : '',
+                  model.reasoning ? 'reasoning' : '',
+                  model.pdf ? 'pdf' : '',
+                  model.experimental ? 'experimental' : '',
+                  model.pro ? 'pro' : '',
+                  model.ultra ? 'ultra' : '',
+                  model.requiresAuth ? 'auth' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')
@@ -296,7 +307,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                        model.category.toLowerCase().includes(searchTerm) ? 1 : 0;
               }}
             >
-              <CommandInput placeholder="Поиск моделей..." className="h-9" />
+              <CommandInput placeholder="Выберете ИИ ..." className="h-9" />
               <CommandEmpty>Модель не найдена.</CommandEmpty>
               <CommandList className="max-h-[15em]">
                 {orderedGroupEntries.map(([category, categoryModels], categoryIndex) => (
@@ -858,19 +869,71 @@ interface GroupSelectorProps {
 const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGroup, onGroupSelect, status }) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const [showSignInDialog, setShowSignInDialog] = useState(false);
+  const [showSearchModeUpgradeDialog, setShowSearchModeUpgradeDialog] = useState(false);
+  const [selectedToolForAuth, setSelectedToolForAuth] = useState<typeof searchGroups[number] | null>(null);
   const isExtreme = selectedGroup === 'extreme';
 
-  // Memoize visible groups calculation
+  // Получаем данные пользователя для проверки подписки
+  const { user, isProUser: userIsProUser } = useUserData();
+  const isProUser = useMemo(
+    () => userIsProUser,
+    [userIsProUser],
+  );
+
+  // Определение Ultra пользователей на основе данных пользователя
+  const isUltraUser = useMemo(
+    () => Boolean(user?.isUltraUser),
+    [user?.isUltraUser],
+  );
+
+  // Функция для проверки доступности режима поиска
+  const isSearchModeAccessible = useCallback((group: typeof searchGroups[number]) => {
+    // Если режим требует аутентификации и пользователь не аутентифицирован
+    if ('requireAuth' in group && group.requireAuth && !session) return false;
+
+    // Если режим требует Pro подписку
+    if (group.requiresPro) {
+      // Неаутентифицированные пользователи не имеют доступа
+      if (!session) return false;
+      // Проверяем наличие Pro или Ultra подписки
+      return isProUser || isUltraUser;
+    }
+
+    // Режим доступен всем
+    return true;
+  }, [session, isProUser, isUltraUser]);
+
+  const handleUpgradeClick = useCallback((selectedTool?: typeof searchGroups[number]) => {
+    if (!session) {
+      // Сохраняем выбранный инструмент и показываем диалог логина
+      if (selectedTool) {
+        setSelectedToolForAuth(selectedTool);
+      }
+      setShowSignInDialog(true);
+    } else {
+      // Показать диалог апгрейда до Pro
+      setShowUpgradeDialog(true);
+    }
+  }, [session]);
+
+  // Memoize visible groups calculation - показываем все группы, но с разной доступностью
   const visibleGroups = useMemo(
     () =>
       searchGroups.filter((group) => {
         if (!group.show) return false;
-        if ('requireAuth' in group && group.requireAuth && !session) return false;
         if (group.id === 'extreme') return false; // Exclude extreme from dropdown
         return true;
       }),
-    [session],
+    [],
   );
+
+  // Проверяем доступность Extreme режима
+  const isExtremeAccessible = useMemo(() => {
+    const extremeGroup = searchGroups.find(g => g.id === 'extreme');
+    return extremeGroup ? isSearchModeAccessible(extremeGroup) : false;
+  }, [isSearchModeAccessible]);
 
   const selectedGroupData = useMemo(
     () => visibleGroups.find((group) => group.id === selectedGroup),
@@ -940,7 +1003,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
               </PopoverTrigger>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{isExtreme ? 'Вернуться к режимам поиска' : 'Выберите режим поиска'}</p>
+              <p>{isExtreme ? 'Вернуться к режимам поиска' : 'Выберите инструмент'}</p>
             </TooltipContent>
           </Tooltip>
           <PopoverContent
@@ -977,29 +1040,59 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
                         onSelect={(currentValue) => {
                           const selectedGroup = visibleGroups.find((g) => g.id === currentValue);
                           if (selectedGroup) {
-                            onGroupSelect(selectedGroup);
-                            setOpen(false);
+                            if (isSearchModeAccessible(selectedGroup)) {
+                              onGroupSelect(selectedGroup);
+                              setOpen(false);
+                            } else {
+                              handleUpgradeClick(selectedGroup);
+                            }
                           }
                         }}
                         className={cn(
-                          'flex items-center justify-between px-2 py-2 mb-0.5 rounded-lg text-xs',
-                          'transition-all duration-200',
-                          'hover:bg-accent',
-                          'data-[selected=true]:bg-accent',
+                          'data-[selected=true]:text-accent-foreground [&_svg:not([class*=\'text-\'])]:text-muted-foreground relative gap-2 outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4 flex items-center justify-between px-2 py-1.5 mb-0.5 rounded-lg text-xs transition-all duration-200',
+                          isSearchModeAccessible(group) 
+                            ? 'cursor-pointer data-[selected=true]:bg-accent hover:bg-accent' 
+                            : 'opacity-60 cursor-pointer'
                         )}
                       >
-                        <div className="flex items-center gap-2 min-w-0 flex-1 pr-4">
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
                           <HugeiconsIcon icon={group.icon} size={30} color="currentColor" strokeWidth={2} />
                           <div className="flex flex-col min-w-0 flex-1">
-                            <div className="font-medium truncate text-[11px] text-foreground">{group.name}</div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-medium truncate text-[11px] text-foreground">{group.name}</span>
+                              {!isSearchModeAccessible(group) && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (!session) {
+                                      setSelectedToolForAuth(group);
+                                      setShowSignInDialog(true);
+                                    } else {
+                                      setShowSearchModeUpgradeDialog(true);
+                                    }
+                                  }}
+                                  className="flex items-center hover:scale-110 transition-transform"
+                                >
+                                  <HugeiconsIcon 
+                                    icon={Crown02Icon} 
+                                    size={12} 
+                                    color="#FFD700" 
+                                    strokeWidth={2} 
+                                    className="text-yellow-500" 
+                                  />
+                                </button>
+                              )}
+                            </div>
                             <div className="text-[9px] text-muted-foreground truncate leading-tight text-wrap!">
                               {group.description}
                             </div>
                           </div>
                         </div>
-                        <Check
-                          className={cn('ml-auto h-4 w-4', selectedGroup === group.id ? 'opacity-100' : 'opacity-0')}
-                        />
+                        <div className="flex items-center gap-1">
+                          <Check
+                            className={cn('h-4 w-4', selectedGroup === group.id ? 'opacity-100' : 'opacity-0')}
+                          />
+                        </div>
                       </CommandItem>
                     );
                   })}
@@ -1015,20 +1108,238 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleToggleExtreme}
+              onClick={() => {
+                if (isExtremeAccessible) {
+                  handleToggleExtreme();
+                } else {
+                  // Просто неактивна, без короны и диалога? Но по запросу неактивна без короны.
+                  // Пользователь сказал неактивной без иконки короны, но не уточнил при клике что делать.
+                  // Сделаем disabled.
+                }
+              }}
+              disabled={!isExtremeAccessible}
               className={cn(
                 'flex items-center gap-1.5 px-3 h-6 rounded-md transition-all',
                 isExtreme ? 'bg-accent text-foreground hover:bg-accent/80' : 'text-muted-foreground hover:bg-accent',
+                !isExtremeAccessible && 'opacity-50 cursor-not-allowed'
               )}
             >
               <HugeiconsIcon icon={AtomicPowerIcon} size={30} color="currentColor" strokeWidth={2} />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            <p>{isExtreme ? 'Extreme Search mode on' : 'Переключиться в режим глубокого поиска'}</p>
+            <p>{isExtreme ? 'Extreme Search mode on' : 'Глубокое исследование'}</p>
           </TooltipContent>
         </Tooltip>
       </div>
+      
+      {/* Диалог для обновления до Pro для доступа к инструментам */}
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent className="sm:max-w-md p-0 gap-0 border !shadow-none">
+          <div className="p-6 space-y-5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                  <HugeiconsIcon
+                    icon={Crown02Icon}
+                    size={16}
+                    color="white"
+                    strokeWidth={1.5}
+                  />
+                </div>
+                <div>
+                  <DialogHeader>
+                    <DialogTitle className="text-lg font-medium text-foreground">
+                      {selectedGroupData?.name || 'Инструмент'} требует Pro
+                    </DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      Обновитесь для доступа к премиум AI-моделям
+                    </DialogDescription>
+                  </DialogHeader>
+                </div>
+              </div>
+            </div>
+
+            {/* Список преимуществ */}
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Неограниченный поиск</p>
+                  <p className="text-xs text-muted-foreground">Без дневных лимитов и ограничений</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Премиум AI-модели</p>
+                  <p className="text-xs text-muted-foreground">Claude 4 Sonnet, Grok 4, продвинутые рассуждения</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Анализ PDF</p>
+                  <p className="text-xs text-muted-foreground">Загружайте и анализируйте документы</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Информация о цене */}
+            <div className="bg-muted rounded-lg p-4 space-y-2">
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-medium text-foreground">1000₽</span>
+                <span className="text-sm text-muted-foreground">/месяц</span>
+              </div>
+              <p className="text-xs text-muted-foreground">Отменить можно в любое время</p>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowUpgradeDialog(false)}
+                className="flex-1 h-9 text-sm font-normal"
+              >
+                Maybe later
+              </Button>
+              <Button
+                onClick={() => {
+                  window.location.href = '/pricing';
+                }}
+                className="flex-1 h-9 text-sm font-normal"
+              >
+                Обновить сейчас
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Диалог для авторизации для доступа к инструментам */}
+      <Dialog open={showSignInDialog} onOpenChange={setShowSignInDialog}>
+        <DialogContent className="sm:max-w-md p-0 gap-0 border !shadow-none">
+          <div className="p-6 space-y-5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                  <HugeiconsIcon
+                    icon={Crown02Icon}
+                    size={16}
+                    color="white"
+                    strokeWidth={1.5}
+                  />
+                </div>
+                <div>
+                  <DialogHeader>
+                    <DialogTitle className="text-lg font-medium text-foreground">
+                      Войдите для доступа к {selectedToolForAuth?.name || 'премиум инструментам'}
+                    </DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      Разблокируйте мощные возможности поиска
+                    </DialogDescription>
+                  </DialogHeader>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Неограниченный поиск</p>
+                  <p className="text-xs text-muted-foreground">Без дневных лимитов и ограничений</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    {selectedToolForAuth?.name || 'Премиум инструменты'} требует Pro
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {selectedToolForAuth?.description || 'Доступ к расширенным возможностям поиска'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Сохранение истории поиска</p>
+                  <p className="text-xs text-muted-foreground">Отслеживайте свои разговоры</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowSignInDialog(false);
+                  setSelectedToolForAuth(null);
+                }}
+                className="flex-1 h-9 text-sm font-normal"
+              >
+                Может быть позже
+              </Button>
+              <Button
+                onClick={() => {
+                  window.location.href = '/auth';
+                }}
+                className="flex-1 h-9 text-sm font-normal"
+              >
+                Войти в систему
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Диалог для обновления до премиум AI-моделей */}
+      <Dialog open={showSearchModeUpgradeDialog} onOpenChange={setShowSearchModeUpgradeDialog}>
+        <DialogContent className="sm:max-w-md p-0 gap-0 border !shadow-none">
+          <div className="p-6 space-y-5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                  <HugeiconsIcon
+                    icon={Crown02Icon}
+                    size={16}
+                    color="white"
+                    strokeWidth={1.5}
+                    className="text-white"
+                  />
+                </div>
+                <div>
+                  <DialogHeader>
+                    <DialogTitle className="text-lg font-medium text-foreground">Премиум AI-модели</DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      Обновитесь для доступа к премиум AI-моделям
+                    </DialogDescription>
+                  </DialogHeader>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowSearchModeUpgradeDialog(false)}
+                className="flex-1 h-9 text-sm font-normal"
+              >
+                Не сейчас
+              </Button>
+              <Button
+                onClick={() => {
+                  window.location.href = '/pricing';
+                }}
+                className="flex-1 h-9 text-sm font-normal bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white border-0"
+              >
+                Обновить до Pro
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });
@@ -1070,9 +1381,26 @@ const FormComponent: React.FC<FormComponentProps> = ({
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  // Хук для отслеживания лимитов мини-моделей
+  const { isLimitExceeded, increment, dailyLimit } = useDailyLimit(user);
+  
+  // Хук для получения сессии пользователя
+  const { data: session } = useSession();
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const [showSignInDialog, setShowSignInDialog] = useState(false);
+
+  // Определяем мини-модели по категории 'Mini'
+  const miniModels = useMemo(() => models.filter(m => m.category === 'Mini').map(m => m.value), []);
+
   const isProUser = useMemo(
     () => user?.isProUser || (subscriptionData?.hasSubscription && subscriptionData?.subscription?.status === 'active'),
     [user?.isProUser, subscriptionData?.hasSubscription, subscriptionData?.subscription?.status],
+  );
+
+  // Определение Ultra пользователей на основе данных пользователя
+  const isUltraUser = useMemo(
+    () => Boolean(user?.isUltraUser),
+    [user?.isUltraUser],
   );
 
   const isProcessing = useMemo(() => status === 'submitted' || status === 'streaming', [status]);
@@ -1873,6 +2201,15 @@ const FormComponent: React.FC<FormComponentProps> = ({
         setHasSubmitted(true);
         lastSubmittedQueryRef.current = input.trim();
 
+        if (miniModels.includes(selectedModel) && isLimitExceeded) {
+          if (!session) {
+            setShowSignInDialog(true);
+          } else {
+            setShowUpgradeDialog(true);
+          }
+          return;
+        }
+
         sendMessage({
           role: 'user',
           parts: [
@@ -1888,6 +2225,10 @@ const FormComponent: React.FC<FormComponentProps> = ({
             },
           ],
         });
+
+        if (miniModels.includes(selectedModel)) {
+          increment();
+        }
 
         setInput('');
         setAttachments([]);
@@ -1912,6 +2253,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
       user,
       isRecording,
       chatId,
+      session,
+      setShowSignInDialog,
+      setShowUpgradeDialog,
     ],
   );
 
@@ -2079,7 +2423,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
           {/* Form container */}
           <div className="relative">
-            <div className="rounded-xl bg-muted border border-border focus-within:border-ring transition-colors duration-200">
+            {/* Закомментированная неоновая подсветка */}
+            <div className="rounded-xl bg-muted transition-all duration-300 relative overflow-hidden">
+            {/* focus-within:shadow-[0_0_30px_-5px_rgba(59,130,246,0.16),0_0_60px_-10px_rgba(34,197,94,0.12),0_0_90px_-15px_rgba(59,130,246,0.08)] dark:focus-within:shadow-[0_0_30px_-5px_rgba(234,179,8,0.1),0_0_60px_-10px_rgba(234,179,8,0.06),0_0_90px_-15px_rgba(234,179,8,0.04)] before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-blue-500/4 before:via-green-500/4 before:to-blue-500/4 before:opacity-0 before:transition-opacity before:duration-300 focus-within:before:opacity-100 dark:before:from-yellow-500/3 dark:before:via-yellow-400/2 dark:before:to-yellow-500/3 after:absolute after:inset-0 after:rounded-xl after:bg-gradient-to-br after:from-transparent after:via-blue-400/2 after:to-green-400/2 after:opacity-0 after:transition-opacity after:duration-300 focus-within:after:opacity-100 dark:after:from-transparent dark:after:via-yellow-400/1.6 dark:after:to-yellow-500/1 */}
               {isRecording ? (
                 <Textarea
                   ref={inputRef}
@@ -2098,6 +2444,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                     'whatsize',
                     'text-center',
                     'cursor-not-allowed',
+                    'relative z-10',
                   )}
                   style={{
                     WebkitUserSelect: 'text',
@@ -2110,7 +2457,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
               ) : (
                 <Textarea
                   ref={inputRef}
-                  placeholder={hasInteracted ? 'Ask a new question...' : 'Напишите ваш запрос..'}
+                  placeholder={hasInteracted ? 'Напишите ваш запрос...' : 'Напишите ваш запрос..'}
                   value={input}
                   onChange={handleInput}
                   onInput={(e) => {
@@ -2149,6 +2496,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                     '!px-4 !py-4',
                     'touch-manipulation',
                     'whatsize',
+                    'relative z-10',
                   )}
                   style={{
                     WebkitUserSelect: 'text',
@@ -2172,6 +2520,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                   'bg-muted',
                   'border-t-0 border-border!',
                   'p-2 gap-2',
+                  'relative z-10',
                 )}
               >
                 <div className={cn('flex items-center gap-2')}>
@@ -2217,8 +2566,11 @@ const FormComponent: React.FC<FormComponentProps> = ({
                           onClick={(event) => {
                             event.preventDefault();
                             event.stopPropagation();
-                            triggerFileInput();
+                            if (isProUser || isUltraUser) {
+                              triggerFileInput();
+                            } // else просто неактивна
                           }}
+                          disabled={!(isProUser || isUltraUser)}
                         >
                           <span className="block">
                             <HugeiconsIcon icon={DocumentAttachmentIcon} size={16} />

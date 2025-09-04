@@ -456,7 +456,7 @@ const LoadingState: React.FC<{
                 </Badge>
                 {totalResults > 0 && (
                   <Button variant="ghost" size="sm" className="h-7 px-2 text-xs opacity-50 cursor-not-allowed" disabled>
-                    View all
+                    Все ссылки
                     <ArrowUpRight className="w-3 h-3 ml-1" />
                   </Button>
                 )}
@@ -663,7 +663,7 @@ const MultiSearch = ({
                       setSourcesOpen(true);
                     }}
                   >
-                    View all
+                    Все ссылки
                     <ArrowUpRight className="w-3 h-3 ml-1" />
                   </Button>
                 )}

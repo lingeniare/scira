@@ -448,7 +448,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
       console.error('Subscription management error:', error);
 
       if (proSource === 'dodo') {
-        toast.error('Unable to access DodoPayments portal. Please contact support at zaid@scira.ai');
+        toast.error('Unable to access DodoPayments portal. Please contact support at mail@vega.chat');
       } else {
         toast.error('Failed to open subscription management');
       }

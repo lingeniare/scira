@@ -11,6 +11,7 @@ import {
   stream,
   extremeSearchUsage,
   messageUsage,
+  miniModelUsage,
   customInstructions,
   payment,
   lookout,
@@ -435,6 +436,83 @@ export async function getMessageCount({ userId }: { userId: string }): Promise<n
     return usage?.messageCount || 0;
   } catch (error) {
     console.error('Error getting message count:', error);
+    return 0;
+  }
+}
+
+// Mini model usage functions
+export async function getMiniModelUsageByUserId({ userId }: { userId: string }) {
+  try {
+    const now = new Date();
+    // Start of current day
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    startOfDay.setHours(0, 0, 0, 0);
+
+    // Start of next day
+    const startOfNextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    startOfNextDay.setHours(0, 0, 0, 0);
+
+    const [usage] = await db
+      .select()
+      .from(miniModelUsage)
+      .where(
+        and(eq(miniModelUsage.userId, userId), gte(miniModelUsage.date, startOfDay), lt(miniModelUsage.date, startOfNextDay)),
+      )
+      .limit(1);
+
+    return usage;
+  } catch (error) {
+    throw new ChatSDKError('bad_request:database', 'Failed to get mini model usage');
+  }
+}
+
+export async function incrementMiniModelUsage({ userId }: { userId: string }) {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // End of current day for daily reset
+    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    endOfDay.setHours(0, 0, 0, 0);
+
+    // Clean up previous day entries for this user
+    await db.delete(miniModelUsage).where(and(eq(miniModelUsage.userId, userId), lt(miniModelUsage.date, today)));
+
+    const existingUsage = await getMiniModelUsageByUserId({ userId });
+
+    if (existingUsage) {
+      const [updatedUsage] = await db
+        .update(miniModelUsage)
+        .set({
+          modelCount: existingUsage.modelCount + 1,
+          updatedAt: new Date(),
+        })
+        .where(eq(miniModelUsage.id, existingUsage.id))
+        .returning();
+      return updatedUsage;
+    } else {
+      const [newUsage] = await db
+        .insert(miniModelUsage)
+        .values({
+          userId,
+          modelCount: 1,
+          date: today,
+          resetAt: endOfDay,
+        })
+        .returning();
+      return newUsage;
+    }
+  } catch (error) {
+    throw new ChatSDKError('bad_request:database', 'Failed to increment mini model usage');
+  }
+}
+
+export async function getMiniModelCount({ userId }: { userId: string }): Promise<number> {
+  try {
+    const usage = await getMiniModelUsageByUserId({ userId });
+    return usage?.modelCount || 0;
+  } catch (error) {
+    console.error('Error getting mini model count:', error);
     return 0;
   }
 }

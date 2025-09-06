@@ -9,27 +9,27 @@ import { SciraLogo } from '@/components/logos/scira-logo';
 const testimonials = [
   {
     content:
-      '"Scira @sciraai is better than Grok at digging up information from X, its own platform! I asked it 3 different queries to help scrape and find some data points I was interested in about my own account and Scira did much much better with insanely accurate answers!"',
+      '"Scira @sciraai лучше справляется с поиском информации в X, чем сам Grok на своей платформе! Я задал 3 разных запроса для поиска данных о своем аккаунте, и Scira справился намного лучше с невероятно точными ответами!"',
     author: 'Chris Universe',
     handle: '@chrisuniverseb',
     link: 'https://x.com/chrisuniverseb/status/1943025911043100835',
   },
   {
-    content: '"scira dot ai does a really good job scraping through the reddit mines btw"',
+    content: '"scira dot ai отлично справляется с поиском в недрах reddit"',
     author: 'nyaaier',
     handle: '@nyaaier',
     link: 'https://x.com/nyaaier/status/1932810453107065284',
   },
   {
     content:
-      "Hi @sciraai, just for curiosity, I searched for myself using its Gemini 2.5 Pro and in extreme mode to see what results it could generate. And it created this 👇🏻 It is not just the best, it is wild. And the best part is it's 10000% accurate.",
+      "Привет @sciraai, из любопытства я поискал информацию о себе, используя Gemini 2.5 Pro в экстремальном режиме, чтобы посмотреть, какие результаты он может выдать. И он создал это 👇🏻 Это не просто лучшее, это невероятно. И самое лучшее - это на 10000% точно.",
     author: 'Aniruddha Dak',
     handle: '@aniruddhadak',
     link: 'https://x.com/aniruddhadak/status/1917140602107445545',
   },
   {
     content:
-      '"read nothing the whole sem and here I am with @sciraai to top my mid sems !! Literally so good to get all the related diagram, points and even topics from the website my professor uses to teach us 🙌"',
+      '"ничего не читал весь семестр, а теперь с @sciraai готовлюсь к промежуточным экзаменам!! Буквально так хорошо получать все связанные диаграммы, пункты и даже темы с сайта, который мой профессор использует для обучения 🙌"',
     author: 'Rajnandinit',
     handle: '@itsRajnandinit',
     link: 'https://x.com/itsRajnandinit/status/1897896134837682288',
@@ -57,19 +57,19 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
               <SciraLogo className="size-8" />
-              <span className="text-lg font-medium">Scira AI</span>
+              <span className="text-lg font-medium">Vega AI</span>
             </Link>
           </div>
 
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-semibold text-foreground mb-3">AI Search that actually understands you</h2>
-              <p className="text-muted-foreground">Skip the ads. Get real answers. From the latest AI models.</p>
+              <h2 className="text-3xl font-semibold text-foreground mb-3">ИИ поиск, который действительно понимает вас</h2>
+              <p className="text-muted-foreground">Никакой рекламы. Только реальные ответы. От новейших ИИ моделей.</p>
             </div>
 
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                What people are saying
+                Что говорят пользователи
               </h3>
 
               <Carousel
@@ -118,7 +118,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                       className={`w-1.5 h-1.5 rounded-full transition-colors ${
                         index === current ? 'bg-foreground' : 'bg-muted-foreground/30'
                       }`}
-                      aria-label={`Go to testimonial ${index + 1}`}
+                      aria-label={`Перейти к отзыву ${index + 1}`}
                     />
                   ))}
                 </div>
@@ -134,17 +134,17 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                 rel="noopener noreferrer"
                 className="hover:text-foreground transition-colors"
               >
-                Open Source
+                Открытый код
               </a>
               <span>•</span>
-              <span>Live Search</span>
+              <span>Живой поиск</span>
               <span>•</span>
-              <span>1M+ Searches served</span>
+              <span>Более 1М поисковых запросов</span>
             </div>
             <p className="text-xs text-muted-foreground">
-              Featured on{' '}
+              Представлено на{' '}
               <a
-                href="https://vercel.com/blog/ai-sdk-4-1"
+                href="https://vega.chat"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-foreground transition-colors"
@@ -153,12 +153,12 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               </a>{' '}
               •{' '}
               <a
-                href="https://peerlist.io/zaidmukaddam/project/scira-ai-20"
+                href="https://vega.chat"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-foreground transition-colors"
               >
-                #1 Product of the Week on Peerlist
+                #1 Продукт недели на Peerlist
               </a>
             </p>
           </div>

@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 export function SciraLogo({
   className,
   width,
@@ -9,6 +13,15 @@ export function SciraLogo({
   height?: number;
   color?: string;
 }) {
+  const [clicked, setClicked] = useState(false)
+
+  // Обработчик клика для запуска анимации расхождения лучей
+  const handleClick = () => {
+    setClicked(true)
+    // Сброс анимации через 2 секунды для повторного использования
+    setTimeout(() => setClicked(false), 2000)
+  }
+
   return (
     <svg
       viewBox="0 0 910 934"
@@ -18,6 +31,7 @@ export function SciraLogo({
       width={width}
       height={height}
       color={color}
+      onClick={handleClick}
     >
       <path
         d="M647.664 197.775C569.13 189.049 525.5 145.419 516.774 66.8849C508.048 145.419 464.418 189.049 385.884 197.775C464.418 206.501 508.048 250.131 516.774 328.665C525.5 250.131 569.13 206.501 647.664 197.775Z"
@@ -64,6 +78,135 @@ export function SciraLogo({
         stroke-linecap="round"
         stroke-linejoin="round"
       />
+      
+      {/* Анимированные лучи с эффектом расхождения */}
+      <g className={`animated-rays ${clicked ? 'active' : ''}`}>
+        {/* Центральный световой эффект */}
+        <circle
+          cx="455"
+          cy="467"
+          r="8"
+          fill="url(#paint1_linear_1_2)"
+          className="center-glow"
+          opacity="0.8"
+        />
+        
+        {/* Основные лучи (вертикальные и горизонтальные) */}
+        <path
+          d="M455 467L455 380"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="4"
+          strokeLinecap="round"
+          className="ray ray-top"
+        />
+        <path
+          d="M455 554L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="4"
+          strokeLinecap="round"
+          className="ray ray-bottom"
+        />
+        <path
+          d="M542 467L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="4"
+          strokeLinecap="round"
+          className="ray ray-right"
+        />
+        <path
+          d="M368 467L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="4"
+          strokeLinecap="round"
+          className="ray ray-left"
+        />
+        
+        {/* Диагональные лучи */}
+        <path
+          d="M516.5 405.5L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          className="ray ray-top-right"
+        />
+        <path
+          d="M393.5 528.5L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          className="ray ray-bottom-left"
+        />
+        <path
+          d="M516.5 528.5L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          className="ray ray-bottom-right"
+        />
+        <path
+          d="M393.5 405.5L455 467"
+          stroke="url(#paint1_linear_1_2)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          className="ray ray-top-left"
+        />
+      </g>
+      
+      <defs>
+        <linearGradient id="paint1_linear_1_2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor={color ? color : 'currentColor'} stopOpacity="1" />
+          <stop offset="100%" stopColor={color ? color : 'currentColor'} stopOpacity="0.3" />
+        </linearGradient>
+      </defs>
     </svg>
   );
 }
+
+// CSS стили для анимации (добавить в глобальные стили)
+/*
+.animated-rays {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.animated-rays.active {
+  opacity: 1;
+}
+
+.animated-rays.active .ray {
+  animation: rayExpand 2s ease-out;
+}
+
+.animated-rays.active .center-glow {
+  animation: glowPulse 2s ease-out;
+}
+
+@keyframes rayExpand {
+  0% {
+    stroke-dasharray: 0 100;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 100 0;
+    opacity: 0.7;
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    r: 0;
+    opacity: 0;
+  }
+  50% {
+    r: 12;
+    opacity: 1;
+  }
+  100% {
+    r: 8;
+    opacity: 0.8;
+  }
+}
+*/

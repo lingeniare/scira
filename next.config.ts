@@ -53,23 +53,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/ph',
-        destination: 'https://www.producthunt.com/posts/scira',
-        permanent: true,
-      },
-      {
-        source: '/raycast',
-        destination: 'https://www.raycast.com/zaidmukaddam/scira',
-        permanent: true,
-      },
-      {
-        source: '/plst',
-        destination: 'https://peerlist.io/zaidmukaddam/project/scira-ai-20',
-        permanent: true,
-      },
-      {
         source: '/blog',
-        destination: 'https://blog.scira.ai',
+        destination: 'https://blog.vega.chat',
         permanent: true,
       },
     ];

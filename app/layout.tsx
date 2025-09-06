@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: '%s | Vega AI',
     absolute: 'Vega AI',
   },
-  description: 'Scira AI is a minimalistic AI-powered search engine that helps you find information on the internet.',
+  description: 'Vega AI is a minimalistic AI-powered search engine that helps you find information on the internet.',
   openGraph: {
     url: 'https://vega.chat',
     siteName: 'Vega AI',

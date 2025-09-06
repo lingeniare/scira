@@ -43,6 +43,9 @@ const transporter = nodemailer.createTransport({
     // Игнорировать самоподписанные сертификаты
     rejectUnauthorized: false,
   },
+  // Опции отладки для отображения ошибок SMTP
+  debug: true, // Включает детальное логирование
+  logger: true, // Включает логгер для отслеживания процесса отправки
 });
 
 // Экспортируемая функция для отправки Magic Link
@@ -127,7 +130,7 @@ export const auth = betterAuth({
                 <head>
                   <meta charset="utf-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Войти в Scira AI</title>
+                  <title>Войти в Vega AI</title>
                 </head>
                 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
                   <div style="text-align: center; margin-bottom: 30px;">

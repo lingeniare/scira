@@ -638,59 +638,9 @@ const ChatInterface = memo(
               <div className="text-center m-0 mb-8">
                 <div className="inline-flex items-center gap-3">
                   <button 
-                    className="group relative transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-full p-2"
-                    onClick={(e) => {
-                      // Создаем эффект лучей желтого света
-                      const button = e.currentTarget;
-                      const rect = button.getBoundingClientRect();
-                      const centerX = rect.left + rect.width / 2;
-                      const centerY = rect.top + rect.height / 2;
-                      
-                      // Создаем контейнер для лучей
-                      const raysContainer = document.createElement('div');
-                      raysContainer.className = 'fixed pointer-events-none z-50';
-                      raysContainer.style.left = centerX + 'px';
-                      raysContainer.style.top = centerY + 'px';
-                      raysContainer.style.transform = 'translate(-50%, -50%)';
-                      
-                      // Создаем 8 лучей
-                      for (let i = 0; i < 8; i++) {
-                        const ray = document.createElement('div');
-                        const angle = (i * 45) * (Math.PI / 180); // Углы: 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°
-                        
-                        ray.className = 'absolute bg-gradient-to-r from-yellow-400 via-yellow-300 to-transparent';
-                        ray.style.width = '0px';
-                        ray.style.height = '3px';
-                        ray.style.borderRadius = '2px';
-                        ray.style.transformOrigin = 'left center';
-                        ray.style.transform = `rotate(${i * 45}deg)`;
-                        ray.style.opacity = '0.8';
-                        ray.style.boxShadow = '0 0 8px rgba(255, 193, 7, 0.6)';
-                        
-                        raysContainer.appendChild(ray);
-                        
-                        // Анимация расширения луча
-                        setTimeout(() => {
-                          ray.style.transition = 'width 0.6s ease-out, opacity 0.6s ease-out';
-                          ray.style.width = '40px'; // 1-2 см в пикселях
-                        }, i * 50); // Небольшая задержка между лучами
-                        
-                        // Анимация исчезновения
-                        setTimeout(() => {
-                          ray.style.opacity = '0';
-                        }, 1500 + i * 50);
-                      }
-                      
-                      document.body.appendChild(raysContainer);
-                      
-                      // Удаляем контейнер после завершения анимации
-                      setTimeout(() => {
-                        if (raysContainer.parentNode) {
-                          raysContainer.parentNode.removeChild(raysContainer);
-                        }
-                      }, 3000);
-                      
-                      // Добавляем пульсацию к самой иконке
+                    className="group transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-full p-2"
+                    onClick={() => {
+                      // Интерактивность - можно добавить анимацию или действие
                       const sparkles = document.querySelectorAll('.sparkle-icon');
                       sparkles.forEach(sparkle => {
                         sparkle.classList.add('animate-pulse');

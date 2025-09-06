@@ -230,7 +230,7 @@ const UserProfile = memo(
 
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://api.scira.ai/'}
+                href={'https://api.vega.chat/'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -306,7 +306,7 @@ const UserProfile = memo(
             </DropdownMenuItem> */}
             {/* <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://www.instagram.com/scira.ai'}
+                href={'https://www.instagram.com/vega.chat'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -334,7 +334,7 @@ const UserProfile = memo(
                 className="w-full flex items-center gap-2"
               >
                 <Bug className="size-4" />
-                <span>Сообщить о баге</span>
+                <span>Предложения и баги</span>
               </a>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

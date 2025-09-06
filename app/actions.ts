@@ -1575,11 +1575,11 @@ export async function createScheduledLookout({
 
           if (delay > 0) {
             await qstash.publish({
-              // if dev env use localhost:3000/api/lookout, else use scira.ai/api/lookout
+              // if dev env use localhost:3000/api/lookout, else use vega.chat/api/lookout
               url:
                 process.env.NODE_ENV === 'development'
                   ? process.env.NGROK_URL + '/api/lookout'
-                  : `https://scira.ai/api/lookout`,
+                  : `https://vega.chat/api/lookout`,
               body: JSON.stringify({
                 lookoutId: lookout.id,
                 prompt,
@@ -1609,11 +1609,11 @@ export async function createScheduledLookout({
           console.log('📅 Cron schedule with timezone:', cronSchedule);
 
           const scheduleResponse = await qstash.schedules.create({
-            // if dev env use localhost:3000/api/lookout, else use scira.ai/api/lookout
+            // if dev env use localhost:3000/api/lookout, else use vega.chat/api/lookout
             destination:
               process.env.NODE_ENV === 'development'
                 ? process.env.NGROK_URL + '/api/lookout'
-                : `https://scira.ai/api/lookout`,
+                : `https://vega.chat/api/lookout`,
             method: 'POST',
             cron: cronSchedule,
             body: JSON.stringify({
@@ -1809,11 +1809,11 @@ export async function updateLookoutAction({
 
         // Create new schedule with updated cron
         const scheduleResponse = await qstash.schedules.create({
-          // if dev env use localhost:3000/api/lookout, else use scira.ai/api/lookout
+          // if dev env use localhost:3000/api/lookout, else use vega.chat/api/lookout
           destination:
             process.env.NODE_ENV === 'development'
               ? process.env.NGROK_URL + '/api/lookout'
-              : `https://scira.ai/api/lookout`,
+              : `https://vega.chat/api/lookout`,
           method: 'POST',
           cron: cronSchedule,
           body: JSON.stringify({
@@ -1915,7 +1915,7 @@ export async function testLookoutAction({ id }: { id: string }) {
 
     // Make a POST request to the lookout API endpoint to trigger the run
     const response = await fetch(
-      process.env.NODE_ENV === 'development' ? process.env.NGROK_URL + '/api/lookout' : `https://scira.ai/api/lookout`,
+      process.env.NODE_ENV === 'development' ? process.env.NGROK_URL + '/api/lookout' : `https://vega.chat/api/lookout`,
       {
         method: 'POST',
         headers: {

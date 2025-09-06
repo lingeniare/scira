@@ -56,15 +56,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
   return {
     title: title,
-    description: 'Поиск в scira.ai',
+    description: 'Поиск в vega.chat',
     openGraph: {
       title: title,
-      url: `https://scira.ai/search/${id}`,
-      description: 'Поиск в scira.ai',
-      siteName: 'scira.ai',
+      url: `https://vega.chat/search/${id}`,
+      description: 'Поиск в vega.chat',
+      siteName: 'vega.chat',
       images: [
         {
-          url: `https://scira.ai/api/og/chat/${id}`,
+          url: `https://vega.chat/api/og/chat/${id}`,
           width: 1200,
           height: 630,
         },
@@ -73,20 +73,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     twitter: {
       card: 'summary_large_image',
       title: title,
-      url: `https://scira.ai/search/${id}`,
-      description: 'Поиск в scira.ai',
-      siteName: 'scira.ai',
+      url: `https://vega.chat/search/${id}`,
+      description: 'Поиск в vega.chat',
+      siteName: 'vega.chat',
       creator: '@sciraai',
       images: [
         {
-          url: `https://scira.ai/api/og/chat/${id}`,
+          url: `https://vega.chat/api/og/chat/${id}`,
           width: 1200,
           height: 630,
         },
       ],
     },
     alternates: {
-      canonical: `https://scira.ai/search/${id}`,
+      canonical: `https://vega.chat/search/${id}`,
     },
   } as Metadata;
 }

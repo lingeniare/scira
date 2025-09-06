@@ -307,7 +307,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                        model.category.toLowerCase().includes(searchTerm) ? 1 : 0;
               }}
             >
-              <CommandInput placeholder="Выберете ИИ ..." className="h-9" />
+              <CommandInput placeholder="Поиск AI ..." className="h-9" />
               <CommandEmpty>Модель не найдена.</CommandEmpty>
               <CommandList className="max-h-[15em]">
                 {orderedGroupEntries.map(([category, categoryModels], categoryIndex) => (
@@ -1026,11 +1026,11 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
                 return searchableFields.includes(searchTerm) ? 1 : 0;
               }}
             >
-              <CommandInput placeholder="Search modes..." className="h-9" />
+              <CommandInput placeholder="Поиск режимов..." className="h-9" />
               <CommandEmpty>No search mode found.</CommandEmpty>
               <CommandList className="max-h-[240px]">
                 <CommandGroup>
-                  <div className="px-2 py-1 text-[10px] font-medium text-muted-foreground">Search Mode</div>
+                  <div className="px-2 py-1 text-[10px] font-medium text-muted-foreground">Режимы поиска</div>
                   {visibleGroups.map((group) => {
                     const Icon = group.icon;
                     return (
@@ -2536,8 +2536,8 @@ const FormComponent: React.FC<FormComponentProps> = ({
                       onModelSelect={(model) => {
                         setSelectedModel(model.value);
                         const isVisionModel = hasVisionSupport(model.value);
-                        toast.message(`Switched to ${model.label}`, {
-                          description: isVisionModel ? 'You can now upload images to the model.' : undefined,
+                        toast.message(`Переключено на ${model.label}`, {
+                          description: isVisionModel ? 'С Pro вы сможете загружать изображения и pdf' : undefined,
                         });
                       }}
                       subscriptionData={subscriptionData}

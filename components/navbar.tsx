@@ -70,7 +70,7 @@ const Navbar = memo(
 
       if (!chatId) return;
 
-      const url = `https://scira.ai/search/${chatId}`;
+      const url = `https://vega.chat/search/${chatId}`;
       navigator.clipboard.writeText(url);
       setCopied(true);
       toast.success('Link copied to clipboard');
@@ -79,7 +79,7 @@ const Navbar = memo(
     };
 
     // Generate the share URL
-    const shareUrl = chatId ? `https://scira.ai/search/${chatId}` : '';
+    const shareUrl = chatId ? `https://vega.chat/search/${chatId}` : '';
 
     // Social media share handlers
     const handleShareVK = (e: React.MouseEvent) => {

@@ -454,3 +454,60 @@
 .nearby-search-map::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Анимация расхождения лучей для Scira Logo */
+.animated-rays {
+  transform-origin: 455px 467px;
+}
+
+/* Центральный световой эффект */
+.center-glow {
+  transform-origin: 455px 467px;
+  transform: scale(0);
+  transition: all 0.3s ease-out;
+}
+
+.animated-rays.active .center-glow {
+  transform: scale(2);
+  opacity: 0.3;
+  animation: pulse 0.6s ease-out;
+}
+
+/* Базовые стили для лучей */
+.ray {
+  transform-origin: 455px 467px;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Анимация активных лучей с задержками для волнового эффекта */
+.animated-rays.active .ray-top,
+.animated-rays.active .ray-bottom,
+.animated-rays.active .ray-left,
+.animated-rays.active .ray-right {
+  transform: scale(1.2);
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+
+.animated-rays.active .ray-top-right,
+.animated-rays.active .ray-top-left,
+.animated-rays.active .ray-bottom-right,
+.animated-rays.active .ray-bottom-left {
+  transform: scale(1.4);
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+/* Анимация пульсации центра */
+@keyframes pulse {
+  0% { transform: scale(0); opacity: 0.8; }
+  50% { transform: scale(3); opacity: 0.4; }
+  100% { transform: scale(2); opacity: 0.3; }
+}
+
+/* Эффект свечения при наведении */
+.scira-logo:hover .animated-rays .ray {
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+}

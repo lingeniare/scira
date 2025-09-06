@@ -58,7 +58,7 @@ export const scira = customProvider({
     
     // Новые модели через OpenRouter
 
-    'scira-kimi-k2-new': openrouter.chat('moonshotai/kimi-k2'),
+    'scira-kimi-k2-new': openrouter.chat('moonshotai/kimi-k2-0905'),
     'scira-glm-4-5v': openrouter.chat('z-ai/glm-4.5v'),
     
     // DeepSeek V3.1 модели
@@ -72,7 +72,10 @@ export const scira = customProvider({
     'scira-qwen-thinking': wrapLanguageModel({
       model: openrouter.chat('qwen/qwen3-30b-a3b-thinking-2507'),
       middleware,
-    })
+    }),
+    
+    // Qwen3 Max модель через OpenRouter
+    'scira-qwen-max': openrouter.chat('qwen/qwen3-max')
   },
 });
 
@@ -157,21 +160,6 @@ export const models: Model[] = [
     maxOutputTokens: 16000,
   },
   {
-    value: 'scira-grok-code',
-    label: 'Grok Code Fast',
-    description: "xAI's speedy coding model with reasoning and function calling capabilities",
-    vision: true,
-    reasoning: true,
-    experimental: false,
-    category: 'Pro',
-    pdf: true,
-    pro: true,
-    ultra: false,
-    requiresAuth: false,
-    freeUnlimited: false,
-    maxOutputTokens: 256000,
-  },
-  {
     value: 'scira-5-mini',
     label: 'GPT 5 Mini',
     description: "OpenAI's latest flagship mini LLM",
@@ -203,7 +191,7 @@ export const models: Model[] = [
   },
   {
     value: 'scira-kimi-k2-new',
-    label: 'Kimi K2',
+    label: 'Kimi K2 0905',
     description: "MoonShot AI's advanced base LLM",
     vision: true,
     reasoning: false,
@@ -307,6 +295,21 @@ export const models: Model[] = [
     requiresAuth: false,
     freeUnlimited: false,
     maxOutputTokens: 10000,
+  },
+  {
+    value: 'scira-qwen-max',
+    label: 'Qwen3 Max',
+    description: "Qwen's flagship model with advanced reasoning and multilingual support",
+    vision: true,
+    reasoning: true,
+    experimental: false,
+    category: 'Ultra',
+    pdf: true,
+    pro: false,
+    ultra: true,
+    requiresAuth: false,
+    freeUnlimited: false,
+    maxOutputTokens: 256000,
   },
   {
     value: 'scira-deepseek-reasoner',

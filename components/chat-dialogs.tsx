@@ -219,7 +219,7 @@ export const LookoutAnnouncementDialog = React.memo(({ open, onOpenChange }: Loo
                 className="w-full sm:flex-1 group"
               >
                 <HugeiconsIcon icon={BinocularsIcon} size={16} color="currentColor" strokeWidth={2} className="mr-2" />
-                Изучить
+                Подробнее тут
                 <span className="sm:ml-auto text-base font-mono hidden sm:inline">⌘ ⏎</span>
               </Button>
               <Button
@@ -231,7 +231,7 @@ export const LookoutAnnouncementDialog = React.memo(({ open, onOpenChange }: Loo
                 className="w-full sm:flex-1 group shadow-none"
               >
                 <HugeiconsIcon icon={BookOpen01Icon} size={16} color="currentColor" strokeWidth={2} className="mr-2" />
-                Читать
+                Перейти в блог
                 <span className="sm:ml-auto font-mono text-base hidden sm:inline">{isMac ? '⌘' : 'Ctrl'} B</span>
               </Button>
             </div>

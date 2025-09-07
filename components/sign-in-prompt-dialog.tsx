@@ -68,17 +68,15 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
     
     setMagicLinkLoading(true);
     try {
-      // Используем встроенный API better-auth для отправки magic link
-      const response = await fetch('/api/auth/magic-link', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
+      // Отправляем Magic Link через Better Auth client (плагин magicLinkClient)
+      // Функционал: обращаемся к серверному эндпоинту Better Auth POST /api/auth/sign-in/magic-link через клиент
+      const { error } = await signIn.magicLink({
+        email,
+        // При необходимости можно добавить callbackURL/newUserCallbackURL/errorCallbackURL
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send magic link');
+      if (error) {
+        throw new Error(error.message || 'Failed to send magic link');
       }
 
       setMagicLinkSent(true);

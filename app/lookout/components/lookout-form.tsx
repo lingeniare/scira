@@ -56,7 +56,10 @@ export function LookoutForm({
     updateLookoutFromForm,
   } = formHook;
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
     if (editingLookout) {
       updateLookoutFromForm(formData, updateLookout);
     } else {
@@ -70,7 +73,7 @@ export function LookoutForm({
     (!editingLookout && !canCreateMore);
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* Title */}
       <div>
         <Input

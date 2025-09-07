@@ -48,26 +48,8 @@ const transporter = nodemailer.createTransport({
   logger: true, // Включает логгер для отслеживания процесса отправки
 });
 
-// Экспортируемая функция для отправки Magic Link
-export async function sendMagicLink(email: string): Promise<void> {
-  try {
-    // Используем встроенный API better-auth для отправки magic link
-    const response = await fetch('/api/auth/magic-link', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to send magic link');
-    }
-  } catch (error) {
-    console.error('Error sending magic link:', error);
-    throw error;
-  }
-}
+// Better-auth автоматически создает endpoint /api/auth/magic-link через плагин magicLink
+// Функция sendMagicLink больше не нужна, так как better-auth обрабатывает это автоматически
 
 // Utility function to safely parse dates
 function safeParseDate(value: string | Date | null | undefined): Date | null {

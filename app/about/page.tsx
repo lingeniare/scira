@@ -93,7 +93,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                 <ShieldCheck className="h-4 w-4" />
                 <span className="text-sm font-medium">
-                  Scira is not connected to any cryptocurrency tokens or coins. We are purely an AI search engine.
+                  Vega не связана ни с какими криптовалютными токенам или монетами, фондовыми компаниями или владельцами валют. Мы — исключительно AI-чат и поиск!
                 </span>
               </div>
               <button
@@ -114,10 +114,10 @@ export default function AboutPage() {
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-primary">
                 <FileText className="size-5" />
-                Terms and Privacy
+                Условия и конфиденциальность
               </DialogTitle>
               <DialogDescription className="text-muted-foreground mt-2">
-                Please review our Terms of Service and Privacy Policy before continuing.
+                Пожалуйста, ознакомьтесь с нашими Условиями сервиса и Политикой обработки персональных данных.
               </DialogDescription>
             </DialogHeader>
           </div>
@@ -126,13 +126,13 @@ export default function AboutPage() {
             <div className="space-y-2">
               <h3 className="text-sm font-medium flex items-center gap-2">
                 <ShieldCheck className="size-4 text-primary" />
-                Terms of Service
+                Условия обслуживания
               </h3>
               <p className="text-xs text-muted-foreground">
-                By using Scira, you agree to our Terms of Service which outline the rules for using our platform.
+                Используя Vega, вы соглашаетесь с нашими Условиями сервиса, которые определяют правила использования нашей платформы.
               </p>
               <Link href="/terms" className="text-xs text-primary hover:underline inline-flex items-center">
-                Read full Terms of Service
+                Прочитать полные Условия сервиса
                 <ArrowUpRight className="size-3 ml-1" />
               </Link>
             </div>
@@ -140,13 +140,13 @@ export default function AboutPage() {
             <div className="space-y-2">
               <h3 className="text-sm font-medium flex items-center gap-2">
                 <ShieldCheck className="size-4 text-primary" />
-                Privacy Policy
+                Политика обработки персональных данных
               </h3>
               <p className="text-xs text-muted-foreground">
-                Our Privacy Policy describes how we collect, use, and protect your personal information.
+                Наша Политика конфиденциальности описывает, как мы собираем, используем и защищаем вашу личную информацию.
               </p>
               <Link href="/privacy-policy" className="text-xs text-primary hover:underline inline-flex items-center">
-                Read full Privacy Policy
+                Прочитать полную Политику обработки персональных данных
                 <ArrowUpRight className="size-3 ml-1" />
               </Link>
             </div>
@@ -161,14 +161,14 @@ export default function AboutPage() {
                 className="mt-0.5"
               />
               <label htmlFor="terms" className="text-sm font-medium cursor-pointer">
-                I agree to the Terms of Service and Privacy Policy
+                Я согласен с Условиями обслуживания и Политикой обработки персональных данных
               </label>
             </div>
           </div>
 
           <DialogFooter className="p-6 pt-2">
             <Button onClick={handleAcceptTerms} disabled={!acceptedTerms} className="w-full">
-              Continue
+              Продолжить
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -182,7 +182,7 @@ export default function AboutPage() {
               <div className="relative">
                 <SciraLogo className="size-8 transition-transform group-hover:scale-110" />
               </div>
-              <span className="text-xl font-bold tracking-tight">Scira</span>
+              <span className="text-xl font-bold tracking-tight">Vega</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -190,22 +190,22 @@ export default function AboutPage() {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <Link href="/" passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Search</NavigationMenuLink>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Поиск</NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/pricing" passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Pricing</NavigationMenuLink>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Цены</NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/terms" passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Terms</NavigationMenuLink>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Условия</NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/privacy-policy" passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Privacy</NavigationMenuLink>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Конфиденциальность</NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
@@ -240,7 +240,7 @@ export default function AboutPage() {
                 className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium"
                 onClick={() => router.push('/')}
               >
-                Try Free
+                Попробовать бесплатно
               </Button>
             </div>
           </div>
@@ -256,12 +256,11 @@ export default function AboutPage() {
             </div>
 
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground max-w-3xl mx-auto">
-              Open Source AI-Powered Search Engine
+              Поисковая система с открытым исходным кодом на базе AI
             </h2>
 
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              A clean, minimalistic search engine with RAG and search grounding capabilities. Get accurate, up-to-date
-              answers from reliable sources.
+              Чистая, минималистичная поисковая система с возможностями RAG и поискового обоснования. Получайте точные, актуальные ответы из надежных источников.
             </p>
           </div>
 
@@ -272,14 +271,14 @@ export default function AboutPage() {
                 <input
                   type="text"
                   name="query"
-                  placeholder="Ask anything..."
+                  placeholder="Спросите что угодно..."
                   className="w-full h-14 px-6 pr-20 text-base rounded-lg bg-background border-2 border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground"
                 />
                 <button
                   type="submit"
                   className="absolute right-2 top-2 h-10 px-5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
                 >
-                  Search
+                  Поиск
                 </button>
               </div>
             </form>
@@ -288,13 +287,13 @@ export default function AboutPage() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="https://git.new/scira"
+              href="https://t.me/getmyai"
               className="inline-flex h-11 items-center gap-2 px-6 rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
               <GithubLogo className="h-4 w-4" />
-              <span className="font-medium">View Source</span>
+              <span className="font-medium">Посмотреть исходный код</span>
               {!isLoadingStars && githubStars && (
                 <Badge variant="secondary" className="ml-2">
                   {githubStars.toLocaleString()}
@@ -305,7 +304,7 @@ export default function AboutPage() {
               href="/"
               className="inline-flex h-11 items-center gap-2 px-6 rounded-lg border-2 border-border hover:border-primary hover:bg-accent transition-colors"
             >
-              <span className="font-medium">Try Now</span>
+              <span className="font-medium">Попробовать сейчас</span>
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
@@ -317,11 +316,11 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="space-y-2">
               <div className="text-3xl font-bold">1M+</div>
-              <p className="text-muted-foreground">Questions Answered</p>
+              <p className="text-muted-foreground">Ответов на вопросы</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold">100K+</div>
-              <p className="text-muted-foreground">Active Users</p>
+              <p className="text-muted-foreground">Активных пользователей</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold">
@@ -331,7 +330,7 @@ export default function AboutPage() {
                   `${githubStars?.toLocaleString() || '9,000'}+`
                 )}
               </div>
-              <p className="text-muted-foreground">GitHub Stars</p>
+              <p className="text-muted-foreground">Звезд на GitHub</p>
             </div>
           </div>
         </div>
@@ -340,8 +339,8 @@ export default function AboutPage() {
       <section className="py-16 px-4">
         <div className="container max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-2xl font-semibold mb-4">Recognition & Awards</h2>
-            <p className="text-muted-foreground">Recognized by leading platforms and communities</p>
+            <h2 className="text-2xl font-semibold mb-4">Признание и награды</h2>
+            <p className="text-muted-foreground">Признано ведущими платформами и сообществами</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -355,7 +354,7 @@ export default function AboutPage() {
                   className="size-16 object-contain mx-auto"
                 />
               </div>
-              <h3 className="font-semibold mb-1">#1 Product of the Week</h3>
+              <h3 className="font-semibold mb-1">Продукт №1 недели</h3>
               <p className="text-sm text-muted-foreground">Tiny Startups</p>
             </div>
 
@@ -369,7 +368,7 @@ export default function AboutPage() {
                   className="h-16 w-16 object-contain mx-auto"
                 />
               </div>
-              <h3 className="font-semibold mb-1">#1 Project of the Week</h3>
+              <h3 className="font-semibold mb-1">Проект №1 недели</h3>
               <p className="text-sm text-muted-foreground">Peerlist</p>
             </div>
           </div>
@@ -385,7 +384,7 @@ export default function AboutPage() {
                 src="https://openalternative.co/scira/badge.svg?theme=dark&width=200&height=50"
                 width={200}
                 height={50}
-                alt="Scira badge"
+                alt="Vega badge"
                 className="mx-auto"
               />
             </a>
@@ -394,9 +393,10 @@ export default function AboutPage() {
       </section>
       {/* Features Section */}
       <section className="py-20 px-4 bg-muted/30">
+        
         <div className="container max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
+            <h2 className="text-2xl font-semibold mb-4">Ключевые особенности</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Built with modern AI technology to provide accurate and reliable search results
             </p>
@@ -407,9 +407,9 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Brain className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Advanced AI Models</h3>
+              <h3 className="text-lg font-semibold mb-2">Продвинутые модели ИИ</h3>
               <p className="text-muted-foreground">
-                Uses multiple state-of-the-art AI models to understand and answer complex questions accurately.
+                Использует несколько передовых моделей ИИ для точного понимания и ответа на сложные вопросы.
               </p>
             </div>
 
@@ -417,9 +417,9 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Search className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Real-time Search</h3>
+              <h3 className="text-lg font-semibold mb-2">Поиск в реальном времени</h3>
               <p className="text-muted-foreground">
-                Combines RAG and search grounding to retrieve up-to-date information from reliable sources.
+                Объединяет RAG и поисковое обоснование для получения актуальной информации из надежных источников.
               </p>
             </div>
 
@@ -427,9 +427,9 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Bot className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Open Source</h3>
+              <h3 className="text-lg font-semibold mb-2">Открытый исходный код</h3>
               <p className="text-muted-foreground">
-                Fully open source and transparent. Contribute to development or self-host your own instance.
+                Полностью открытый исходный код и прозрачность. Участвуйте в разработке или размещайте свой собственный экземпляр.
               </p>
             </div>
 
@@ -437,9 +437,9 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Eye className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Vega автоматиация</h3>
+              <h3 className="text-lg font-semibold mb-2">Автоматизация Vega</h3>
               <p className="text-muted-foreground">
-                Schedule automated searches to monitor trends and get regular updates on topics that matter to you.
+                Планируйте автоматические поиски для отслеживания тенденций и получения регулярных обновлений по важным для вас темам.
               </p>
             </div>
           </div>
@@ -449,9 +449,9 @@ export default function AboutPage() {
       <section className="py-20 px-4">
         <div className="container max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-2xl font-semibold mb-4">Built With Industry Leaders</h2>
+            <h2 className="text-2xl font-semibold mb-4">Создано с лидерами индустрии</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Powered by cutting-edge technology from leading companies
+              Работает на передовых технологиях от ведущих компаний
             </p>
           </div>
 
@@ -461,7 +461,7 @@ export default function AboutPage() {
                 <VercelLogo />
               </div>
               <h3 className="text-lg font-semibold mb-2">Vercel AI SDK</h3>
-              <p className="text-muted-foreground text-sm">Advanced AI framework powering intelligent responses</p>
+              <p className="text-muted-foreground text-sm">Продвинутый фреймворк ИИ, обеспечивающий интеллектуальные ответы</p>
             </div>
 
             <div className="bg-card border border-border rounded-lg p-8 text-center">
@@ -469,7 +469,7 @@ export default function AboutPage() {
                 <ExaLogo />
               </div>
               <h3 className="text-lg font-semibold mb-2">Exa Search</h3>
-              <p className="text-muted-foreground text-sm">Real-time search grounding with reliable sources</p>
+              <p className="text-muted-foreground text-sm">Поисковое обоснование в реальном времени с надежными источниками</p>
             </div>
 
             <div className="bg-card border border-border rounded-lg p-8 text-center">
@@ -477,7 +477,7 @@ export default function AboutPage() {
                 <ElevenLabsLogo />
               </div>
               <h3 className="text-lg font-semibold mb-2">ElevenLabs Voice</h3>
-              <p className="text-muted-foreground text-sm">Natural voice synthesis with human-like quality</p>
+              <p className="text-muted-foreground text-sm">Естественный синтез голоса с человеческим качеством</p>
             </div>
           </div>
         </div>
@@ -487,10 +487,10 @@ export default function AboutPage() {
         <div className="container max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h2 className="text-2xl font-semibold">Featured on Vercel&apos;s Blog</h2>
+              <h2 className="text-2xl font-semibold">Представлено в блоге Vercel</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Recognized for our innovative use of AI technology and contribution to the developer community through
-                the Vercel AI SDK.
+                Признаны за наше инновационное использование технологии ИИ и вклад в сообщество разработчиков через
+                Vercel AI SDK.
               </p>
               <Link
                 href="https://vercel.com/blog/ai-sdk-4-1"
@@ -498,7 +498,7 @@ export default function AboutPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Read the Feature
+                Прочитать статью
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
@@ -512,9 +512,9 @@ export default function AboutPage() {
       <section className="py-20 px-4 bg-muted/30">
         <div className="container max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-2xl font-semibold mb-4">Available AI Models</h2>
+            <h2 className="text-2xl font-semibold mb-4">Доступные модели ИИ</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose from a variety of models, each optimized for different tasks
+              Выбирайте из множества моделей, каждая из которых оптимизирована для разных задач
             </p>
           </div>
 
@@ -523,10 +523,10 @@ export default function AboutPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-border">
-                    <TableHead className="font-semibold">Model</TableHead>
-                    <TableHead className="font-semibold">Description</TableHead>
-                    <TableHead className="font-semibold">Category</TableHead>
-                    <TableHead className="font-semibold">Capabilities</TableHead>
+                    <TableHead className="font-semibold">Модель</TableHead>
+                    <TableHead className="font-semibold">Описание</TableHead>
+                    <TableHead className="font-semibold">Категория</TableHead>
+                    <TableHead className="font-semibold">Возможности</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -579,16 +579,16 @@ export default function AboutPage() {
       <section className="py-20 px-4">
         <div className="container max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-2xl font-medium mb-4 tracking-tight">Pricing</h2>
-            <p className="text-muted-foreground/80 max-w-lg mx-auto">Simple, transparent pricing for everyone</p>
+            <h2 className="text-2xl font-medium mb-4 tracking-tight">Цены</h2>
+            <p className="text-muted-foreground/80 max-w-lg mx-auto">Простое, прозрачное ценообразование для всех</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Free Plan */}
             <div className="bg-background/50 border border-border/50 rounded-xl p-8 hover:border-border/80 transition-colors flex flex-col">
               <div className="mb-8">
-                <h3 className="text-xl font-medium mb-2">Free</h3>
-                <p className="text-muted-foreground/70 mb-4">Get started with essential features</p>
+                <h3 className="text-xl font-medium mb-2">Бесплатно</h3>
+                <p className="text-muted-foreground/70 mb-4">Начните с основных функций</p>
                 <div className="space-y-1">
                   <div className="flex items-baseline">
                     <span className="text-3xl font-light tracking-tight">$0</span>
@@ -604,23 +604,28 @@ export default function AboutPage() {
               <ul className="space-y-3 flex-1 mb-8">
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">10 searches per day</span>
+                  <span className="text-muted-foreground">10 поисков в день</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">5 extreme searches per month</span>
+                  <span className="text-muted-foreground">5 экстремальных поисков в месяц</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Basic AI models</span>
+                  <span className="text-muted-foreground">Базовые модели ИИ</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Search history</span>
+                  <span className="text-muted-foreground">История поиска</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">No Lookout access</span>
+                  <span className="text-muted-foreground">Нет доступа к Lookout</span>
+                
                 </li>
               </ul>
 
@@ -629,8 +634,9 @@ export default function AboutPage() {
                 className="w-full border-border/60 hover:border-border"
                 onClick={() => router.push('/')}
               >
-                Get Started
+                Начать
               </Button>
+            
             </div>
 
             {/* Ultra Plan */}
@@ -639,12 +645,15 @@ export default function AboutPage() {
 
               <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-xl font-medium">Ultra</h3>
+                  <h3 className="text-xl font-medium">Ультра</h3>
+                  
                   <span className="text-xs font-medium text-orange-600/80 bg-orange-600/10 px-2.5 py-1 rounded-full">
-                    Premium
+                    Премиум
                   </span>
+                
                 </div>
-                <p className="text-muted-foreground/70 mb-4">Maximum power for professionals</p>
+                <p className="text-muted-foreground/70 mb-4">Максимальная мощность для профессионалов</p>
+                
                 <div className="space-y-1">
                   <div className="flex items-baseline">
                     <span className="text-3xl font-light tracking-tight">₹{PRICING.ULTRA_MONTHLY_INR}</span>
@@ -660,29 +669,35 @@ export default function AboutPage() {
               <ul className="space-y-3 flex-1 mb-8">
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Everything in Pro</span>
+                  <span className="text-muted-foreground">Все в Pro</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Premium AI models (GPT-5, Claude Opus)</span>
+                  <span className="text-muted-foreground">Премиум модели ИИ (GPT-5, Claude Opus)</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Advanced reasoning capabilities</span>
+                  <span className="text-muted-foreground">Расширенные возможности рассуждения</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Faster response times</span>
+                  <span className="text-muted-foreground">Более быстрое время ответа</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Premium support</span>
+                  <span className="text-muted-foreground">Премиум поддержка</span>
+                
                 </li>
               </ul>
 
               <Button className="w-full bg-orange-600 hover:bg-orange-700" onClick={() => router.push('/pricing')}>
-                Upgrade to Ultra
+                Обновить до Ультра
               </Button>
+            
             </div>
 
             {/* Pro Plan */}
@@ -692,11 +707,14 @@ export default function AboutPage() {
               <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="text-xl font-medium">Pro</h3>
+                  
                   <span className="text-xs font-medium text-primary/80 bg-primary/10 px-2.5 py-1 rounded-full">
-                    Popular
+                    Популярный
                   </span>
+                
                 </div>
-                <p className="text-muted-foreground/70 mb-4">Everything you need for serious work</p>
+                <p className="text-muted-foreground/70 mb-4">Все, что вам нужно для серьезной работы</p>
+                
                 <div className="space-y-1">
                   <div className="flex items-baseline">
                     <span className="text-3xl font-light tracking-tight">₹{PRICING.PRO_MONTHLY_INR}</span>
@@ -712,55 +730,66 @@ export default function AboutPage() {
               <ul className="space-y-3 flex-1 mb-8">
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Unlimited searches</span>
+                  <span className="text-muted-foreground">Неограниченное количество поисков</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Advanced AI models</span>
+                  <span className="text-muted-foreground">Продвинутые модели ИИ</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">PDF document analysis</span>
+                  <span className="text-muted-foreground">Анализ PDF-документов</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Priority support</span>
+                  <span className="text-muted-foreground">Приоритетная поддержка</span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                   <span className="text-muted-foreground">
-                    Vega автоматиация ({LOOKOUT_LIMITS.TOTAL_LOOKOUTS} automated searches)
+                    Автоматизация Vega ({LOOKOUT_LIMITS.TOTAL_LOOKOUTS} автоматических поисков)
                   </span>
+                
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                  <span className="text-muted-foreground">Up to {LOOKOUT_LIMITS.DAILY_LOOKOUTS} daily lookouts</span>
+                  <span className="text-muted-foreground">До {LOOKOUT_LIMITS.DAILY_LOOKOUTS} ежедневных проверок</span>
+                
                 </li>
               </ul>
 
               <Button className="w-full" onClick={() => router.push('/pricing')}>
-                Upgrade to Pro
+                Обновить до Pro
               </Button>
+            
             </div>
           </div>
 
           {/* Student Discount */}
           <div className="max-w-2xl mx-auto bg-muted/20 border border-border/40 rounded-xl p-6 mt-8">
+            
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-primary/5 rounded-lg flex items-center justify-center flex-shrink-0">
                 <GraduationCap className="h-5 w-5 text-primary/70" />
               </div>
               <div className="flex-1">
-                <h3 className="font-medium mb-2">Student Pricing</h3>
+                <h3 className="font-medium mb-2">Цены для студентов</h3>
+                
                 <p className="text-muted-foreground/80 mb-4 text-sm">
                   Студенты могут получить доступ к Pro функциям за ₹500/месяц ($5/месяц). Свяжитесь с нами для подтверждения студенческого статуса.
                 </p>
+                
                 <a
                   href="mailto:mail@vega.chat?subject=Student%20Discount%20Request"
                   className="inline-flex items-center justify-center h-9 px-4 rounded-md border border-border/60 bg-background hover:bg-accent/50 text-sm font-medium transition-colors"
                 >
-                  Apply for Student Pricing
+                  Подать заявку на студенческую скидку
                 </a>
+              
               </div>
             </div>
           </div>
@@ -770,89 +799,115 @@ export default function AboutPage() {
       <section className="py-20 px-4 bg-muted/30">
         <div className="container max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">Find answers to common questions about Scira</p>
+            <h2 className="text-2xl font-semibold mb-4">Часто задаваемые вопросы</h2>
+            
+            <p className="text-muted-foreground max-w-2xl mx-auto">Найдите ответы на часто задаваемые вопросы о Vega</p>
+          
           </div>
 
           <ProAccordion type="single" collapsible className="w-full">
             <ProAccordionItem value="item-1">
-              <ProAccordionTrigger>What is Scira?</ProAccordionTrigger>
+              
+              <ProAccordionTrigger>Что такое Vega?</ProAccordionTrigger>
+              
               <ProAccordionContent>
-                Scira is an open-source AI-powered search engine that uses RAG (Retrieval-Augmented Generation) and
-                search grounding to provide accurate, up-to-date answers from reliable sources.
+                Vega — это поисковая система с открытым исходным кодом на базе ИИ, которая использует RAG (Retrieval-Augmented Generation) и
+                поисковое обоснование для предоставления точных, актуальных ответов из надежных источников.
               </ProAccordionContent>
+            
             </ProAccordionItem>
 
             <ProAccordionItem value="item-2">
-              <ProAccordionTrigger>What&apos;s the difference between Free and Pro plans?</ProAccordionTrigger>
+              
+              <ProAccordionTrigger>В чем разница между планами Free и Pro?</ProAccordionTrigger>
+              
               <ProAccordionContent>
-                The Free plan offers limited daily searches with basic AI models, while the Pro plan ($15/month)
-                provides unlimited searches, access to all AI models, PDF document analysis, and priority support.
+                Бесплатный план предлагает ограниченное количество ежедневных поисков с базовыми моделями ИИ, в то время как план Pro ($15/месяц)
+                предоставляет неограниченное количество поисков, доступ ко всем моделям ИИ, анализ PDF-документов и приоритетную поддержку.
               </ProAccordionContent>
+            
             </ProAccordionItem>
 
             <ProAccordionItem value="item-3">
-              <ProAccordionTrigger>Is there a student discount?</ProAccordionTrigger>
+              
+              <ProAccordionTrigger>Есть ли скидка для студентов?</ProAccordionTrigger>
+              
               <ProAccordionContent>
-                Yes, students can get $10 off the Pro plan, bringing it down to $5/month. Email mail@vega.chat with your
-                student verification and a brief description of how you use Scira.
+                Да, студенты могут получить скидку $10 на план Pro, что снижает его стоимость до $5/месяц. Отправьте электронное письмо на mail@vega.chat с вашим
+                подтверждением студенческого статуса и кратким описанием того, как вы используете Vega.
               </ProAccordionContent>
+            
             </ProAccordionItem>
 
             <ProAccordionItem value="item-4">
-              <ProAccordionTrigger>Can I cancel my subscription anytime?</ProAccordionTrigger>
+              
+              <ProAccordionTrigger>Могу ли я отменить подписку в любое время?</ProAccordionTrigger>
+              
               <ProAccordionContent>
-                Yes, you can cancel your Pro subscription at any time. Your benefits will continue until the end of your
-                current billing period.
+                Да, вы можете отменить подписку Pro в любое время. Ваши преимущества будут действовать до конца текущего расчетного периода.
+                текущего расчетного периода.
               </ProAccordionContent>
+            
             </ProAccordionItem>
 
             <ProAccordionItem value="item-5">
-              <ProAccordionTrigger>What AI models does Scira use?</ProAccordionTrigger>
+              
+              <ProAccordionTrigger>Какие модели ИИ использует Vega?</ProAccordionTrigger>
+              
               <ProAccordionContent>
-                Scira uses a range of advanced AI models including Grok, Claude, OpenAI GPT, Gemini, and more to provide
-                the best possible answers for different types of queries.
+                Vega использует ряд передовых моделей ИИ, включая Grok, Claude, OpenAI GPT, Gemini и другие, чтобы предоставлять
+                наилучшие ответы на различные типы запросов.
               </ProAccordionContent>
+            
             </ProAccordionItem>
 
             <ProAccordionItem value="item-6">
-              <ProAccordionTrigger>How does Scira ensure information accuracy?</ProAccordionTrigger>
+              
+              <ProAccordionTrigger>Как Vega обеспечивает точность информации?</ProAccordionTrigger>
+              
               <ProAccordionContent>
-                Scira combines RAG technology with search grounding to retrieve information from reliable sources and
-                verify it before providing answers. Each response includes source attribution for transparency.
+                Vega сочетает технологию RAG с поисковым обоснованием для получения информации из надежных источников и
+                проверки ее перед предоставлением ответов. Каждый ответ включает указание источника для прозрачности.
               </ProAccordionContent>
+            
             </ProAccordionItem>
           </ProAccordion>
 
           <div className="text-center mt-12">
+            
             <p className="text-muted-foreground">
-              Have more questions?{' '}
+              Есть еще вопросы?{' '}
               <a href="mailto:mail@vega.chat" className="text-primary hover:text-primary/80 transition-colors">
-                Contact us
+                Свяжитесь с нами
               </a>
+            
             </p>
           </div>
         </div>
       </section>
       {/* Footer */}
       <footer className="border-t border-border py-12 px-4">
+        
         <div className="container max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <SciraLogo className="size-8" />
-              <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Scira. All rights reserved.</p>
+              <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Vega. Все права защищены.</p>
+            
             </div>
 
             <div className="flex items-center gap-6">
               <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Terms
+                Условия
               </Link>
+              
               <Link
                 href="/privacy-policy"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Privacy Policy
+                Политика конфиденциальности
               </Link>
+              
               <div className="flex items-center gap-2">
                 <Link
                   href="https://x.com/sciraai"
@@ -862,6 +917,7 @@ export default function AboutPage() {
                 >
                   <XLogo className="h-4 w-4" />
                 </Link>
+                
                 <Link
                   href="https://git.new/scira"
                   className="p-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -870,6 +926,7 @@ export default function AboutPage() {
                 >
                   <GithubLogo className="h-4 w-4" />
                 </Link>
+              
               </div>
             </div>
           </div>

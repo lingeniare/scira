@@ -33,24 +33,24 @@ export type SearchGroupId =
 export const searchGroups = [
   {
     id: 'chat' as const,
-    name: 'Chat',
-    description: 'Общение с моделью напрямую.',
+    name: 'Чат',
+    description: 'Общение c AI',
     icon: ChattingIcon,
     show: true,
     requiresPro: false, // Доступен всем пользователям
   },
   {
     id: 'web' as const,
-    name: 'Web',
-    description: 'Поиск по всему интернету на базе Exa AI',
+    name: 'Веб',
+    description: 'AI поиск в интернете',
     icon: GlobalSearchIcon,
     show: true,
     requiresPro: true, // Требует Pro подписку
   },
     {
     id: 'academic' as const,
-    name: 'Academic',
-    description: 'Поиск научных статей на базе Exa',
+    name: 'Наука',
+    description: 'Поиск научных статей',
     icon: MicroscopeIcon,
     show: true,
     requiresPro: true, // Требует Pro подписку
@@ -65,8 +65,8 @@ export const searchGroups = [
   },
   {
     id: 'stocks' as const,
-    name: 'Stocks',
-    description: 'Информация об акциях и валютах',
+    name: 'Котировки',
+    description: 'Информация об акциях и валюте',
     icon: AppleStocksIcon,
     show: true,
     requiresPro: true, // Требует Pro подписку
@@ -81,17 +81,17 @@ export const searchGroups = [
   },
   {
     id: 'memory' as const,
-    name: 'Memory',
-    description: 'Ваш персональный помощник памяти',
+    name: 'Память',
+    description: 'Ваш помощник памяти',
     icon: Database02Icon,
-    show: true,
+    show: false,
     requireAuth: true,
     requiresPro: true, // Требует Pro подписку
   },
   {
     id: 'crypto' as const,
-    name: 'Crypto',
-    description: 'Исследование криптовалют на базе CoinGecko',
+    name: 'Крипта',
+    description: 'Анализ критовалют',
     icon: Bitcoin02Icon,
     show: true,
     requiresPro: true, // Требует Pro подписку
@@ -99,7 +99,7 @@ export const searchGroups = [
   {
     id: 'youtube' as const,
     name: 'YouTube',
-    description: 'Поиск видео YouTube на базе Exa',
+    description: 'Поиск видео на YouTube',
     icon: YoutubeIcon,
     show: true,
     requiresPro: true, // Требует Pro подписку
@@ -107,7 +107,7 @@ export const searchGroups = [
   {
     id: 'extreme' as const,
     name: 'Extreme',
-    description: 'Глубокое исследование с множественными источниками и анализом',
+    description: 'Глубокое исследование и анализ',
     icon: AtomicPowerIcon,
     show: true,
     requiresPro: true, // Требует Pro подписку

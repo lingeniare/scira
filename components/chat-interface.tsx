@@ -39,6 +39,7 @@ import { SEARCH_LIMITS } from '@/lib/constants';
 import { ChatSDKError } from '@/lib/errors';
 import { cn, SearchGroupId, invalidateChatsCache } from '@/lib/utils';
 import { Sparkles } from 'lucide-react';
+import { SciraLogo } from '@/components/logos/scira-logo';
 
 // State management imports
 import { chatReducer, createInitialState } from '@/components/chat-state';
@@ -635,7 +636,7 @@ const ChatInterface = memo(
         >
           <div className={`w-full max-w-[95%] sm:max-w-2xl space-y-6 p-0 mx-auto transition-all duration-300`}>
             {status === 'ready' && messages.length === 0 && (
-              <div className="text-center m-0 mb-8">
+              <div className="text-center m-0">
                 <div className="inline-flex items-center gap-3">
                   <button 
                     className="group transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-full p-2"
@@ -648,9 +649,8 @@ const ChatInterface = memo(
                       });
                     }}
                   >
-                    <Sparkles 
-                      className="sparkle-icon w-12 h-12 sm:w-16 sm:h-16 text-foreground dark:text-foreground group-hover:text-primary transition-colors duration-300" 
-                      strokeWidth={1.5}
+                    <SciraLogo 
+                      className="sparkle-icon w-12 h-12 sm:w-16 sm:h-16 text-foreground dark:text-foreground group-hover:text-primary transition-colors duration-300"
                     />
                   </button>
                   {isUserPro && (

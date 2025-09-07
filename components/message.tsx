@@ -40,7 +40,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Attachment, ChatMessage, ChatTools, CustomUIDataTypes } from '@/lib/types';
 import { UseChatHelpers } from '@ai-sdk/react';
-import { SciraLogoHeader } from '@/components/scira-logo-header';
+import { VegaLogoHeader } from '@/components/scira-logo-header';
 import { ComprehensiveUserData } from '@/lib/user-data-server';
 import { cn } from '@/lib/utils';
 
@@ -426,9 +426,9 @@ const MessageEditor: React.FC<MessageEditorProps> = ({
             onChange={handleInput}
             autoFocus
             className="prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden
-            [&>*]:font-be-vietnam-pro! font-normal max-w-none text-base sm:text-lg text-foreground dark:text-foreground pr-10 sm:pr-12 overflow-hidden
+            [&>*]:font-roboto! font-normal max-w-none text-base sm:text-lg text-foreground dark:text-foreground pr-10 sm:pr-12 overflow-hidden
             relative w-full resize-none
-            border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 outline-none leading-relaxed font-be-vietnam-pro min-h-[auto]
+            border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 outline-none leading-relaxed font-roboto min-h-[auto]
             transition-colors rounded-sm"
             placeholder="Edit your message..."
             style={{
@@ -622,7 +622,7 @@ export const Message: React.FC<MessageProps> = ({
                         <div
                           key={`user-${index}-${partIndex}`}
                           ref={messageContentRef}
-                          className={`mt-2 prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:!font-be-vietnam-pro font-normal max-w-none ${getDynamicFontSize(part.text)} text-foreground dark:text-foreground overflow-hidden relative ${
+                          className={`mt-2 prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:!font-roboto font-normal max-w-none ${getDynamicFontSize(part.text)} text-foreground dark:text-foreground overflow-hidden relative ${
                             !isExpanded && exceedsMaxHeight ? 'max-h-[120px]' : ''
                           }`}
                         >
@@ -671,7 +671,7 @@ export const Message: React.FC<MessageProps> = ({
                   {(!message.parts || !message.parts.some((part: any) => part.type === 'text' && part.text)) && (
                     <div
                       ref={messageContentRef}
-                      className={`prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:!font-be-vietnam-pro font-normal max-w-none ${getDynamicFontSize(
+                      className={`prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:!font-roboto font-normal max-w-none ${getDynamicFontSize(
                         message.parts
                           ?.map((part) => (part.type === 'text' ? part.text : ''))
                           .join('')
@@ -805,7 +805,7 @@ export const Message: React.FC<MessageProps> = ({
               <div className="relative">
                 <div
                   ref={messageContentRef}
-                  className={`prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:font-be-vietnam-pro! font-normal max-w-none ${getDynamicFontSize(
+                  className={`prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:font-roboto! font-normal max-w-none ${getDynamicFontSize(
                     message.parts
                       ?.map((part) => (part.type === 'text' ? part.text : ''))
                       .join('')
@@ -935,7 +935,7 @@ export const Message: React.FC<MessageProps> = ({
         {isMissingAssistantResponse && (
           <div className="flex items-start">
             <div className="w-full">
-              <SciraLogoHeader />
+              <VegaLogoHeader />
 
               <div className="flex flex-col gap-4 bg-primary/10 border border-primary/20 dark:border-primary/20 rounded-lg p-4">
                 <div className=" mb-4 max-w-2xl">

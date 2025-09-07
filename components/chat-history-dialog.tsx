@@ -1116,11 +1116,11 @@ export function ChatHistoryButton({ onClickAction }: { onClickAction: () => void
           aria-label="Chat History"
         >
           <HugeiconsIcon icon={SearchList02Icon} className="size-6" />
-          <span className="sr-only">Chat History</span>
+          <span className="sr-only">История чатов</span>
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={4}>
-        Chat History
+        История чатов
       </TooltipContent>
     </Tooltip>
   );

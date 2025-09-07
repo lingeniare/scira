@@ -608,7 +608,7 @@ const WeatherChart: React.FC<WeatherChartProps> = React.memo(({ result }) => {
                 <div className="flex items-center justify-center gap-4 mb-2">
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-[#ff9500]" />
-                    <span className="text-[10px] text-neutral-600 dark:text-neutral-400">Temperature</span>
+                    <span className="text-[10px] text-neutral-600 dark:text-neutral-400">Температура</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-[#0ea5e9]" />

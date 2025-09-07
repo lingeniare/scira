@@ -167,21 +167,21 @@ async function createSubscriptionLogic(session: any, planType: string, duration:
       pro: {
         monthly: {
           amount: 990, // 990 рублей в месяц
-          description: 'Scira Pro - Месячная подписка',
+          description: 'Vega Pro - Месячная подписка',
         },
         yearly: {
           amount: 790, // 790 рублей в месяц при годовой подписке (скидка 20%)
-          description: 'Scira Pro - Годовая подписка (ежемесячное списание)',
+          description: 'Vega Pro - Годовая подписка (ежемесячное списание)',
         },
       },
       ultra: {
         monthly: {
           amount: 1990, // 1990 рублей в месяц
-          description: 'Scira Ultra - Месячная подписка',
+          description: 'Vega Ultra - Месячная подписка',
         },
         yearly: {
           amount: 1590, // 1590 рублей в месяц при годовой подписке (скидка 20%)
-          description: 'Scira Ultra - Годовая подписка (ежемесячное списание)',
+          description: 'Vega Ultra - Годовая подписка (ежемесячное списание)',
         },
       },
     };

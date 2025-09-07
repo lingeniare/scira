@@ -85,7 +85,7 @@ const inter = Inter({
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ['latin'],
-  variable: '--font-be-vietnam-pro',
+  variable: '--font-roboto',
   preload: true,
   display: 'swap',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],

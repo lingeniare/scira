@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { RefreshCw, AlertCircle } from 'lucide-react';
 import { EnhancedErrorDisplay } from '@/components/message';
 import { MessagePartRenderer } from '@/components/message-parts';
-import { SciraLogoHeader } from '@/components/scira-logo-header';
+import { VegaLogoHeader } from '@/components/scira-logo-header';
 import { deleteTrailingMessages } from '@/app/actions';
 import { ChatMessage, CustomUIDataTypes } from '@/lib/types';
 import { UseChatHelpers } from '@ai-sdk/react';
@@ -436,7 +436,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
             className={`flex items-start ${shouldReserveLoaderMinHeight ? 'min-h-[calc(100vh-18rem)]' : ''} !m-0 !p-0`}
           >
             <div className="w-full !m-0 !p-0">
-              <SciraLogoHeader />
+              <VegaLogoHeader />
               <div className="flex space-x-2 ml-8 mt-2">
                 <div
                   className="w-2 h-2 rounded-full bg-muted-foreground dark:bg-muted-foreground animate-bounce"

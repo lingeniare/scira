@@ -97,7 +97,7 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
               <Mail className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-lg font-medium text-foreground">Ссылка для входа отправлена</h2>
+              <h2 className="text-lg font-medium text-foreground mb-1">Ссылка для входа отправлена</h2>
               <p className="text-sm text-muted-foreground">
                 на <span className="font-medium text-foreground">{email}</span>
               </p>
@@ -246,9 +246,9 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
               id="terms"
               checked={termsAccepted}
               onCheckedChange={(checked) => setTermsAccepted(checked === true)}
-              className="mt-0.5 transition-all duration-200"
+              className="mt-0.5 transition-all duration-200 text-foreground"
             />
-            <label htmlFor="terms" className="text-xs text-muted-foreground leading-relaxed">
+            <label htmlFor="terms" className="text-xs text-foreground leading-relaxed">
               Я принимаю{' '}
               <Link href="/terms" className="underline underline-offset-2 hover:text-foreground">
                 Условия использования
@@ -261,9 +261,9 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
               id="privacy"
               checked={privacyAccepted}
               onCheckedChange={(checked) => setPrivacyAccepted(checked === true)}
-              className="mt-0.5 transition-all duration-200"
+              className="mt-0.5 transition-all duration-200 text-foreground"
             />
-            <label htmlFor="privacy" className="text-xs text-muted-foreground leading-relaxed">
+            <label htmlFor="privacy" className="text-xs text-foreground leading-relaxed">
               Я принимаю{' '}
               <Link href="/privacy-policy" className="underline underline-offset-2 hover:text-foreground">
                 Политику обработки данных

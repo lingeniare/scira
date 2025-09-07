@@ -39,7 +39,7 @@ export default function PrivacyPage() {
           >
             {/* Logo */}
             <motion.div variants={item} className="text-center">
-              <Link href="/" className="inline-flex items-center gap-3 font-be-vietnam-pro font-bold">
+              <Link href="/" className="inline-flex items-center gap-3 font-roboto font-bold">
                 <div className="relative w-14 h-14 rounded-full bg-background/90 shadow-sm flex items-center justify-center border">
                   <SciraLogo className="size-8 opacity-90" />
                 </div>
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
 
       {/* Main Content */}
       <div className="py-16 px-4">
-        <div className="container max-w-3xl mx-auto prose dark:prose-invert prose-neutral prose-headings:font-be-vietnam-pro prose-p:text-muted-foreground prose-a:text-foreground prose-a:no-underline hover:prose-a:text-foreground/80 prose-headings:tracking-tight">
+        <div className="container max-w-3xl mx-auto prose dark:prose-invert prose-neutral prose-headings:font-roboto prose-p:text-muted-foreground prose-a:text-foreground prose-a:no-underline hover:prose-a:text-foreground/80 prose-headings:tracking-tight">
           <p className="text-lg">
             Мы в Vega уважаем вашу конфиденциальность и обязуемся защищать ваши персональные данные.
             Настоящая Политика конфиденциальности объясняет, как мы собираем, используем и защищаем вашу информацию, когда вы используете нашей гибридной системой, на базе искусственного интеллекта.
@@ -180,21 +180,21 @@ export default function PrivacyPage() {
                 <SciraLogo className="size-4 opacity-80" />
               </div>
               <div className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} VEGA AI ИП
+                © {new Date().getFullYear()} VEGA AI
               </div>
             </div>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <Link href="/" className="hover:text-foreground transition-colors">
-                Home
+                Главная
               </Link>
               <Link href="/about" className="hover:text-foreground transition-colors">
-                About
+                О сервисе
               </Link>
               <Link href="/terms" className="hover:text-foreground transition-colors">
-                Terms
+                Условия сервиса
               </Link>
               <Link href="/privacy-policy" className="text-foreground font-medium">
-                Privacy
+                Политика ПД
               </Link>
             </div>
           </div>

@@ -32,7 +32,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           />
         </div>
 
-        <h1 className="text-4xl mb-4 text-neutral-800 dark:text-neutral-100 font-be-vietnam-pro">
+        <h1 className="text-4xl mb-4 text-neutral-800 dark:text-neutral-100 font-roboto">
           Что-то пошло не так
         </h1>
         <p className="text-lg mb-8 text-neutral-600 dark:text-neutral-300">

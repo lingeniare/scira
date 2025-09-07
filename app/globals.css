@@ -2,6 +2,27 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* CSS переменные для цветов тем */
+:root {
+  --primary-ray: var(--primary); /* светлая тема: синхронизировано с основным цветом темы */
+}
+
+.dark {
+  --primary-ray: var(--primary); /* тёмная тема: синхронизировано с основным цветом темы */
+}
+
+/* Анимации для SciraLogo */
+.animated-rays {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.animated-rays.active {
+  opacity: 1;
+}
+
+
+
 @plugin 'tailwind-scrollbar';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -196,27 +217,27 @@
 }
 
 :root {
-  --font-be-vietnam-pro: 'Be Vietnam Pro';
-  --background: oklch(0.9821 0 0);
+  --font-roboto: 'Roboto';
+  --background: oklch(0.98 0 0);
   --foreground: oklch(0.2435 0 0);
   --card: oklch(0.9911 0 0);
   --card-foreground: oklch(0.2435 0 0);
   --popover: oklch(0.9911 0 0);
   --popover-foreground: oklch(0.2435 0 0);
-  --primary: oklch(0.3707 0.1108 252.74);
+  --primary: oklch(0.4737 0.064 206.89);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.92 0.0651 74.3695);
   --secondary-foreground: oklch(0.3499 0.0685 40.8288);
-  --muted: oklch(0.9521 0 0);
+  --muted: oklch(1 0 0);
   --muted-foreground: oklch(0.5032 0 0);
-  --accent: oklch(0.931 0 0);
+  --accent: oklch(0.98 0 0);
   --accent-foreground: oklch(0.2435 0 0);
   --destructive: oklch(0.6271 0.1936 33.339);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.8822 0 0);
   --input: oklch(0.8822 0 0);
-  --ring: oklch(0.3707 0.1108 252.74);
-  --chart-1: oklch(0.3707 0.1108 252.74);
+  --ring: oklch(0.4737 0.064 206.89);
+  --chart-1: oklch(0.4737 0.064 206.89);
   --chart-2: oklch(0.92 0.0651 74.3695);
   --chart-3: oklch(0.931 0 0);
   --chart-4: oklch(0.9367 0.0523 75.5009);
@@ -243,7 +264,7 @@
 }
 
 .dark {
-  --font-be-vietnam-pro: 'Be Vietnam Pro';
+  --font-roboto: 'Roboto';
   --background: oklch(0.1776 0 0);
   --foreground: oklch(0.9491 0 0);
   --card: oklch(0.2134 0 0);
@@ -288,7 +309,7 @@
 }
 
 @theme inline {
-  --font-be-vietnam-pro: var(--font-be-vietnam-pro);
+  --font-roboto: var(--font-roboto);
   --font-baumans: var(--font-baumans);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -455,59 +476,56 @@
   background: transparent;
 }
 
-/* Анимация расхождения лучей для Scira Logo */
+/* Анимация расхождения лучей для Vega Logo */
 .animated-rays {
   transform-origin: 455px 467px;
 }
 
-/* Центральный световой эффект */
-.center-glow {
-  transform-origin: 455px 467px;
-  transform: scale(0);
-  transition: all 0.3s ease-out;
-}
-
-.animated-rays.active .center-glow {
-  transform: scale(2);
-  opacity: 0.3;
-  animation: pulse 0.6s ease-out;
-}
 
 /* Базовые стили для лучей */
 .ray {
   transform-origin: 455px 467px;
-  transform: scale(0);
   opacity: 0;
-  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  stroke-dasharray: 0 1000;
+  transition: opacity 0.3s ease;
 }
 
-/* Анимация активных лучей с задержками для волнового эффекта */
-.animated-rays.active .ray-top,
-.animated-rays.active .ray-bottom,
-.animated-rays.active .ray-left,
-.animated-rays.active .ray-right {
-  transform: scale(1.2);
-  opacity: 1;
-  transition-delay: 0.1s;
+/* Активное состояние анимации */
+.animated-rays.active .ray {
+  animation: rayExpand 2s ease-out forwards;
 }
 
-.animated-rays.active .ray-top-right,
-.animated-rays.active .ray-top-left,
-.animated-rays.active .ray-bottom-right,
-.animated-rays.active .ray-bottom-left {
-  transform: scale(1.4);
-  opacity: 1;
-  transition-delay: 0.2s;
+
+/* Анимация расширения лучей */
+@keyframes rayExpand {
+  0% {
+    stroke-dasharray: 0 1000;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    stroke-dasharray: 1000 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 1000 0;
+    opacity: 0;
+  }
 }
 
-/* Анимация пульсации центра */
-@keyframes pulse {
-  0% { transform: scale(0); opacity: 0.8; }
-  50% { transform: scale(3); opacity: 0.4; }
-  100% { transform: scale(2); opacity: 0.3; }
-}
 
-/* Эффект свечения при наведении */
-.scira-logo:hover .animated-rays .ray {
-  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
-}
+/* Задержки для разных лучей */
+.ray-top-long { animation-delay: 0.1s; }
+.ray-bottom-long { animation-delay: 0.3s; }
+.ray-right-long { animation-delay: 0.2s; }
+.ray-left-long { animation-delay: 0.4s; }
+.ray-top-right-long { animation-delay: 0.15s; }
+.ray-bottom-left-long { animation-delay: 0.35s; }
+.ray-bottom-right-long { animation-delay: 0.25s; }
+.ray-top-left-long { animation-delay: 0.45s; }
+.ray-short-1 { animation-delay: 0.5s; }
+.ray-short-2 { animation-delay: 0.6s; }
+.ray-short-3 { animation-delay: 0.55s; }
+.ray-short-4 { animation-delay: 0.65s; }

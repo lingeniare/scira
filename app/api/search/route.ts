@@ -343,13 +343,31 @@ export async function POST(req: Request) {
                   minP: 0,
                   presencePenalty: 1.5,
                 }
-              : // Валидация температуры для моделей OpenRouter (scira-5, scira-default, scira-kimi-k2-new, scira-glm-4-5v, scira-qwen-thinking)
-                (model.includes('scira-5') || model === 'scira-default' || model.includes('scira-kimi-k2-new') || model.includes('scira-glm-4-5v') || model.includes('scira-qwen-thinking'))
+              : // Валидация температуры для моделей OpenRouter (scira-5, scira-default, scira-kimi-k2-new, scira-glm-4-5v, scira-qwen-thinking, scira-qwen-max)
+                (model.includes('scira-5') || model === 'scira-default' || model.includes('scira-kimi-k2-new') || model.includes('scira-glm-4-5v') || model.includes('scira-qwen-thinking') || model.includes('scira-qwen-max'))
                 ? {
-                    // OpenRouter модели поддерживают температуру от 0 до 1, ограничиваем значение
-                    temperature: temperature !== undefined ? Math.min(Math.max(temperature, 0), 1) : undefined,
+                    // OpenRouter модели поддерживают температуру от 0 до 2, ограничиваем значение
+                    temperature: temperature !== undefined ? Math.min(Math.max(temperature, 0), 2) : undefined,
                   }
-                : temperature !== undefined ? { temperature } : {}),
+                : // Валидация температуры для моделей DeepSeek (scira-deepseek-chat, scira-deepseek-reasoner)
+                  (model.includes('scira-deepseek-chat') || model.includes('scira-deepseek-reasoner'))
+                  ? {
+                      // DeepSeek модели поддерживают температуру от 0 до 2, рекомендуется 0.5-0.7 для R1
+                      temperature: temperature !== undefined ? Math.min(Math.max(temperature, 0), 2) : 0.6,
+                    }
+                  : // Валидация температуры для Google моделей (scira-google, scira-google-pro, scira-google-lite)
+                    (model.includes('scira-google'))
+                    ? {
+                        // Google Vertex AI модели поддерживают температуру от 0 до 2
+                        temperature: temperature !== undefined ? Math.min(Math.max(temperature, 0), 2) : 1.0,
+                      }
+                    : // Валидация температуры для x.ai моделей (scira-grok-4)
+                      (model.includes('scira-grok'))
+                      ? {
+                          // x.ai модели поддерживают температуру от 0 до 2 (следуя OpenAI стандарту)
+                          temperature: temperature !== undefined ? Math.min(Math.max(temperature, 0), 2) : 1.0,
+                        }
+                      : temperature !== undefined ? { temperature } : {}),
         stopWhen: stepCountIs(3),
         maxRetries: 10,
         ...(model.includes('scira-5')

@@ -822,7 +822,7 @@ const groupInstructions = {
   - Do not include images in responses`,
 
   chat: `
-  You are Scira, a helpful assistant that helps with the task asked by the user.
+  You are Vega, a helpful assistant that helps with the task asked by the user.
   Today's date is ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' })}.
 
   ### CRITICAL INSTRUCTION:

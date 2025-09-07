@@ -307,7 +307,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                        model.category.toLowerCase().includes(searchTerm) ? 1 : 0;
               }}
             >
-              <CommandInput placeholder="Поиск AI ..." className="h-9" />
+              <CommandInput placeholder="" className="h-9" />
               <CommandEmpty>Модель не найдена.</CommandEmpty>
               <CommandList className="max-h-[15em]">
                 {orderedGroupEntries.map(([category, categoryModels], categoryIndex) => (
@@ -480,10 +480,10 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
 
               <div className="bg-muted rounded-lg p-4 space-y-2">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-xl font-medium text-foreground">1000₽</span>
-                  <span className="text-sm text-muted-foreground">/month</span>
+                  <span className="text-xl font-medium text-foreground">от 1000₽</span>
+                  <span className="text-sm text-muted-foreground">/месяц</span>
                 </div>
-                <p className="text-xs text-muted-foreground">Cancel anytime</p>
+                <p className="text-xs text-muted-foreground">Отмена в любое время</p>
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -492,7 +492,7 @@ const ModelSwitcher: React.FC<ModelSwitcherProps> = React.memo(
                   onClick={() => setShowUpgradeDialog(false)}
                   className="flex-1 h-9 text-sm font-normal"
                 >
-                  Maybe later
+                  Позднее
                 </Button>
                 <Button
                   onClick={() => {
@@ -1026,7 +1026,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
                 return searchableFields.includes(searchTerm) ? 1 : 0;
               }}
             >
-              <CommandInput placeholder="Поиск режимов..." className="h-9" />
+              <CommandInput placeholder="" className="h-9" />
               <CommandEmpty>No search mode found.</CommandEmpty>
               <CommandList className="max-h-[240px]">
                 <CommandGroup>
@@ -1200,7 +1200,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
                 onClick={() => setShowUpgradeDialog(false)}
                 className="flex-1 h-9 text-sm font-normal"
               >
-                Maybe later
+                Позднее
               </Button>
               <Button
                 onClick={() => {
@@ -1221,28 +1221,23 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
           <div className="p-6 space-y-5">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                   <HugeiconsIcon
                     icon={Crown02Icon}
                     size={16}
-                    color="white"
+                    color="currentColor"
                     strokeWidth={1.5}
+                    className="text-primary-foreground"
                   />
                 </div>
                 <div>
-                  <DialogHeader>
-                    <DialogTitle className="text-lg font-medium text-foreground">
-                      Войдите для доступа к {selectedToolForAuth?.name || 'премиум инструментам'}
-                    </DialogTitle>
-                    <DialogDescription className="text-sm text-muted-foreground">
-                      Разблокируйте мощные возможности поиска
-                    </DialogDescription>
-                  </DialogHeader>
+                  <h2 className="text-lg font-medium text-foreground">{selectedToolForAuth?.name || 'премиум инструментам'} требует Pro</h2>
+                  <p className="text-sm text-muted-foreground">Обновитесь для доступа к премиум AI-моделям</p>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                 <div>
@@ -1253,41 +1248,42 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">
-                    {selectedToolForAuth?.name || 'Премиум инструменты'} требует Pro
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {selectedToolForAuth?.description || 'Доступ к расширенным возможностям поиска'}
-                  </p>
+                  <p className="text-sm font-medium text-foreground">Премиум AI-модели</p>
+                  <p className="text-xs text-muted-foreground">Claude 4 Sonnet, Grok 4, продвинутые рассуждения</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0"></div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">Сохранение истории поиска</p>
-                  <p className="text-xs text-muted-foreground">Отслеживайте свои разговоры</p>
+                  <p className="text-sm font-medium text-foreground">Анализ PDF</p>
+                  <p className="text-xs text-muted-foreground">Загружайте и анализируйте документы</p>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-muted rounded-lg p-4 space-y-2">
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-medium text-foreground">от 1000₽</span>
+                <span className="text-sm text-muted-foreground">/месяц</span>
+              </div>
+              <p className="text-xs text-muted-foreground">Отмена в любое время</p>
             </div>
 
             <div className="flex gap-3 pt-2">
               <Button
                 variant="outline"
-                onClick={() => {
-                  setShowSignInDialog(false);
-                  setSelectedToolForAuth(null);
-                }}
+                onClick={() => setShowSignInDialog(false)}
                 className="flex-1 h-9 text-sm font-normal"
               >
-                Может быть позже
+                Позднее
               </Button>
               <Button
                 onClick={() => {
-                  window.location.href = '/auth';
+                  window.location.href = '/pricing';
                 }}
                 className="flex-1 h-9 text-sm font-normal"
               >
-                Войти в систему
+                Обновить сейчас
               </Button>
             </div>
           </div>
@@ -2647,7 +2643,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                             {isRecording ? 'Остановить запись' : 'Голосовой ввод'}
                           </span>
                           <span className="text-[10px] text-accent leading-tight">
-                            {isRecording ? 'Нажмите, чтобы остановить запись' : 'Запишите голосовое сообщение'}
+                            {isRecording ? 'Нажмите, чтобы остановить запись' : 'Общайтесь голосом'}
                           </span>
                         </div>
                       </TooltipContent>

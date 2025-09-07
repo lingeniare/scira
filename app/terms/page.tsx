@@ -39,7 +39,7 @@ export default function TermsPage() {
           >
             {/* Logo */}
             <motion.div variants={item} className="text-center">
-              <Link href="/" className="inline-flex items-center gap-3 font-be-vietnam-pro font-bold">
+              <Link href="/" className="inline-flex items-center gap-3 font-roboto font-bold">
                 <div className="relative w-14 h-14 rounded-full bg-background/90 shadow-sm flex items-center justify-center border">
                   <SciraLogo className="size-8 opacity-90" />
                 </div>
@@ -56,7 +56,7 @@ export default function TermsPage() {
 
       {/* Main Content */}
       <div className="py-16 px-4">
-        <div className="container max-w-3xl mx-auto prose dark:prose-invert prose-neutral prose-headings:font-be-vietnam-pro prose-p:text-muted-foreground prose-a:text-foreground prose-a:no-underline hover:prose-a:text-foreground/80 prose-headings:tracking-tight">
+        <div className="container max-w-3xl mx-auto prose dark:prose-invert prose-neutral prose-headings:font-roboto prose-p:text-muted-foreground prose-a:text-foreground prose-a:no-underline hover:prose-a:text-foreground/80 prose-headings:tracking-tight">
           <p className="text-lg">
             Welcome to Vega AI. These Terms of Service govern your use of our website and services. By using Vega AI,
             you agree to these terms in full. If you disagree with any part of these terms, please do not use our
@@ -262,16 +262,16 @@ export default function TermsPage() {
             </div>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <Link href="/" className="hover:text-foreground transition-colors">
-                Home
+                Главная
               </Link>
               <Link href="/about" className="hover:text-foreground transition-colors">
-                About
+                О сервисе
               </Link>
               <Link href="/terms" className="text-foreground font-medium">
-                Terms
+                Условия сервиса
               </Link>
               <Link href="/privacy-policy" className="hover:text-foreground transition-colors">
-                Privacy
+                Политика ПД
               </Link>
             </div>
           </div>

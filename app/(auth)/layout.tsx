@@ -1,54 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
-import { useState, useEffect } from 'react';
-import Autoplay from 'embla-carousel-autoplay';
+import type React from 'react';
 import { SciraLogo } from '@/components/logos/scira-logo';
 
-const testimonials = [
-  {
-    content:
-      '"Scira @sciraai лучше справляется с поиском информации в X, чем сам Grok на своей платформе! Я задал 3 разных запроса для поиска данных о своем аккаунте, и Scira справился намного лучше с невероятно точными ответами!"',
-    author: 'Chris Universe',
-    handle: '@chrisuniverseb',
-    link: 'https://x.com/chrisuniverseb/status/1943025911043100835',
-  },
-  {
-    content: '"scira dot ai отлично справляется с поиском в недрах reddit"',
-    author: 'nyaaier',
-    handle: '@nyaaier',
-    link: 'https://x.com/nyaaier/status/1932810453107065284',
-  },
-  {
-    content:
-      "Привет @sciraai, из любопытства я поискал информацию о себе, используя Gemini 2.5 Pro в экстремальном режиме, чтобы посмотреть, какие результаты он может выдать. И он создал это 👇🏻 Это не просто лучшее, это невероятно. И самое лучшее - это на 10000% точно.",
-    author: 'Aniruddha Dak',
-    handle: '@aniruddhadak',
-    link: 'https://x.com/aniruddhadak/status/1917140602107445545',
-  },
-  {
-    content:
-      '"ничего не читал весь семестр, а теперь с @sciraai готовлюсь к промежуточным экзаменам!! Буквально так хорошо получать все связанные диаграммы, пункты и даже темы с сайта, который мой профессор использует для обучения 🙌"',
-    author: 'Rajnandinit',
-    handle: '@itsRajnandinit',
-    link: 'https://x.com/itsRajnandinit/status/1897896134837682288',
-  },
-];
+
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-
-    setCurrent(api.selectedScrollSnap());
-
-    api.on('select', () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
 
   return (
     <div className="flex items-center justify-between h-screen bg-background">
@@ -63,66 +21,28 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-semibold text-foreground mb-3">ИИ поиск, который действительно понимает вас</h2>
-              <p className="text-muted-foreground">Никакой рекламы. Только реальные ответы. От новейших ИИ моделей.</p>
+              <h2 className="text-3xl font-semibold text-foreground mb-3">VEGA AI - сервис, где находят ответы.</h2>
+              <p className="text-muted-foreground">Лучшие AI-модели, передовые инструменты и гибкие тарифы.</p>
             </div>
 
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                Что говорят пользователи
+                Тарифы:
               </h3>
 
-              <Carousel
-                className="w-full"
-                opts={{ loop: true }}
-                setApi={setApi}
-                plugins={[
-                  Autoplay({
-                    delay: 4000,
-                    stopOnInteraction: true,
-                    stopOnMouseEnter: true,
-                  }),
-                ]}
-              >
-                <CarouselContent>
-                  {testimonials.map((testimonial, index) => (
-                    <CarouselItem key={index}>
-                      <Link
-                        href={testimonial.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block group h-full"
-                      >
-                        <blockquote className="relative h-full flex flex-col bg-background/50 backdrop-blur-sm border border-border/50 rounded-lg p-6 transition-all duration-200 hover:bg-background/70">
-                          <div className="text-sm text-muted-foreground group-hover:text-foreground transition-colors flex-1 text-balance">
-                            {testimonial.content}
-                          </div>
-                          <footer className="mt-3">
-                            <div className="flex items-center gap-2">
-                              <cite className="text-sm font-medium not-italic text-foreground">
-                                {testimonial.author}
-                              </cite>
-                              <span className="text-xs text-muted-foreground">{testimonial.handle}</span>
-                            </div>
-                          </footer>
-                        </blockquote>
-                      </Link>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="flex items-center justify-center gap-1 mt-4">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => api?.scrollTo(index)}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                        index === current ? 'bg-foreground' : 'bg-muted-foreground/30'
-                      }`}
-                      aria-label={`Перейти к отзыву ${index + 1}`}
-                    />
-                  ))}
+              <div className="w-full">
+                <div className="relative h-full flex flex-col bg-background/50 backdrop-blur-sm border border-border/50 rounded-lg p-6">
+                  <div className="text-sm text-muted-foreground flex-1 space-y-2">
+                    <p><span className="font-semibold text-foreground">Без авторизации</span> - 1 запрос в сутки</p>
+                    <p><span className="font-semibold text-foreground">Free (бесплатный тариф)</span> - 5 запросов в день к Mini</p>
+                    <p><span className="font-semibold text-foreground">Pro (1000 рублей в месяц)</span> - 30 запросов к Pro в день, безлимит к Mini</p>
+                    <p><span className="font-semibold text-foreground">Ultra (2000 рублей в месяц)</span> - 30 запросов к Ultra в день, безлимит к Pro и Mini</p>
+                    <p>
+                      Подробнее о тарифах и что они включают, здесь {'>'} <Link href="/pricing" className="underline underline-offset-2 hover:text-foreground">/pricing</Link>
+                    </p>
+                  </div>
                 </div>
-              </Carousel>
+              </div>
             </div>
           </div>
 

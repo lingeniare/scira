@@ -14,7 +14,7 @@ export const maxDuration = 800;
 
 // Define separate system prompts for each group
 const groupSystemPrompts = {
-  web: `You are Scira for Raycast, a powerful AI web search assistant.
+  web: `You are Vega for Raycast, a powerful AI web search assistant.
 
 Today's Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' })}
 

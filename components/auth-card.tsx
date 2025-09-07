@@ -191,14 +191,14 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
                 id="privacy"
                 checked={privacyAccepted}
                 onCheckedChange={(checked) => setPrivacyAccepted(checked as boolean)}
-                className={`mt-0.5 ${shakeCheckboxes ? 'ring-2 ring-red-400 ring-opacity-75' : ''}`}
+                className={`mt-0.5 text-foreground ${shakeCheckboxes ? 'ring-2 ring-red-400 ring-opacity-75' : ''}`}
               />
-              <label htmlFor="privacy" className="text-[11px] text-muted-foreground/60 leading-relaxed">
+              <label htmlFor="privacy" className="text-[11px] text-foreground leading-relaxed">
                 Согласие с{' '}
                 <Link 
                   href="/privacy-policy" 
                   target="_blank"
-                  className="hover:text-muted-foreground underline-offset-2 underline"
+                  className="text-foreground underline-offset-2 underline"
                 >
                   политикой обработки персональных данных
                 </Link>
@@ -210,14 +210,14 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
                 id="terms"
                 checked={termsAccepted}
                 onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
-                className={`mt-0.5 ${shakeCheckboxes ? 'ring-2 ring-red-400 ring-opacity-75' : ''}`}
+                className={`mt-0.5 text-foreground ${shakeCheckboxes ? 'ring-2 ring-red-400 ring-opacity-75' : ''}`}
               />
-              <label htmlFor="terms" className="text-[11px] text-muted-foreground/60 leading-relaxed">
+              <label htmlFor="terms" className="text-[11px] text-foreground leading-relaxed">
                 Согласие с{' '}
                 <Link 
                   href="/terms" 
                   target="_blank"
-                  className="hover:text-muted-foreground underline-offset-2 underline"
+                  className="text-foreground underline-offset-2 underline"
                 >
                   условиями сервиса
                 </Link>

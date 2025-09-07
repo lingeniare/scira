@@ -46,10 +46,10 @@ export default function Loading() {
               {/* Assistant message skeleton */}
               <div className="mb-6 pb-6 border-b border-neutral-200 dark:border-neutral-800">
                 <div className="w-full">
-                  {/* Scira logo header */}
+                  {/* Vega logo header */}
                   <div className="flex items-center gap-2 mb-2">
                     <div className="h-6 w-6 bg-muted rounded animate-pulse" />
-                    <div className="text-lg font-semibold font-be-vietnam-pro">
+                    <div className="text-lg font-semibold font-roboto">
                       <div className="h-5 w-20 bg-muted rounded animate-pulse" />
                     </div>
                   </div>
@@ -105,7 +105,7 @@ export default function Loading() {
                 <div className="w-full">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="h-6 w-6 bg-muted rounded animate-pulse" />
-                    <div className="text-lg font-semibold font-be-vietnam-pro">
+                    <div className="text-lg font-semibold font-roboto">
                       <div className="h-5 w-20 bg-muted rounded animate-pulse" />
                     </div>
                   </div>

@@ -221,7 +221,7 @@ export default function CheckoutPage() {
             Checkout
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed">
-            Complete your one-time payment for Scira Pro
+            Complete your one-time payment for Vega Pro
           </p>
           <div className="mt-4 space-y-2">
             <div className="inline-flex items-center bg-secondary text-secondary-foreground px-4 py-2 rounded-full text-sm">
@@ -268,9 +268,9 @@ export default function CheckoutPage() {
                       name="customer.name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel>Отоброжаемое имя</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder="Иван Дое" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -281,7 +281,7 @@ export default function CheckoutPage() {
                       name="customer.email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Address</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="john@example.com"

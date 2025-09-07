@@ -292,7 +292,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
         </Link>
 
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-medium text-foreground mb-4 font-be-vietnam-pro">Тарифы</h1>
+          <h1 className="text-4xl font-medium text-foreground mb-4 font-roboto">Тарифы</h1>
           <p className="text-xl text-muted-foreground">Выберите подходящий план</p>
           {!location.loading && location.isIndia && (
             <Badge variant="secondary" className="mt-4">
@@ -594,7 +594,7 @@ export default function PricingTable({ subscriptionDetails, user }: PricingTable
 
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-medium">Scira Ultra</h3>
+                <h3 className="text-xl font-medium">Vega Ultra</h3>
                 <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Премиум</Badge>
               </div>
 

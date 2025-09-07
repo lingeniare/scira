@@ -51,9 +51,9 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
 
   // Функция для получения описания температуры
   const getTemperatureDescription = (temp: number) => {
-    if (temp <= 0.3) return 'Консервативный - Более сфокусированный и детерминированный';
-    if (temp <= 0.7) return 'Сбалансированный - Хорошее сочетание креативности и фокуса';
-    return 'Креативный - Более случайные и творческие ответы';
+    if (temp <= 0.3) return 'Консервативный';
+    if (temp <= 0.7) return 'Сбалансированный';
+    return 'Креативный';
   };
 
   return (
@@ -91,7 +91,7 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
         >
           <div className="flex flex-col gap-0.5">
             <span className="font-medium text-[11px]">
-              Temperature: {temperature.toFixed(1)}
+              AI-температура: {temperature.toFixed(1)}
             </span>
             <span className="text-[10px] text-accent leading-tight">
               {getTemperatureDescription(temperature)}
@@ -117,10 +117,10 @@ const TemperatureButton: React.FC<TemperatureButtonProps> = ({
                 strokeWidth={2}
                 className="transition-colors duration-200"
               />
-              <span className="font-medium text-sm">Температура ИИ</span>
+              <span className="font-medium text-sm">AI-температура</span>
             </div>
             <span className="text-sm font-mono bg-accent/20 px-2 py-1 rounded">
-              {temperature.toFixed(2)}
+              {temperature.toFixed(1)}
             </span>
           </div>
           

@@ -111,18 +111,18 @@ function ProfileSection({ user, subscriptionData, isProUser, isProStatusLoading 
       <div className={isMobile ? 'space-y-2' : 'space-y-3'}>
         <div className={cn('bg-muted/50 rounded-lg space-y-3', isMobile ? 'p-3' : 'p-4')}>
           <div>
-            <Label className="text-xs text-muted-foreground">Full Name</Label>
+            <Label className="text-xs text-muted-foreground">Имя</Label>
             <p className="text-sm font-medium mt-1">{user?.name || 'Not provided'}</p>
           </div>
           <div>
-            <Label className="text-xs text-muted-foreground">Email Address</Label>
+            <Label className="text-xs text-muted-foreground">Email</Label>
             <p className="text-sm font-medium mt-1 break-all">{user?.email || 'Not provided'}</p>
           </div>
         </div>
 
         <div className={cn('bg-muted/30 rounded-lg border border-border', isMobile ? 'p-2.5' : 'p-3')}>
           <p className={cn('text-muted-foreground', isMobile ? 'text-[11px]' : 'text-xs')}>
-            Profile information is managed through your authentication provider. Contact support to update your details.
+            Обновление профиля сейчас возможно только через службу поддержки mail@vega.chat.
           </p>
         </div>
       </div>
@@ -266,9 +266,9 @@ function UsageSection({ user }: any) {
     try {
       setIsRefreshing(true);
       await Promise.all([refetchUsageData(), refetchHistoricalData()]);
-      toast.success('Usage data refreshed');
+      toast.success('Использование обновлено');
     } catch (error) {
-      toast.error('Failed to refresh usage data');
+      toast.error('Не удалось обновить использование');
     } finally {
       setIsRefreshing(false);
     }
@@ -282,7 +282,7 @@ function UsageSection({ user }: any) {
   return (
     <div className={cn(isMobile ? 'space-y-3' : 'space-y-4', isMobile && !isProUser ? 'pb-4' : '')}>
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-semibold">Daily Search Usage</h3>
+        <h3 className="text-sm font-semibold">Использование сервиса</h3>
         <Button
           variant="ghost"
           size="sm"
@@ -297,7 +297,7 @@ function UsageSection({ user }: any) {
       <div className={cn('grid grid-cols-2', isMobile ? 'gap-2' : 'gap-3')}>
         <div className={cn('bg-muted/50 rounded-lg space-y-1', isMobile ? 'p-2.5' : 'p-3')}>
           <div className="flex items-center justify-between">
-            <span className={cn('text-muted-foreground', isMobile ? 'text-[11px]' : 'text-xs')}>Today</span>
+            <span className={cn('text-muted-foreground', isMobile ? 'text-[11px]' : 'text-xs')}>Сегодня</span>
             <MagnifyingGlass className={isMobile ? 'h-3 w-3' : 'h-3.5 w-3.5'} />
           </div>
           {usageLoading ? (
@@ -305,7 +305,7 @@ function UsageSection({ user }: any) {
           ) : (
             <div className={cn('font-semibold', isMobile ? 'text-base' : 'text-lg')}>{searchCount?.count || 0}</div>
           )}
-          <p className="text-[10px] text-muted-foreground">Regular searches</p>
+          <p className="text-[10px] text-muted-foreground"></p>
         </div>
 
         <div className={cn('bg-muted/50 rounded-lg space-y-1', isMobile ? 'p-2.5' : 'p-3')}>
@@ -320,7 +320,7 @@ function UsageSection({ user }: any) {
               {extremeSearchCount?.count || 0}
             </div>
           )}
-          <p className="text-[10px] text-muted-foreground">This month</p>
+          <p className="text-[10px] text-muted-foreground">В этом месяце</p>
         </div>
       </div>
 
@@ -355,13 +355,13 @@ function UsageSection({ user }: any) {
           <div className={cn('bg-card rounded-lg border border-border', isMobile ? 'p-3' : 'p-4')}>
             <div className={cn('flex items-center gap-2', isMobile ? 'mb-1.5' : 'mb-2')}>
               <HugeiconsIcon icon={Crown02Icon} size={isMobile ? 14 : 16} color="currentColor" strokeWidth={1.5} />
-              <span className={cn('font-semibold', isMobile ? 'text-xs' : 'text-sm')}>Upgrade to Pro</span>
+              <span className={cn('font-semibold', isMobile ? 'text-xs' : 'text-sm')}>Улучшить тариф</span>
             </div>
             <p className={cn('text-muted-foreground mb-3', isMobile ? 'text-[11px]' : 'text-xs')}>
-              Get unlimited searches and premium features
+              Получите лучшие AI-модели и инструменты
             </p>
             <Button asChild size="sm" className={cn('w-full', isMobile ? 'h-7 text-xs' : 'h-8')}>
-              <Link href="/pricing">Upgrade Now</Link>
+              <Link href="/pricing">Улучшите опыт использования AI, прямо сейчас</Link>
             </Button>
           </div>
         </div>
@@ -370,7 +370,7 @@ function UsageSection({ user }: any) {
       {!usageLoading && (
         <div className={cn('space-y-2', isMobile && !isProUser ? 'pb-4' : '')}>
           <h4 className={cn('font-semibold text-muted-foreground', isMobile ? 'text-[11px]' : 'text-xs')}>
-            Activity (Past 14 days)
+            Активность (за 2 недели)
           </h4>
           <div className={cn('bg-muted/50 dark:bg-card rounded-lg overflow-hidden', isMobile ? 'p-2' : 'p-3')}>
             {historicalLoading ? (
@@ -448,9 +448,9 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
       console.error('Subscription management error:', error);
 
       if (proSource === 'dodo') {
-        toast.error('Unable to access DodoPayments portal. Please contact support at mail@vega.chat');
+        toast.error('Не удалось получить доступ к DodoPayments. Пожалуйста, свяжитесь с поддержкой по адресу mail@vega.chat');
       } else {
-        toast.error('Failed to open subscription management');
+        toast.error('Не удалось открыть управление подпиской');
       }
     } finally {
       setIsManagingSubscription(false);
@@ -510,7 +510,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
               </Badge>
             </div>
             <div className={cn('opacity-90 mb-3', isMobile ? 'text-[11px]' : 'text-xs')}>
-              <p className="mb-1">Unlimited access to all premium features</p>
+              <p className="mb-1">Безлимитный доступ ко всем премиум-функциям</p>
               {hasActiveSubscription && subscription && (
                 <div className="flex gap-4 text-[10px] opacity-75">
                   <span>
@@ -522,8 +522,8 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
               {hasDodoProStatus && !hasActiveSubscription && (
                 <div className="space-y-1">
                   <div className="flex gap-4 text-[10px] opacity-75">
-                    <span>₹1500 (One-time payment)</span>
-                    <span>🇮🇳 Indian pricing</span>
+                    <span>₹1500 (Одноразовая оплата)</span>
+                    <span>🇮🇳 Цена в Индии</span>
                   </div>
                   {dodoProStatus?.expiresAt && (
                     <div className="text-[10px] opacity-75">
@@ -545,7 +545,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                 ) : (
                   <ExternalLink className={isMobile ? 'h-3 w-3 mr-1.5' : 'h-3.5 w-3.5 mr-2'} />
                 )}
-                {isManagingSubscription ? 'Opening...' : 'Manage Billing'}
+                {isManagingSubscription ? 'Открывается...' : 'Управление подпиской'}
               </Button>
             )}
           </div>
@@ -583,8 +583,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                       isMobile ? 'text-[11px] mt-1' : 'text-xs mt-1',
                     )}
                   >
-                    Your Pro access expires in {daysUntilExpiration} {daysUntilExpiration === 1 ? 'day' : 'days'}. Renew
-                    now to continue enjoying unlimited features.
+                    Ваша подписка скоро истечет {daysUntilExpiration} {daysUntilExpiration === 1 ? 'day' : 'days'}.
                   </p>
                   <Button
                     asChild
@@ -594,7 +593,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                       isMobile ? 'h-7 text-xs' : 'h-8',
                     )}
                   >
-                    <Link href="/pricing">Renew Pro Access</Link>
+                    <Link href="/pricing">Условия подписки</Link>
                   </Button>
                 </div>
               </div>
@@ -611,9 +610,9 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
               strokeWidth={1.5}
               className={cn('mx-auto text-muted-foreground mb-3')}
             />
-            <h3 className={cn('font-semibold mb-1', isMobile ? 'text-sm' : 'text-base')}>No Active Subscription</h3>
+            <h3 className={cn('font-semibold mb-1', isMobile ? 'text-sm' : 'text-base')}>Нет активной подписки</h3>
             <p className={cn('text-muted-foreground mb-4', isMobile ? 'text-[11px]' : 'text-xs')}>
-              Upgrade to Pro for unlimited access
+              Условия подписки
             </p>
             <div className="space-y-2">
               <Button asChild size="sm" className={cn('w-full', isMobile ? 'h-8 text-xs' : 'h-9')}>
@@ -625,11 +624,11 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                     strokeWidth={1.5}
                     className={isMobile ? 'mr-1.5' : 'mr-2'}
                   />
-                  Upgrade to Pro
+                  Улучшить подписку
                 </Link>
               </Button>
               <Button asChild variant="outline" size="sm" className={cn('w-full', isMobile ? 'h-7 text-xs' : 'h-8')}>
-                <Link href="/pricing">Compare Plans</Link>
+                <Link href="/pricing">Сравнить планы</Link>
               </Button>
             </div>
           </div>
@@ -637,7 +636,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
       )}
 
       <div className={isMobile ? 'space-y-2' : 'space-y-3'}>
-        <h4 className={cn('font-semibold', isMobile ? 'text-xs' : 'text-sm')}>Billing History</h4>
+        <h4 className={cn('font-semibold', isMobile ? 'text-xs' : 'text-sm')}>История покупок</h4>
         {ordersLoading ? (
           <div className={cn('border rounded-lg flex items-center justify-center', isMobile ? 'p-3 h-16' : 'p-4 h-20')}>
             <Loader2 className={cn(isMobile ? 'w-3.5 h-3.5' : 'w-4 h-4', 'animate-spin')} />
@@ -654,7 +653,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
                         <p className={cn('font-medium truncate', isMobile ? 'text-xs' : 'text-sm')}>
-                          {order.product?.name || 'Subscription'}
+                          {order.product?.name || 'Подписка'}
                         </p>
                         <div className="flex items-center gap-2">
                           <p className={cn('text-muted-foreground', isMobile ? 'text-[10px]' : 'text-xs')}>
@@ -688,7 +687,7 @@ function SubscriptionSection({ subscriptionData, isProUser, user }: any) {
                   )}
                 >
                   <p className={cn('text-muted-foreground', isMobile ? 'text-[11px]' : 'text-xs')}>
-                    No billing history yet
+                    Нет истории оплат
                   </p>
                 </div>
               )}
@@ -734,7 +733,7 @@ function CustomInstructionsSection({
 
   const handleSave = async () => {
     if (!content.trim()) {
-      toast.error('Please enter some instructions');
+      toast.error('Пожалуйста, введите некоторые инструкции');
       return;
     }
 
@@ -742,13 +741,13 @@ function CustomInstructionsSection({
     try {
       const result = await saveCustomInstructions(content);
       if (result.success) {
-        toast.success('Custom instructions saved successfully');
+        toast.success('Пользовательские инструкции сохранены успешно');
         refetch();
       } else {
-        toast.error(result.error || 'Failed to save instructions');
+        toast.error(result.error || 'Пользовательские инструкции не были сохранены');
       }
     } catch (error) {
-      toast.error('Failed to save instructions');
+      toast.error('Пользовательские инструкции не были сохранены');
     } finally {
       setIsSaving(false);
     }
@@ -759,14 +758,14 @@ function CustomInstructionsSection({
     try {
       const result = await deleteCustomInstructionsAction();
       if (result.success) {
-        toast.success('Custom instructions deleted successfully');
+        toast.success('Пользовательские инструкции удалены успешно');
         setContent('');
         refetch();
       } else {
-        toast.error(result.error || 'Failed to delete instructions');
+        toast.error(result.error || 'Пользовательские инструкции не были удалены');
       }
     } catch (error) {
-      toast.error('Failed to delete instructions');
+      toast.error('Пользовательские инструкции не были удалены');
     } finally {
       setIsSaving(false);
     }
@@ -777,10 +776,10 @@ function CustomInstructionsSection({
       <div className="flex items-center justify-between">
         <div>
           <Label htmlFor="enable-instructions" className="text-sm font-medium">
-            Enable Custom Instructions
+            Включить пользовательские инструкции
           </Label>
           <p className="text-xs text-muted-foreground mt-1">
-            Toggle to enable or disable custom instructions for your conversations
+            Переключите, чтобы включить или отключить пользовательские инструкции для ваших бесед
           </p>
         </div>
         <Switch id="enable-instructions" checked={enabled} onCheckedChange={setEnabled} />
@@ -789,15 +788,17 @@ function CustomInstructionsSection({
       <div className={cn('space-y-3', !enabled && 'opacity-50')}>
         <div>
           <Label htmlFor="instructions" className="text-sm font-medium">
-            Custom Instructions
+            Пользовательские инструкции
           </Label>
-          <p className="text-xs text-muted-foreground mt-1 mb-3">Guide how the AI responds to your questions</p>
+          <p className="text-xs text-muted-foreground mt-1 mb-3">
+            Укажите, как AI отвечает на ваши вопросы
+          </p>
           {customInstructionsLoading ? (
             <Skeleton className="h-32 w-full" />
           ) : (
             <Textarea
               id="instructions"
-              placeholder="Enter your custom instructions here... For example: 'Always provide code examples when explaining programming concepts' or 'Keep responses concise and focused on practical applications'"
+              placeholder="Введите свои пользовательские инструкции здесь... Например: 'Всегда предоставляйте примеры кода при объяснении концепций программирования' или 'СтарайтесьKeep responses concise and focused on practical applications'"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="min-h-[120px] resize-y text-sm"
@@ -823,10 +824,10 @@ function CustomInstructionsSection({
             {isSaving ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
-                Saving...
+                Сохранение...
               </>
             ) : (
-              'Save Instructions'
+              'Сохранить инструкции'
             )}
           </Button>
           {customInstructions && (
@@ -906,7 +907,7 @@ function MemoriesSection() {
         return newSet;
       });
       queryClient.invalidateQueries({ queryKey: ['memories'] });
-      toast.success('Memory deleted successfully');
+      toast.success('Память удалена успешно');
     },
     onError: (_, memoryId) => {
       setDeletingMemoryIds((prev) => {
@@ -914,7 +915,7 @@ function MemoriesSection() {
         newSet.delete(memoryId);
         return newSet;
       });
-      toast.error('Failed to delete memory');
+      toast.error('Память не удалена');
     },
   });
 
@@ -1008,7 +1009,7 @@ function MemoriesSection() {
         ) : displayedMemories.length === 0 ? (
           <div className="flex flex-col justify-center items-center h-32 border border-dashed rounded-lg bg-muted/20">
             <Memory className="h-6 w-6 text-muted-foreground mb-2" />
-            <p className="text-sm text-muted-foreground">No memories found</p>
+            <p className="text-sm text-muted-foreground">Не найдено памяти</p>
           </div>
         ) : (
           <>
@@ -1116,15 +1117,15 @@ export function SettingsDialog({
   }, [isMobile, open]);
 
   const tabItems = [
-    { value: 'profile', label: 'Account', icon: User },
-    { value: 'usage', label: 'Usage', icon: ChartLineUp },
+    { value: 'profile', label: 'Профиль', icon: User },
+    { value: 'usage', label: 'Использование', icon: ChartLineUp },
     {
       value: 'subscription',
-      label: 'Subscription',
+      label: 'Подписка',
       icon: () => <HugeiconsIcon icon={Crown02Icon} size={16} color="currentColor" strokeWidth={1.5} />,
     },
-    { value: 'instructions', label: 'Customize', icon: NotePencil },
-    { value: 'memories', label: 'Memories', icon: Memory },
+    { value: 'instructions', label: 'Настройки', icon: NotePencil },
+    { value: 'memories', label: 'Память', icon: Memory },
   ];
 
   const contentSections = (

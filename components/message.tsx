@@ -622,13 +622,22 @@ export const Message: React.FC<MessageProps> = ({
                         <div
                           key={`user-${index}-${partIndex}`}
                           ref={messageContentRef}
-                          className={`mt-2 prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:!font-roboto font-normal max-w-none ${getDynamicFontSize(part.text)} text-foreground dark:text-foreground overflow-hidden relative ${
+                          className={`mb-2.5 prose prose-sm sm:prose-base prose-neutral dark:prose-invert prose-p:my-1 sm:prose-p:my-2 prose-p:mt-0 sm:prose-p:mt-0 prose-pre:my-1 sm:prose-pre:my-2 prose-code:before:hidden prose-code:after:hidden [&>*]:!font-roboto font-normal max-w-none ${getDynamicFontSize(part.text)} text-foreground dark:text-foreground overflow-hidden relative ${
                             !isExpanded && exceedsMaxHeight ? 'max-h-[120px]' : ''
                           }`}
                         >
                           <div
-                            className={`flex ${shouldTopAlignUser ? 'items-start' : 'items-center'} justify-start gap-2`}
+                            className={`flex ${shouldTopAlignUser ? 'items-start' : 'items-center'} justify-end gap-2`}
                           >
+                            <div className="w-fit max-w-full bg-muted rounded-2xl p-2 px-3.5">
+                              <ChatTextHighlighter
+                                className={`${getDynamicFontSize(part.text)}`}
+                                onHighlight={onHighlight}
+                                removeHighlightOnClick={true}
+                              >
+                                <MarkdownRenderer content={preprocessLaTeX(part.text)} isUserMessage={true} />
+                              </ChatTextHighlighter>
+                            </div>
                             {user ? (
                               <Avatar className="size-7 rounded-md !p-0 !m-0 flex-shrink-0 self-start">
                                 <AvatarImage
@@ -647,15 +656,6 @@ export const Message: React.FC<MessageProps> = ({
                                 className="size-7 flex-shrink-0 self-start"
                               />
                             )}
-                            <div className="flex-1 grow min-w-0 bg-accent/80 rounded-2xl p-2">
-                              <ChatTextHighlighter
-                                className={`${getDynamicFontSize(part.text)}`}
-                                onHighlight={onHighlight}
-                                removeHighlightOnClick={true}
-                              >
-                                <MarkdownRenderer content={preprocessLaTeX(part.text)} isUserMessage={true} />
-                              </ChatTextHighlighter>
-                            </div>
                           </div>
 
                           {!isExpanded && exceedsMaxHeight && (

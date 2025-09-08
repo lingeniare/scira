@@ -2556,9 +2556,9 @@ const FormComponent: React.FC<FormComponentProps> = ({
                     <Tooltip delayDuration={300}>
                       <TooltipTrigger asChild>
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="icon"
-                          className="group rounded-full transition-colors duration-200 !size-8 border-0 !shadow-none hover:!bg-primary/30 hover:!border-0"
+                          className="group rounded-full transition-colors duration-200 !size-8 !bg-transparent !border-0 !shadow-none hover:!bg-primary/30 hover:!border-0"
                           onClick={(event) => {
                             event.preventDefault();
                             event.stopPropagation();

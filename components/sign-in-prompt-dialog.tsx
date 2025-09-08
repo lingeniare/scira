@@ -144,7 +144,7 @@ export function SignInPromptDialog({ open, onOpenChange }: SignInPromptDialogPro
               {/* Показываем placeholder как отдельный элемент когда поле не в фокусе и пустое */}
               {!isEmailFocused && !email && (
                 <div 
-                  className="absolute inset-0 flex items-center justify-center pointer-events-none text-sm text-muted-foreground"
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none font-normal text-sm text-muted-foreground"
                   onClick={() => document.getElementById('email')?.focus()}
                 >
                   Войти через Email

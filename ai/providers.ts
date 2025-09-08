@@ -100,7 +100,8 @@ export const models: Model[] = [
   {
     value: 'scira-5-nano',
     label: 'GPT 5 Nano',
-    description: "OpenAI's latest flagship nano LLM",
+    description: "Новейшая нано-LLM от OpenAI",
+
     vision: true,
     reasoning: false,
     experimental: false,
@@ -115,7 +116,8 @@ export const models: Model[] = [
   {
     value: 'scira-google-lite',
     label: 'Gemini 2.5 Flash Lite',
-    description: "Google's advanced smallest LLM",
+    description: "Самая быстрая LLM от Google",
+
     vision: true,
     reasoning: false,
     experimental: false,
@@ -130,7 +132,8 @@ export const models: Model[] = [
   {
     value: 'scira-qwen-thinking',
     label: 'Qwen3 Thinking',
-    description: "Qwen's advanced reasoning model with thinking",
+    description: "Базовая модель Qwen с рассуждением",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -147,7 +150,8 @@ export const models: Model[] = [
   {
     value: 'scira-default',
     label: 'Grok 3 Mini',
-    description: "xAI's most efficient reasoning LLM.",
+    description: "Мини-LLM с рассуждением от xAI.",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -162,7 +166,8 @@ export const models: Model[] = [
   {
     value: 'scira-5-mini',
     label: 'GPT 5 Mini',
-    description: "OpenAI's latest flagship mini LLM",
+    description: "Новейшая мини-LLM от OpenAI",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -177,7 +182,8 @@ export const models: Model[] = [
   {
     value: 'scira-google',
     label: 'Gemini 2.5 Flash',
-    description: "Google's advanced small LLM",
+    description: "Продвинутая быстрая LLM от Google",
+
     vision: true,
     reasoning: false,
     experimental: false,
@@ -192,7 +198,8 @@ export const models: Model[] = [
   {
     value: 'scira-kimi-k2-new',
     label: 'Kimi K2 0905',
-    description: "MoonShot AI's advanced base LLM",
+    description: "Флагманская LLM от MoonShot AI",
+
     vision: true,
     reasoning: false,
     experimental: false,
@@ -207,7 +214,8 @@ export const models: Model[] = [
   {
     value: 'scira-glm-4-5v',
     label: 'GLM 4.5V',
-    description: "Zhipu AI's multimodal model with vision capabilities",
+    description: "Флагманская LLM от Zhipu AI",
+
     vision: true,
     reasoning: false,
     experimental: false,
@@ -222,7 +230,8 @@ export const models: Model[] = [
   {
     value: 'scira-deepseek-chat',
     label: 'DeepSeek V3.1 Chat',
-    description: "DeepSeek's advanced model",
+    description: "Флагманская LLM от DeepSeek",
+
     vision: true,
     reasoning: false,
     experimental: false,
@@ -239,7 +248,8 @@ export const models: Model[] = [
   {
     value: 'scira-grok-4',
     label: 'Grok 4',
-    description: "xAI's most intelligent vision LLM",
+    description: "Флагманская LLM от xAI",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -254,7 +264,8 @@ export const models: Model[] = [
   {
     value: 'scira-5',
     label: 'GPT 5',
-    description: "OpenAI's latest flagship LLM",
+    description: "Флагманская LLM от OpenAI",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -269,7 +280,8 @@ export const models: Model[] = [
   {
     value: 'scira-anthropic',
     label: 'Claude 4 Sonnet',
-    description: "Anthropic's most advanced LLM",
+    description: "Флагманская LLM от Anthropic",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -284,7 +296,8 @@ export const models: Model[] = [
   {
     value: 'scira-google-pro',
     label: 'Gemini 2.5 Pro',
-    description: "Google's most advanced LLM",
+    description: "Флагманская LLM от Google",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -299,7 +312,8 @@ export const models: Model[] = [
   {
     value: 'scira-qwen-max',
     label: 'Qwen3 Max',
-    description: "Qwen's flagship model with advanced reasoning and multilingual support",
+    description: "Флагманская LLM от Qwen",
+
     vision: true,
     reasoning: true,
     experimental: false,
@@ -314,7 +328,8 @@ export const models: Model[] = [
   {
     value: 'scira-deepseek-reasoner',
     label: 'DeepSeek V3.1 Reasoner',
-    description: "DeepSeek's reasoning model with advanced problem-solving capabilities",
+    description: "Флагманская LLM с рассуждением DeepSeek",
+
     vision: true,
     reasoning: true,
     experimental: false,

@@ -162,7 +162,7 @@ export default function AuthCard({ title, description, mode }: AuthCardProps) {
             disabled={loading}
             className="w-full"
           >
-            {loading ? 'Отправляем...' : 'Клик'}
+            {loading ? 'Отправляем...' : 'Получить ссылку'}
           </Button>
 
           {/* Разделитель */}

@@ -67,6 +67,25 @@ import { markdownJoinerTransform } from '@/lib/parser';
 
 let globalStreamContext: ResumableStreamContext | null = null;
 
+// Simple in-memory cache for frequently accessed data
+const cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+function getCachedData<T>(key: string): T | null {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < cached.ttl) {
+    return cached.data as T;
+  }
+  if (cached) {
+    cache.delete(key); // Remove expired data
+  }
+  return null;
+}
+
+function setCachedData<T>(key: string, data: T, ttl: number = CACHE_TTL): void {
+  cache.set(key, { data, timestamp: Date.now(), ttl });
+}
+
 export function getStreamContext() {
   if (!globalStreamContext) {
     try {
@@ -111,6 +130,9 @@ export async function POST(req: Request) {
   console.log('Group: ', group);
   console.log('Timezone: ', timezone);
 
+  // Fast path for simple chat requests - minimal blocking operations
+  const isSimpleChat = group === 'chat' || !group;
+
   const userCheckTime = Date.now();
   const user = await getCurrentUser();
   const streamId = 'stream-' + uuidv4();
@@ -138,8 +160,17 @@ export async function POST(req: Request) {
     isProUser?: boolean;
   }> = Promise.resolve({ canProceed: true });
 
-  // Get custom instructions in parallel with other operations (declare outside user block for scope)
-  const customInstructionsPromise = user ? getCustomInstructions(user) : Promise.resolve(null);
+  // Get custom instructions with caching
+  const customInstructionsPromise = user ? (() => {
+    const cached = getCachedData<CustomInstructions>(`custom-instructions-${user.id}`);
+    if (cached) {
+      return Promise.resolve(cached);
+    }
+    return getCustomInstructions(user).then(result => {
+      if (result) setCachedData(`custom-instructions-${user.id}`, result);
+      return result;
+    });
+  })() : Promise.resolve(null);
 
   if (user) {
     const isProUser = user.isProUser;
@@ -254,10 +285,18 @@ export async function POST(req: Request) {
   }
 
   const configStartTime = Date.now();
-  const configPromise = getGroupConfig(group).then((config) => {
-    console.log(`⏱️  Config loading took: ${((Date.now() - configStartTime) / 1000).toFixed(2)}s`);
-    return config;
-  });
+  const configPromise = (() => {
+    const cached = getCachedData<any>(`group-config-${group}`);
+    if (cached) {
+      console.log(`⏱️  Config loaded from cache`);
+      return Promise.resolve(cached);
+    }
+    return getGroupConfig(group).then((config) => {
+      console.log(`⏱️  Config loading took: ${((Date.now() - configStartTime) / 1000).toFixed(2)}s`);
+      setCachedData(`group-config-${group}`, config);
+      return config;
+    });
+  })();
 
   // Start streaming immediately while background operations continue
   const stream = createUIMessageStream({
@@ -493,54 +532,79 @@ export async function POST(req: Request) {
         },
         onChunk(event) {
           if (event.chunk.type === 'tool-call') {
-            console.log('Called Tool: ', event.chunk.toolName);
+            // Minimal logging for simple chat
+            if (!isSimpleChat) {
+              console.log('Called Tool: ', event.chunk.toolName);
+            }
           }
         },
         onStepFinish(event) {
-          if (event.warnings) {
+          // Reduced logging for simple chat
+          if (!isSimpleChat && event.warnings) {
             console.log('Warnings: ', event.warnings);
           }
         },
         onFinish: async (event) => {
-          console.log('Fin reason: ', event.finishReason);
-          console.log('Reasoning: ', event.reasoningText);
-          console.log('reasoning details: ', event.reasoning);
-          console.log('Steps: ', event.steps);
-          console.log('Messages: ', event.response.messages);
-          console.log('Message content: ', event.response.messages[event.response.messages.length - 1].content);
-          console.log('Response Body: ', event.response.body);
-          console.log('Provider metadata: ', event.providerMetadata);
-          console.log('Sources: ', event.sources);
-          console.log('Usage: ', event.usage);
-          console.log('Total Usage: ', event.totalUsage);
+          // Minimal logging for simple chat
+          if (isSimpleChat) {
+            console.log('Fin reason: ', event.finishReason);
+            console.log('Usage: ', event.usage);
+          } else {
+            console.log('Fin reason: ', event.finishReason);
+            console.log('Reasoning: ', event.reasoningText);
+            console.log('reasoning details: ', event.reasoning);
+            console.log('Steps: ', event.steps);
+            console.log('Messages: ', event.response.messages);
+            console.log('Message content: ', event.response.messages[event.response.messages.length - 1].content);
+            console.log('Response Body: ', event.response.body);
+            console.log('Provider metadata: ', event.providerMetadata);
+            console.log('Sources: ', event.sources);
+            console.log('Usage: ', event.usage);
+            console.log('Total Usage: ', event.totalUsage);
+          }
 
           // Only proceed if user is authenticated
           if (user?.id && event.finishReason === 'stop') {
-            after(async () => {
-              try {
-                if (!shouldBypassRateLimits(model, user)) {
-                  await incrementMessageUsage({ userId: user.id });
-                }
-              } catch (error) {
-                console.error('Failed to track message usage:', error);
-              }
-            });
-
-            if (group === 'extreme') {
+            // For simple chat, run all tracking in background without blocking
+            if (isSimpleChat) {
+              // Non-blocking background operations
               after(async () => {
                 try {
-                  const extremeSearchUsed = event.steps?.some((step) =>
-                    step.toolCalls?.some((toolCall) => toolCall.toolName === 'extreme_search'),
-                  );
-
-                  if (extremeSearchUsed) {
-                    console.log('Extreme search was used successfully, incrementing count');
-                    await incrementExtremeSearchUsage({ userId: user.id });
+                  if (!shouldBypassRateLimits(model, user)) {
+                    await incrementMessageUsage({ userId: user.id });
                   }
                 } catch (error) {
-                  console.error('Failed to track extreme search usage:', error);
+                  console.error('Failed to track message usage:', error);
                 }
               });
+            } else {
+              // Original logic for complex operations
+              after(async () => {
+                try {
+                  if (!shouldBypassRateLimits(model, user)) {
+                    await incrementMessageUsage({ userId: user.id });
+                  }
+                } catch (error) {
+                  console.error('Failed to track message usage:', error);
+                }
+              });
+
+              if (group === 'extreme') {
+                after(async () => {
+                  try {
+                    const extremeSearchUsed = event.steps?.some((step) =>
+                      step.toolCalls?.some((toolCall) => toolCall.toolName === 'extreme_search'),
+                    );
+
+                    if (extremeSearchUsed) {
+                      console.log('Extreme search was used successfully, incrementing count');
+                      await incrementExtremeSearchUsage({ userId: user.id });
+                    }
+                  } catch (error) {
+                    console.error('Failed to track extreme search usage:', error);
+                  }
+                });
+              }
             }
           }
 
@@ -562,9 +626,10 @@ export async function POST(req: Request) {
 
       result.consumeStream();
 
+      // Optimize stream merging for simple chat
       dataStream.merge(
         result.toUIMessageStream({
-          sendReasoning: true,
+          sendReasoning: !isSimpleChat, // Disable reasoning for simple chat to reduce overhead
         }),
       );
     },

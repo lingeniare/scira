@@ -12,10 +12,11 @@ interface NavbarProps {
   user: any;
   isProUser: boolean;
   isProStatusLoading: boolean;
+  isUltraUser?: boolean; // Добавляем поддержку Ultra пользователей
   showProBadge?: boolean;
 }
 
-export function Navbar({ user, isProUser, isProStatusLoading, showProBadge = false }: NavbarProps) {
+export function Navbar({ user, isProUser, isProStatusLoading, isUltraUser, showProBadge = false }: NavbarProps) {
   return (
     <div className="fixed left-0 right-0 top-0 z-30 flex justify-between items-center p-3 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
       <div className="flex items-center gap-3">
@@ -51,6 +52,7 @@ export function Navbar({ user, isProUser, isProStatusLoading, showProBadge = fal
           user={user || null}
           isProUser={isProUser}
           isProStatusLoading={isProStatusLoading}
+          isUltraUser={isUltraUser}
         />
       </div>
     </div>

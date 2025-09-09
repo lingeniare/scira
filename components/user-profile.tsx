@@ -58,6 +58,7 @@ const UserProfile = memo(
     subscriptionData,
     isProUser,
     isProStatusLoading,
+    isUltraUser,
     isCustomInstructionsEnabled,
     setIsCustomInstructionsEnabled,
   }: {
@@ -66,6 +67,7 @@ const UserProfile = memo(
     subscriptionData?: any;
     isProUser?: boolean;
     isProStatusLoading?: boolean;
+    isUltraUser?: boolean; // Добавляем поддержку Ultra пользователей
     isCustomInstructionsEnabled?: boolean;
     setIsCustomInstructionsEnabled?: (value: boolean | ((val: boolean) => boolean)) => void;
   }) => {
@@ -394,6 +396,7 @@ const UserProfile = memo(
           subscriptionData={subscriptionData}
           isProUser={isProUser}
           isProStatusLoading={isProStatusLoading}
+          isUltraUser={isUltraUser}
           isCustomInstructionsEnabled={isCustomInstructionsEnabled}
           setIsCustomInstructionsEnabled={setIsCustomInstructionsEnabled}
         />

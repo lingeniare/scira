@@ -1128,7 +1128,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            <p>{isExtreme ? 'Extreme Search mode on' : 'Глубокое исследование'}</p>
+            <p>{isExtreme ? 'Глубокое исследование включено' : 'Глубокое исследование'}</p>
           </TooltipContent>
         </Tooltip>
       </div>
@@ -2532,10 +2532,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                       onModelSelect={(model) => {
                         setSelectedModel(model.value);
                         const isVisionModel = hasVisionSupport(model.value);
-                        toast.message(`Переключено на ${model.label}`, {
-                          description: isVisionModel ? 'С Pro вы сможете загружать изображения и pdf' : undefined,
-                        });
-                      }}
+                        }}
                       subscriptionData={subscriptionData}
                       user={user}
                     />

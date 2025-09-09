@@ -38,6 +38,7 @@ interface MessagesProps {
   initialMessages?: any[]; // Add initial messages prop to detect existing chat
   isOwner?: boolean; // Add ownership prop
   onHighlight?: (text: string) => void; // Add highlight handler
+  selectedModel?: string; // Add selected model prop
 }
 
 const Messages: React.FC<MessagesProps> = React.memo(
@@ -58,6 +59,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
     onHighlight,
     sendMessage,
     regenerate,
+    selectedModel,
   }) => {
     // Track visibility state for each reasoning section using messageIndex-partIndex as key
     const [reasoningVisibilityMap, setReasoningVisibilityMap] = useState<Record<string, boolean>>({});
@@ -226,6 +228,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
             onVisibilityChange={onVisibilityChange}
             setMessages={setMessages}
             setSuggestedQuestions={setSuggestedQuestions}
+            selectedModel={selectedModel}
             regenerate={regenerate}
             onHighlight={onHighlight}
             annotations={annotations}
@@ -411,6 +414,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
                   handleRetry={handleRetry}
                   isOwner={isOwner}
                   onHighlight={onHighlight}
+                  selectedModel={selectedModel}
                   shouldReduceHeight={
                     message.role === 'assistant'
                       ? status === 'submitted'
@@ -436,7 +440,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
             className={`flex items-start ${shouldReserveLoaderMinHeight ? 'min-h-[calc(100vh-18rem)]' : ''} !m-0 !p-0`}
           >
             <div className="w-full !m-0 !p-0">
-              <VegaLogoHeader />
+              <VegaLogoHeader selectedModel={selectedModel} />
               <div className="flex space-x-2 ml-8 mt-2">
                 <div
                   className="w-2 h-2 rounded-full bg-muted-foreground dark:bg-muted-foreground animate-bounce"

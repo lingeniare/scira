@@ -299,6 +299,7 @@ interface MessageProps {
   isOwner?: boolean;
   onHighlight?: (text: string) => void;
   shouldReduceHeight?: boolean;
+  selectedModel?: string;
 }
 
 // Message Editor Component
@@ -528,6 +529,7 @@ export const Message: React.FC<MessageProps> = ({
   isOwner = true,
   onHighlight,
   shouldReduceHeight = false,
+  selectedModel,
 }) => {
   // State for expanding/collapsing long user messages
   const [isExpanded, setIsExpanded] = useState(false);
@@ -935,7 +937,7 @@ export const Message: React.FC<MessageProps> = ({
         {isMissingAssistantResponse && (
           <div className="flex items-start">
             <div className="w-full">
-              <VegaLogoHeader />
+              <VegaLogoHeader selectedModel={selectedModel} />
 
               <div className="flex flex-col gap-4 bg-primary/10 border border-primary/20 dark:border-primary/20 rounded-lg p-4">
                 <div className=" mb-4 max-w-2xl">

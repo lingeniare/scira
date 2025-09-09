@@ -350,7 +350,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
                 'p-1 rounded border border-border bg-background shadow-sm transition-colors',
                 isWrapped ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
               )}
-              title={isWrapped ? 'Disable wrap' : 'Enable wrap'}
+              title={isWrapped ? 'Выключить перенос' : 'Включить перенос'}
             >
               {isWrapped ? <ArrowLeftRight size={12} /> : <WrapText size={12} />}
             </button>
@@ -360,7 +360,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
                 'p-1 rounded border border-border bg-background shadow-sm transition-colors',
                 isCopied ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
               )}
-              title={isCopied ? 'Copied!' : 'Copy code'}
+              title={isCopied ? 'Код скопирован!' : 'Скопировать код'}
             >
               {isCopied ? <Check size={12} /> : <Copy size={12} />}
             </button>
@@ -416,7 +416,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
                   )}
                   title="Expand code block"
                 >
-                  Expand
+                  Раскрыть
                 </button>
               </div>
             </div>
@@ -433,7 +433,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
                 )}
                 title="Collapse code block"
               >
-                Collapse
+                Скрыть
               </button>
             </div>
           )}
@@ -757,7 +757,8 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, isUserMess
       return (
         <p
           key={generateKey()}
-          className={`${isUserMessage ? 'leading-relaxed text-foreground !m-0' : ''} my-5 leading-relaxed text-foreground`}
+          className={`${isUserMessage ? 'leading-relaxed text-foreground !m-0' : ''} my-5 leading-relaxed text-foreground text-base`}
+          style={{ fontSize: '1rem' }}
         >
           {children}
         </p>

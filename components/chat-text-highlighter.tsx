@@ -51,7 +51,7 @@ export const ChatTextHighlighter: React.FC<ChatTextHighlighterProps> = ({
         renderSelectionUI={({ selection, modifyHighlight, onClose }) => (
           <div className="selection-popup absolute z-50 bg-background border border-border rounded-lg shadow-lg p-3 min-w-[320px] -translate-y-[calc(65%+12px)] before:absolute before:content-[''] before:bottom-[-8px] before:left-[24px] before:w-4 before:h-4 before:bg-background before:border-r before:border-b before:border-border before:rotate-45 before:transform">
             <span className="text-sm text-foreground block mb-3">
-              Quote &ldquo;{selection.text.length > 50 ? selection.text.substring(0, 50) + '...' : selection.text}
+              Цитата &ldquo;{selection.text.length > 50 ? selection.text.substring(0, 50) + '...' : selection.text}
               &rdquo;?
             </span>
 
@@ -64,7 +64,7 @@ export const ChatTextHighlighter: React.FC<ChatTextHighlighterProps> = ({
                 }}
                 className="px-3 py-1.5 text-xs font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
               >
-                Quote
+                Цитата
               </button>
 
               <button
@@ -74,7 +74,7 @@ export const ChatTextHighlighter: React.FC<ChatTextHighlighterProps> = ({
                 }}
                 className="px-3 py-1.5 text-xs font-medium bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors"
               >
-                Cancel
+                Отмена
               </button>
             </div>
           </div>

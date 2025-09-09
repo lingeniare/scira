@@ -73,6 +73,7 @@ const ChatInterface = memo(
       user,
       subscriptionData,
       isProUser: isUserPro,
+      isUltraUser: isUserUltra,
       isLoading: proStatusLoading,
       shouldCheckLimits: shouldCheckUserLimits,
       shouldBypassLimitsForModel,
@@ -593,6 +594,7 @@ const ChatInterface = memo(
           isOwner={isOwner}
           subscriptionData={subscriptionData}
           isProUser={isUserPro}
+          isUltraUser={isUserUltra}
           isProStatusLoading={proStatusLoading}
           isCustomInstructionsEnabled={isCustomInstructionsEnabled}
           setIsCustomInstructionsEnabled={setIsCustomInstructionsEnabled}
@@ -653,11 +655,15 @@ const ChatInterface = memo(
                       className="sparkle-icon w-12 h-12 sm:w-16 sm:h-16 text-foreground dark:text-foreground group-hover:text-primary transition-colors duration-300"
                     />
                   </button>
-                  {isUserPro && (
+                  {isUserUltra ? (
+                    <h1 className="text-2xl font-baumans! leading-4 inline-block !px-3 !pt-1 !pb-2.5 rounded-xl shadow-sm !m-0 !mt-2 bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground ring-1 ring-ring/35 ring-offset-1 ring-offset-background dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground">
+                      ultra
+                    </h1>
+                  ) : isUserPro ? (
                     <h1 className="text-2xl font-baumans! leading-4 inline-block !px-3 !pt-1 !pb-2.5 rounded-xl shadow-sm !m-0 !mt-2 bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground ring-1 ring-ring/35 ring-offset-1 ring-offset-background dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground">
                       pro
                     </h1>
-                  )}
+                  ) : null}
                 </div>
               </div>
             )}
@@ -736,6 +742,7 @@ const ChatInterface = memo(
                 initialMessages={initialMessages}
                 isOwner={isOwner}
                 onHighlight={handleHighlight}
+                selectedModel={selectedModel}
               />
             )}
 

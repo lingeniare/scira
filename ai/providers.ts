@@ -40,7 +40,7 @@ export const scira = customProvider({
     // Новые модели через OpenRouter
     'scira-5-nano': openrouter.chat('openai/gpt-5-nano'),
     'scira-5-mini': openrouter.chat('openai/gpt-5-mini'),
-    'scira-5': openrouter.chat('openai/gpt-5-chat'),
+    'scira-5': openrouter.chat('openai/gpt-5'),
 
     'scira-glm': wrapLanguageModel({
       model: huggingface.chat('zai-org/GLM-4.5:fireworks-ai'),
@@ -49,7 +49,8 @@ export const scira = customProvider({
     'scira-glm-air': huggingface.chat('zai-org/GLM-4.5-Air:fireworks-ai'),
     'scira-qwen-235': huggingface.chat('Qwen/Qwen3-235B-A22B-Instruct-2507:together'),
     'scira-kimi-k2': groq('moonshotai/kimi-k2-instruct'),
-    'scira-mistral-medium': mistral('mistral-medium-2508'),
+    'scira-mistral-small': mistral('mistral-small-latest'),
+    'scira-mistral-medium': mistral('mistral-medium-latest'),
     'scira-google-lite': google('gemini-2.5-flash-lite'),
     'scira-google': google('gemini-2.5-flash'),
     'scira-google-pro': google('gemini-2.5-pro'),
@@ -68,14 +69,11 @@ export const scira = customProvider({
       middleware,
     }),
     
-    // Qwen3 модель через OpenRouter
-    'scira-qwen-thinking': wrapLanguageModel({
-      model: openrouter.chat('qwen/qwen3-30b-a3b-thinking-2507'),
-      middleware,
-    }),
+    // Qwen3 модель через OpenRouter (без middleware из-за проблем с типами параметров у провайдера Alibaba)
+    'scira-qwen-thinking': openrouter.chat('qwen/qwen3-30b-a3b-thinking-2507'),
     
-    // Qwen3 Max модель через OpenRouter
-    'scira-qwen-max': openrouter.chat('qwen/qwen3-max')
+    // Qwen3 модель через OpenRouter (без middleware из-за проблем с типами параметров у провайдера Alibaba)
+    'scira-qwen-max': openrouter.chat('qwen/qwen3-max'),
   },
 });
 
@@ -130,12 +128,12 @@ export const models: Model[] = [
     maxOutputTokens: 10000,
   },
   {
-    value: 'scira-qwen-thinking',
-    label: 'Qwen3 Thinking',
-    description: "Базовая модель Qwen с рассуждением",
+    value: 'scira-mistral-small',
+    label: 'Mistral Small',
+    description: "Быстрая и эффективная модель от Mistral AI",
 
-    vision: true,
-    reasoning: true,
+    vision: false,
+    reasoning: false,
     experimental: false,
     category: 'Mini',
     pdf: true,
@@ -143,7 +141,7 @@ export const models: Model[] = [
     ultra: false,
     requiresAuth: false,
     freeUnlimited: false,
-    maxOutputTokens: 262144,
+    maxOutputTokens: 32000,
   },
 
   // Pro Models
@@ -243,6 +241,22 @@ export const models: Model[] = [
     freeUnlimited: false,
     maxOutputTokens: 8192,
   },
+  {
+    value: 'scira-mistral-medium',
+    label: 'Mistral Medium',
+    description: "Продвинутая модель от Mistral AI",
+
+    vision: false,
+    reasoning: false,
+    experimental: false,
+    category: 'Pro',
+    pdf: true,
+    pro: true,
+    ultra: false,
+    requiresAuth: false,
+    freeUnlimited: false,
+    maxOutputTokens: 32000,
+  },
 
   // Ultra Models
   {
@@ -275,7 +289,7 @@ export const models: Model[] = [
     ultra: true,
     requiresAuth: false,
     freeUnlimited: false,
-    maxOutputTokens: 128000,
+    maxOutputTokens: 16000,
   },
   {
     value: 'scira-anthropic',
@@ -312,10 +326,10 @@ export const models: Model[] = [
   {
     value: 'scira-qwen-max',
     label: 'Qwen3 Max',
-    description: "Флагманская LLM от Qwen",
+    description: "Флагманская LLM от Qwen (без извлечения рассуждений)",
 
     vision: true,
-    reasoning: true,
+    reasoning: false,
     experimental: false,
     category: 'Ultra',
     pdf: true,
@@ -323,7 +337,7 @@ export const models: Model[] = [
     ultra: true,
     requiresAuth: false,
     freeUnlimited: false,
-    maxOutputTokens: 256000,
+    maxOutputTokens: 16000,
   },
   {
     value: 'scira-deepseek-reasoner',

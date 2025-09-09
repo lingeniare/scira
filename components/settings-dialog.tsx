@@ -59,17 +59,19 @@ interface SettingsDialogProps {
   subscriptionData?: any;
   isProUser?: boolean;
   isProStatusLoading?: boolean;
+  isUltraUser?: boolean; // Добавляем поддержку Ultra пользователей
   isCustomInstructionsEnabled?: boolean;
   setIsCustomInstructionsEnabled?: (value: boolean | ((val: boolean) => boolean)) => void;
 }
 
 // Component for Profile Information
-function ProfileSection({ user, subscriptionData, isProUser, isProStatusLoading }: any) {
+function ProfileSection({ user, subscriptionData, isProUser, isProStatusLoading, isUltraUser }: any) {
   const { isProUser: fastProStatus, isLoading: fastProLoading } = useIsProUser();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   // Use comprehensive Pro status from user data (includes DodoPayments and CloudPayments)
   const isProUserActive: boolean = user?.isProUser || fastProStatus || false;
+  const isUltraUserActive: boolean = user?.isUltraUser || isUltraUser || false;
   const showProLoading: boolean = Boolean(fastProLoading || isProStatusLoading);
 
   return (
@@ -92,19 +94,27 @@ function ProfileSection({ user, subscriptionData, isProUser, isProStatusLoading 
           <p className={cn('text-muted-foreground', isMobile ? 'text-xs' : 'text-sm')}>{user?.email}</p>
           {showProLoading ? (
             <Skeleton className="h-5 w-16 mx-auto" />
-          ) : (
-            isProUserActive && (
-              <span
-                className={cn(
-                  'font-baumans! px-2 pt-1 pb-2 inline-flex leading-5 mt-2 items-center rounded-lg shadow-sm border-transparent ring-1 ring-ring/35 ring-offset-1 ring-offset-background',
-                  'bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground',
-                  'dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground',
-                )}
-              >
-                pro user
-              </span>
-            )
-          )}
+          ) : isUltraUserActive ? (
+            <span
+              className={cn(
+                'font-baumans! px-2 pt-1 pb-2 inline-flex leading-5 mt-2 items-center rounded-lg shadow-sm border-transparent ring-1 ring-ring/35 ring-offset-1 ring-offset-background',
+                'bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground',
+                'dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground',
+              )}
+            >
+              ultra user
+            </span>
+          ) : isProUserActive ? (
+            <span
+              className={cn(
+                'font-baumans! px-2 pt-1 pb-2 inline-flex leading-5 mt-2 items-center rounded-lg shadow-sm border-transparent ring-1 ring-ring/35 ring-offset-1 ring-offset-background',
+                'bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground',
+                'dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground',
+              )}
+            >
+              pro user
+            </span>
+          ) : null}
         </div>
       </div>
 
@@ -1080,6 +1090,7 @@ export function SettingsDialog({
   subscriptionData,
   isProUser,
   isProStatusLoading,
+  isUltraUser,
   isCustomInstructionsEnabled,
   setIsCustomInstructionsEnabled,
 }: SettingsDialogProps) {
@@ -1136,6 +1147,7 @@ export function SettingsDialog({
           subscriptionData={subscriptionData}
           isProUser={isProUser}
           isProStatusLoading={isProStatusLoading}
+          isUltraUser={isUltraUser}
         />
       </TabsContent>
 

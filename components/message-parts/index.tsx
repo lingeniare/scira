@@ -273,6 +273,7 @@ interface MessagePartRendererProps {
   regenerate: UseChatHelpers<ChatMessage>['regenerate'];
   onHighlight?: (text: string) => void;
   annotations?: DataUIPart<CustomUIDataTypes>[];
+  selectedModel?: string;
 }
 
 export const MessagePartRenderer = memo<MessagePartRendererProps>(
@@ -299,6 +300,7 @@ export const MessagePartRenderer = memo<MessagePartRendererProps>(
     regenerate,
     onHighlight,
     annotations,
+    selectedModel,
   }) => {
     // Handle text parts
     if (part.type === 'text') {
@@ -309,7 +311,7 @@ export const MessagePartRenderer = memo<MessagePartRendererProps>(
             key={`${messageIndex}-${partIndex}-loading`}
             className="flex flex-col min-h-[calc(100vh-18rem)] !m-0 !p-0"
           >
-            <VegaLogoHeader />
+            <VegaLogoHeader selectedModel={selectedModel} />
             <div className="flex space-x-2 ml-8 mt-2">
               <div
                 className="w-2 h-2 rounded-full bg-muted-foreground dark:bg-muted-foreground animate-bounce"
@@ -401,7 +403,7 @@ export const MessagePartRenderer = memo<MessagePartRendererProps>(
                         <HugeiconsIcon icon={RepeatIcon} size={32} color="currentColor" strokeWidth={2} />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Rewrite</TooltipContent>
+                    <TooltipContent>Переписать</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               )}
@@ -429,7 +431,7 @@ export const MessagePartRenderer = memo<MessagePartRendererProps>(
                         <HugeiconsIcon icon={Share03Icon} size={32} color="currentColor" strokeWidth={2} />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Share</TooltipContent>
+                    <TooltipContent>Поделиться</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               )}
@@ -448,7 +450,7 @@ export const MessagePartRenderer = memo<MessagePartRendererProps>(
                       <HugeiconsIcon icon={Copy01Icon} size={32} color="currentColor" strokeWidth={2} />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Copy</TooltipContent>
+                  <TooltipContent>Копировать</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
@@ -516,7 +518,7 @@ export const MessagePartRenderer = memo<MessagePartRendererProps>(
       if (partIndex === firstStepStartIndex) {
         return (
           <div key={`${messageIndex}-${partIndex}-step-start-logo`} className="!m-0 !p-0">
-            <VegaLogoHeader />
+            <VegaLogoHeader selectedModel={selectedModel} />
           </div>
         );
       }

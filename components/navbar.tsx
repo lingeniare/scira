@@ -31,6 +31,7 @@ interface NavbarProps {
   isOwner?: boolean;
   subscriptionData?: any;
   isProUser?: boolean;
+  isUltraUser?: boolean;
   isProStatusLoading?: boolean;
   isCustomInstructionsEnabled?: boolean;
   setIsCustomInstructionsEnabled?: (value: boolean | ((val: boolean) => boolean)) => void;
@@ -48,6 +49,7 @@ const Navbar = memo(
     isOwner = true,
     subscriptionData,
     isProUser,
+    isUltraUser,
     isProStatusLoading,
     isCustomInstructionsEnabled,
     setIsCustomInstructionsEnabled,
@@ -412,6 +414,19 @@ const Navbar = memo(
                       Loading subscription status...
                     </TooltipContent>
                   </Tooltip>
+                ) : isUltraUser ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="pointer-events-auto">
+                        <span className="font-baumans! inline-flex items-center gap-1 rounded-lg shadow-sm border-transparent ring-1 ring-ring/35 ring-offset-1 ring-offset-background bg-gradient-to-br from-secondary/25 via-primary/20 to-accent/25 text-foreground px-2.5 pt-0.5 pb-1.25 sm:pt-1 leading-5 dark:bg-gradient-to-br dark:from-primary dark:via-secondary dark:to-primary dark:text-foreground">
+                          <span>ultra</span>
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" sideOffset={4}>
+                      Ultra Subscribed - Premium access
+                    </TooltipContent>
+                  </Tooltip>
                 ) : hasActiveSubscription ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -438,6 +453,7 @@ const Navbar = memo(
               subscriptionData={subscriptionData}
               isProUser={isProUser}
               isProStatusLoading={isProStatusLoading}
+              isUltraUser={isUltraUser}
               isCustomInstructionsEnabled={isCustomInstructionsEnabled}
               setIsCustomInstructionsEnabled={setIsCustomInstructionsEnabled}
             />

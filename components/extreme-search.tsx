@@ -910,8 +910,8 @@ const ExtremeSourcesSheet: React.FC<{
           {/* Header */}
           <div className="px-6 py-5 border-b border-neutral-200 dark:border-neutral-800">
             <div>
-              <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">All Sources</h2>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">{sources.length} research sources</p>
+              <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Все источники</h2>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">{sources.length} источники исследований</p>
             </div>
           </div>
 

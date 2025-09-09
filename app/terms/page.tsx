@@ -48,7 +48,7 @@ export default function TermsPage() {
 
             <motion.div variants={item} className="text-center">
               <h1 className="text-4xl font-bold tracking-tight">Условия использования</h1>
-              <p className="text-muted-foreground mt-3">Последнее обновление: 05 сентября 2025</p>
+              <p className="text-muted-foreground mt-3">Последнее обновление: 05 января 2025</p>
             </motion.div>
           </motion.div>
         </div>
@@ -58,177 +58,177 @@ export default function TermsPage() {
       <div className="py-16 px-4">
         <div className="container max-w-3xl mx-auto prose dark:prose-invert prose-neutral prose-headings:font-roboto prose-p:text-muted-foreground prose-a:text-foreground prose-a:no-underline hover:prose-a:text-foreground/80 prose-headings:tracking-tight">
           <p className="text-lg">
-            Welcome to Vega AI. These Terms of Service govern your use of our website and services. By using Vega AI,
-            you agree to these terms in full. If you disagree with any part of these terms, please do not use our
-            service.
+            Добро пожаловать в Vega AI. Данные Условия использования регулируют использование вами нашего веб-сайта и услуг. Используя Vega AI,
+            вы соглашаетесь с данными условиями в полном объеме. Если вы не согласны с какой-либо частью данных условий, пожалуйста, не используйте наш
+            сервис.
           </p>
 
-          <h2>1. Acceptance of Terms</h2>
+          <h2>1. Принятие условий</h2>
           <p>
-            By accessing or using Vega AI, you acknowledge that you have read, understood, and agree to be bound by
-            these Terms of Service. We reserve the right to modify these terms at any time, and such modifications shall
-            be effective immediately upon posting. Your continued use of Vega AI after any modifications indicates your
-            acceptance of the modified terms.
+            Получая доступ к Vega AI или используя его, вы подтверждаете, что прочитали, поняли и согласны соблюдать
+            данные Условия использования. Мы оставляем за собой право изменять данные условия в любое время, и такие изменения
+            вступают в силу немедленно после публикации. Ваше дальнейшее использование Vega AI после любых изменений означает
+            ваше согласие с измененными условиями.
           </p>
 
-          <h2>2. Description of Service</h2>
+          <h2>2. Описание сервиса</h2>
           <p>
-            Vega AI is a minimalistic AI-powered search engine that helps users find information on the internet. Our
-            service utilizes artificial intelligence to process search queries and provide relevant results and
-            information.
+            Vega AI — это минималистичная поисковая система на основе искусственного интеллекта, которая помогает пользователям находить информацию в интернете. Наш
+            сервис использует искусственный интеллект для обработки поисковых запросов и предоставления релевантных результатов и
+            информации.
           </p>
           <p>
-            Our service is hosted on Vercel and integrates with various AI technology providers, including OpenAI,
-            Anthropic, xAI, and others, to deliver search results and content generation capabilities.
+            Наш сервис размещен на Vercel и интегрируется с различными поставщиками технологий ИИ, включая OpenAI,
+            Anthropic, xAI и другими, для предоставления результатов поиска и возможностей генерации контента.
           </p>
 
-          <h2>3. User Conduct</h2>
-          <p>You agree not to use Vega AI to:</p>
+          <h2>3. Поведение пользователей</h2>
+          <p>Вы соглашаетесь не использовать Vega AI для:</p>
           <ul>
-            <li>Engage in any activity that violates applicable laws or regulations</li>
-            <li>Infringe upon the rights of others, including intellectual property rights</li>
-            <li>Distribute malware, viruses, or other harmful computer code</li>
-            <li>Attempt to gain unauthorized access to our systems or networks</li>
-            <li>Conduct automated queries or scrape our service</li>
-            <li>Generate or distribute illegal, harmful, or offensive content</li>
-            <li>Interfere with the proper functioning of the service</li>
+            <li>Участия в любой деятельности, нарушающей применимые законы или правила</li>
+            <li>Нарушения прав других лиц, включая права интеллектуальной собственности</li>
+            <li>Распространения вредоносного ПО, вирусов или другого вредоносного компьютерного кода</li>
+            <li>Попыток получения несанкционированного доступа к нашим системам или сетям</li>
+            <li>Проведения автоматизированных запросов или парсинга нашего сервиса</li>
+            <li>Создания или распространения незаконного, вредоносного или оскорбительного контента</li>
+            <li>Вмешательства в надлежащее функционирование сервиса</li>
           </ul>
 
-          <h2>4. Content and Results</h2>
-          <p>While we strive to provide accurate and reliable information, Vega AI:</p>
+          <h2>4. Контент и результаты</h2>
+          <p>Хотя мы стремимся предоставлять точную и надежную информацию, Vega AI:</p>
           <ul>
-            <li>Does not guarantee the accuracy, completeness, or reliability of any results</li>
-            <li>Is not responsible for content generated based on your search queries</li>
-            <li>May provide links to third-party websites over which we have no control</li>
+            <li>Не гарантирует точность, полноту или надежность любых результатов</li>
+            <li>Не несет ответственности за контент, созданный на основе ваших поисковых запросов</li>
+            <li>Может предоставлять ссылки на сторонние веб-сайты, над которыми мы не имеем контроля</li>
           </ul>
           <p>
-            You should exercise judgment and critical thinking when evaluating search results and generated content.
-            Vega AI should not be used as the sole source for making important decisions, especially in professional,
-            medical, legal, or financial contexts.
+            Вы должны проявлять рассудительность и критическое мышление при оценке результатов поиска и созданного контента.
+            Vega AI не следует использовать в качестве единственного источника для принятия важных решений, особенно в профессиональных,
+            медицинских, юридических или финансовых контекстах.
           </p>
 
-          <h2>5. Intellectual Property</h2>
+          <h2>5. Интеллектуальная собственность</h2>
           <p>
-            All content, features, and functionality of Vega AI, including but not limited to text, graphics, logos,
-            icons, images, audio clips, and software, are the property of Vega AI or its licensors and are protected by
-            copyright, trademark, and other intellectual property laws.
+            Весь контент, функции и функциональность Vega AI, включая, но не ограничиваясь текстом, графикой, логотипами,
+            иконками, изображениями, аудиоклипами и программным обеспечением, являются собственностью Vega AI или его лицензиаров и защищены
+            авторским правом, товарными знаками и другими законами об интеллектуальной собственности.
           </p>
           <p>
-            You may not copy, modify, distribute, sell, or lease any part of our service or included software without
-            explicit permission.
+            Вы не можете копировать, изменять, распространять, продавать или сдавать в аренду любую часть нашего сервиса или включенного программного обеспечения без
+            явного разрешения.
           </p>
 
-          <h2>6. Third-Party Services</h2>
-          <p>Vega AI relies on third-party services to provide its functionality:</p>
+          <h2>6. Сторонние сервисы</h2>
+          <p>Vega AI полагается на сторонние сервисы для обеспечения своей функциональности:</p>
           <ul>
-            <li>Our service is hosted on Vercel&apos;s infrastructure</li>
-            <li>We integrate with AI technology providers including OpenAI, Anthropic, xAI, and others</li>
-            <li>We use payment processors including CloudPayments and DodoPayments for billing and subscription management</li>
-            <li>These third-party services have their own terms of service and privacy policies</li>
-            <li>We are not responsible for the practices or policies of these third-party services</li>
+            <li>Наш сервис размещен на инфраструктуре Vercel</li>
+            <li>Мы интегрируемся с поставщиками технологий ИИ, включая OpenAI, Anthropic, xAI и другими</li>
+            <li>Мы используем платежные процессоры, включая CloudPayments и DodoPayments для выставления счетов и управления подписками</li>
+            <li>Эти сторонние сервисы имеют свои собственные условия обслуживания и политики конфиденциальности</li>
+            <li>Мы не несем ответственности за практики или политики этих сторонних сервисов</li>
           </ul>
           <p>
-            By using Vega AI, you acknowledge and agree that your data may be processed by these third-party services
-            as described in our Privacy Policy. This includes payment data being processed by our payment providers
-            according to their respective privacy policies and security standards.
+            Используя Vega AI, вы признаете и соглашаетесь с тем, что ваши данные могут обрабатываться этими сторонними сервисами
+            как описано в нашей Политике конфиденциальности. Это включает обработку платежных данных нашими платежными провайдерами
+            в соответствии с их соответствующими политиками конфиденциальности и стандартами безопасности.
           </p>
 
-          <h2>7. Pricing and Billing</h2>
+          <h2>7. Цены и выставление счетов</h2>
           <p>
-            Vega AI offers both free and paid subscription plans. For detailed pricing information, visit our{' '}
+            Vega AI предлагает как бесплатные, так и платные планы подписки. Для получения подробной информации о ценах посетите нашу{' '}
             <Link href="/pricing" className="underline">
-              Pricing page
+              страницу с ценами
             </Link>
             .
           </p>
           <ul>
             <li>
-              <strong>Free:</strong> Includes limited daily searches with access to basic AI models
+              <strong>Бесплатный:</strong> Включает ограниченное количество ежедневных поисков с доступом к базовым моделям ИИ
             </li>
             <li>
-              <strong>Pro:</strong> $15/month subscription with unlimited searches and access to all AI models
+              <strong>Pro:</strong> Подписка $15/месяц с неограниченными поисками и доступом ко всем моделям ИИ
             </li>
           </ul>
           <p>
-            <strong>Payment Processing:</strong> We use third-party payment processors to handle billing and payments:
+            <strong>Обработка платежей:</strong> Мы используем сторонние платежные процессоры для обработки счетов и платежей:
           </p>
           <ul>
             <li>
-              <strong>CloudPayments:</strong> For recurring monthly subscriptions
+              <strong>CloudPayments:</strong> Для регулярных ежемесячных подписок
             </li>
             <li>
-              <strong>DodoPayments:</strong> For one-time payments (primarily for Indian users)
+              <strong>DodoPayments:</strong> Для разовых платежей (в основном для индийских пользователей)
             </li>
           </ul>
           <p>
-            <strong>Important:</strong> Vega AI does not store any payment card details, bank information, or other
-            sensitive payment data. All payment information is processed directly by our payment providers according to
-            their respective privacy policies and security standards.
+            <strong>Важно:</strong> Vega AI не хранит никаких данных платежных карт, банковской информации или других
+            конфиденциальных платежных данных. Вся платежная информация обрабатывается напрямую нашими платежными провайдерами в соответствии с
+            их соответствующими политиками конфиденциальности и стандартами безопасности.
           </p>
-          <p>For paid subscriptions:</p>
+          <p>Для платных подписок:</p>
           <ul>
-            <li>Billing is processed monthly and charged automatically to your payment method</li>
-            <li>All fees are non-refundable except as expressly stated in our refund policy</li>
-            <li>We reserve the right to change subscription prices with 30 days advance notice</li>
-            <li>You are responsible for all applicable taxes</li>
-            <li>Failed payments may result in service suspension or termination</li>
+            <li>Выставление счетов обрабатывается ежемесячно и автоматически списывается с вашего способа оплаты</li>
+            <li>Все сборы не подлежат возврату, за исключением случаев, прямо указанных в нашей политике возврата</li>
+            <li>Мы оставляем за собой право изменять цены подписки с уведомлением за 30 дней</li>
+            <li>Вы несете ответственность за все применимые налоги</li>
+            <li>Неудачные платежи могут привести к приостановке или прекращению обслуживания</li>
           </ul>
 
-          <h2>8. Cancellation and Refunds</h2>
+          <h2>8. Отмена и возврат средств</h2>
           <p>
-            You may cancel your subscription at any time through your account settings or by contacting us. Upon
-            cancellation:
+            Вы можете отменить свою подписку в любое время через настройки аккаунта или связавшись с нами. При
+            отмене:
           </p>
           <ul>
-            <li>Your subscription will remain active until the end of your current billing period</li>
-            <li>You will retain access to paid features until the subscription expires</li>
-            <li>Your account will automatically revert to the free plan</li>
-            <li>No partial refunds will be provided for unused portions of your subscription</li>
+            <li>Ваша подписка останется активной до конца текущего расчетного периода</li>
+            <li>Вы сохраните доступ к платным функциям до истечения срока подписки</li>
+            <li>Ваш аккаунт автоматически вернется к бесплатному плану</li>
+            <li>Частичные возвраты за неиспользованные части вашей подписки не предоставляются</li>
           </ul>
           <p>
-            <strong>No Refund Policy:</strong> All subscription fees are final and non-refundable. We do not provide
-            refunds, credits, or prorated billing for partial subscription periods, regardless of usage or
-            circumstances. Please consider this policy carefully before subscribing to our paid plans.
+            <strong>Политика отсутствия возврата:</strong> Все сборы за подписку являются окончательными и не подлежат возврату. Мы не предоставляем
+            возвраты, кредиты или пропорциональное выставление счетов за частичные периоды подписки, независимо от использования или
+            обстоятельств. Пожалуйста, внимательно рассмотрите эту политику перед подпиской на наши платные планы.
           </p>
 
-          <h2>9. Privacy</h2>
+          <h2>9. Конфиденциальность</h2>
           <p>
-            Your use of Vega AI is also governed by our{' '}
+            Ваше использование Vega AI также регулируется нашей{' '}
             <Link href="/privacy-policy" className="underline">
-              Privacy Policy
+              Политикой конфиденциальности
             </Link>
-            , which is incorporated into these Terms of Service by reference.
+            , которая включена в данные Условия использования по ссылке.
           </p>
 
-          <h2>10. Limitation of Liability</h2>
+          <h2>10. Ограничение ответственности</h2>
           <p>
-            To the maximum extent permitted by law, Vega AI shall not be liable for any indirect, incidental, special,
-            consequential, or punitive damages, including loss of profits, data, or goodwill, arising out of or in
-            connection with your use of or inability to use the service.
+            В максимальной степени, разрешенной законом, Vega AI не несет ответственности за любые косвенные, случайные, специальные,
+            последующие или штрафные убытки, включая потерю прибыли, данных или деловой репутации, возникающие из или в
+            связи с вашим использованием или невозможностью использования сервиса.
           </p>
 
-          <h2>11. Disclaimers</h2>
+          <h2>11. Отказ от гарантий</h2>
           <p>
-            Vega AI is provided &quot;as is&quot; and &quot;as available&quot; without any warranties of any kind,
-            either express or implied, including but not limited to warranties of merchantability, fitness for a
-            particular purpose, or non-infringement.
+            Vega AI предоставляется &quot;как есть&quot; и &quot;как доступно&quot; без каких-либо гарантий любого рода,
+            явных или подразумеваемых, включая, но не ограничиваясь гарантиями товарности, пригодности для
+            конкретной цели или отсутствия нарушений.
           </p>
 
-          <h2>12. Termination</h2>
+          <h2>12. Прекращение</h2>
           <p>
-            We reserve the right to suspend or terminate your access to Vega AI, with or without notice, for conduct
-            that we believe violates these Terms of Service or is harmful to other users, us, or third parties, or for
-            any other reason at our discretion.
+            Мы оставляем за собой право приостановить или прекратить ваш доступ к Vega AI, с уведомлением или без него, за поведение,
+            которое, по нашему мнению, нарушает данные Условия использования или наносит вред другим пользователям, нам или третьим лицам, или по
+            любой другой причине по нашему усмотрению.
           </p>
 
-          <h2>13. Governing Law</h2>
+          <h2>13. Применимое право</h2>
           <p>
-            These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which
-            Vega AI operates, without regard to its conflict of law provisions.
+            Данные Условия регулируются и толкуются в соответствии с законами юрисдикции, в которой
+            работает Vega AI, без учета положений о коллизии права.
           </p>
 
-          <h2>14. Contact Us</h2>
-          <p>If you have any questions about these Terms of Service, please contact us at:</p>
+          <h2>14. Свяжитесь с нами</h2>
+          <p>Если у вас есть вопросы по данным Условиям использования, пожалуйста, свяжитесь с нами по адресу:</p>
           <p>
             <a href="mailto:mail@vega.chat" className="flex items-center gap-1">
               mail@vega.chat <ExternalLink className="h-4 w-4" />
@@ -237,9 +237,9 @@ export default function TermsPage() {
 
           <div className="my-8 border-t pt-8">
             <p className="text-sm text-muted-foreground">
-              By using Vega AI, you agree to these Terms of Service and our{' '}
+              Используя Vega AI, вы соглашаетесь с данными Условиями использования и нашей{' '}
               <Link href="/privacy-policy" className="underline">
-                Privacy Policy
+                Политикой конфиденциальности
               </Link>
               .
             </p>

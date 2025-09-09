@@ -130,7 +130,7 @@ export const models: Model[] = [
   {
     value: 'scira-mistral-small',
     label: 'Mistral Small',
-    description: "Быстрая и эффективная модель от Mistral AI",
+    description: "Быстрая модель от Mistral AI",
 
     vision: false,
     reasoning: false,

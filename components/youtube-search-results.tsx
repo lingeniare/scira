@@ -509,7 +509,7 @@ const YouTubeEmptyState: React.FC = () => (
 // Main YouTube Search Results Component
 export const YouTubeSearchResults: React.FC<YouTubeSearchResultsProps> = ({ results, isLoading = false }) => {
   if (isLoading) {
-    return <SearchLoadingState icon={YoutubeIcon} text="Searching YouTube" color="red" />;
+    return <SearchLoadingState icon={YoutubeIcon} text="Ищю на YouTube" color="red" />;
   }
 
   if (!results || !results.results || !Array.isArray(results.results)) {

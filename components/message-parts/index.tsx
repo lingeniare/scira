@@ -1313,7 +1313,7 @@ const ToolPartRenderer = memo(
           case 'input-streaming':
             return <div className="text-sm text-neutral-500">Preparing YouTube search...</div>;
           case 'input-available':
-            return <SearchLoadingState icon={YoutubeIcon} text="Searching YouTube..." color="red" />;
+            return <SearchLoadingState icon={YoutubeIcon} text="Ищю на YouTube..." color="red" />;
           case 'output-available':
             return (
               <Suspense fallback={<ComponentLoader />}>

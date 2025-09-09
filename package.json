@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:log": "pnpm dev 2>&1 | tee -a app.log",
+    "dev:log-dated": "pnpm dev 2>&1 | tee -a logs/app-$(date +%Y%m%d).log",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

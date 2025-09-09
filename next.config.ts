@@ -51,13 +51,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return [
-      {
-        source: '/blog',
-        destination: 'https://blog.vega.chat',
-        permanent: true,
-      },
-    ];
+    return [];
   },
   images: {
     dangerouslyAllowSVG: true,
